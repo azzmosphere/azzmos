@@ -40,6 +40,10 @@ SchedulerProcess( Scheduler_t *sc )
 	/* create internet socket and start downloading stuff */
 	DownloadHTML_t *dl;
 
+	/* Create URIQualifier list */
+ 	/* REMAINS TO BE IMPLEMENTED */
+	//INIT_LIST_HEAD(  );
+
 
 	if( (dl = InitDownloadHTML( opts )) == NULL ) {
 		syslog( LOG_ERR, "could not initilize DownloadHTML");

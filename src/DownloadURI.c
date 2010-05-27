@@ -46,37 +46,29 @@ DownloadURIPerform(
 	int urirv = 0, uriid = 0;
 	CURLcode curlstatus;
 	char *href;
-	
-	/*  if( (uri = URIObjInit()) == NULL)
-		urirv = EAGAIN;
-	else { */
-		/*  if( (href = (char *) URIQualify(urirel, seed, uri, NULL)) == NULL ) {
-			urirv = 1;
-			syslog( LOG_ERR, "could not get FQP for seed = '%s'", seed);
-		} */ 
-		if( (curlstatus = PerformDownloadHTML( dl, URIObjGetFQP(uri)) ) != CURLE_OK)
-			syslog(LOG_ERR, "%s - %s -%s", __FILE__, "CURL", curl_easy_strerror( curlstatus));
 
-		else if( (urirv = URIObjSetContent(uri, dl)) != 0)
-			SYSLOG_ERR("DownloadURI","URI" ,urirv);
+	if( (curlstatus = PerformDownloadHTML( dl, URIObjGetFQP(uri)) ) != CURLE_OK)
+		syslog(LOG_ERR, "%s - %s -%s", __FILE__, "CURL", curl_easy_strerror( curlstatus));
 
-		/* upload URI to database */
-		else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
-			syslog(LOG_CRIT, "can not upload to database!!!!");
-			URIObjCleanUp(uri);
-			urirv = 1;
-		}
-		/* Extract Href List from content */
-		else if( (duri = GetHrefList(urirel, uri)) == NULL ) {
-			syslog(LOG_ERR, "could not get HREF list");
-			urirv = 1;
-		} 
-		else if ( urirv == 0 ) {
-			/* set the URIID */
-			URIObjSetId( uri, uriid);
-			URIObjFreeContent( uri );	
-		}
-//	}
+	else if( (urirv = URIObjSetContent(uri, dl)) != 0)
+		SYSLOG_ERR("DownloadURI","URI" ,urirv);
+
+	/* upload URI to database */
+	else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
+		syslog(LOG_CRIT, "can not upload to database!!!!");
+		URIObjCleanUp(uri);
+		urirv = 1;
+	}
+	/* Extract Href List from content */
+	else if( (duri = GetHrefList(urirel, uri)) == NULL ) {
+		syslog(LOG_ERR, "could not get HREF list");
+		urirv = 1;
+	} 
+	else if ( urirv == 0 ) {
+		/* set the URIID */
+		URIObjSetId( uri, uriid);
+		URIObjFreeContent( uri );	
+	}
 	
 	if( curlstatus != CURLE_OK || urirv != 0 ) 
 		return NULL;
@@ -89,7 +81,8 @@ DownloadURIPerform(
  * ===  FUNCTION  ======================================================================
  *         Name:  DownloadURI
  *  Description:  This is the main interface, it should be used as the access point
- *  to access the algoritm unless performing unit tests
+ *                to access the algoritm unless performing unit tests, note this is 
+ *                a recursive algoritm.
  * =====================================================================================
  */
 int 
@@ -191,4 +184,17 @@ DownloadURISetListItem(DownloadURI_t *tmp, DownloadURI_t *duri,  char *href)
 	list_add(&(tmp->du_list), &(duri->du_list));
 	return rv;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DownloadURICleanUp
+ *  Description:  
+ * =====================================================================================
+ */
+void
+DownloadURICleanUp ( DownloadURI_t *du )
+{
+ /* REMAINS TO BE IMPLEMENTED */
+}		/* -----  end of function DownloadURICleanUp  ----- */
 

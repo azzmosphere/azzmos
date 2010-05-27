@@ -1,0 +1,1550 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<!-- Took this out for IE6ites "http://www.w3.org/TR/REC-html40/loose.dtd" -->
+
+  
+    <title>
+      PerlMonks - The Monastery Gates
+    </title>
+    
+    <!-- Theme : Web safe blue PerlMonks Theme    -->
+    <link rel="stylesheet" href="test_files/common.css" type="text/css">
+    <link rel="stylesheet" href="test_files/a.css" type="text/css">
+    <!-- No CSS Link in User Settings -->
+    <!-- No CSS Data in User Settings -->
+    <link rel="icon" href="http://www.perlmonks.org/favicon.ico">
+    
+
+    <meta name="description" content="A community committed to sharing 
+Perl
+                     knowledge and coding tips.  The site
+                     contains questions and answers, useful
+                     snippets, and a library of code.">
+    <meta name="keywords" content="perl, mod_perl, regular expressions,
+                     regexp, xp whoring, CGI, programming,
+                     learning, tutorials, questions, answers,
+                     examples, vroom, tim, node, experience,
+                     votes, code">
+  </head><body id="id-131">
+<!-- monktainer -->
+<!-- monkbar2001 -->
+
+    <table id="monkbar" border="0" cellpadding="0" cellspacing="0" 
+width="100%">
+      <tbody><tr class="bannerrow">
+        <td align="left" width="100%">
+        <a href="http://pair.com/">
+ <img src="test_files/pair-banner-current.gif" alt="Beefy Boxes and 
+Bandwidth Generously Provided by pair Networks" height="60" width="468">
+</a>
+        </td>
+        <td rowspan="2" align="right" valign="bottom">
+          <a href="http://www.perlmonks.org/?node_id=966"><img 
+src="test_files/robo.gif" alt="RobOMonk" title="RobOMonk" border="0" 
+height="91" width="74"></a>
+        </td>
+      </tr>
+      <tr class="monkquip">
+        <td class="monkquip" valign="bottom" width="100%">
+          
+    <font size="2">
+      P is for Practical
+    </font>
+
+        </td>
+      </tr>
+      <tr class="titlebar">
+        <td class="titlebar">
+
+          <form method="get" action="?" 
+enctype="application/x-www-form-urlencoded">
+            &nbsp;
+            <input name="node" id="search_text" size="20" 
+maxlength="300" type="text">
+            <input class="titlebar" value="Search" type="submit">
+          </form>
+        </td>
+        <td class="titlebar" id="mb2001titlebar" align="right">
+          <a class="titlebar" href="http://www.perlmonks.org/?">
+            PerlMonks
+          </a>
+        </td>
+      </tr>
+    </tbody></table>
+
+<!-- /monkbar2001 -->
+<!-- Begin title bar -->
+<table id="titlebar-top" align="center" width="98%">
+  <tbody>
+    <tr>
+      <td class="titlechooser" valign="middle">
+        <!-- superdoc title chooser(1) -->
+        <h3 class="superdoc">The Monastery Gates</h3>
+        <!-- /superdoc title chooser(1) -->
+      </td>
+      <td class="monktitlebar" align="right" valign="top">
+        <!-- monktitlebar -->
+        <span class="topnavmenu"><span class="link-sep"><span 
+class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span 
+id="titlebar-link-000"><a href="http://www.perlmonks.org/?node_id=109">Log&nbsp;in</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-001"><a href="http://www.perlmonks.org/?node_id=101">Create&nbsp;a&nbsp;new&nbsp;user</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-002"><a href="http://www.perlmonks.org/?node_id=131">The&nbsp;Monastery&nbsp;Gates</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-003"><a 
+href="http://www.perlmonks.org/?node=Super%20Search">Super&nbsp;Search</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><br>
+<span class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-004"><a 
+href="http://www.perlmonks.org/?node=Seekers%20of%20Perl%20Wisdom">Seekers&nbsp;of&nbsp;Perl&nbsp;Wisdom</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-005"><a 
+href="http://www.perlmonks.org/?node=Meditations">Meditations</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-006"><a 
+href="http://www.perlmonks.org/?node=Perl%20Monks%20Discussion">PerlMonks&nbsp;Discussion</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><br>
+<span class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-007"><a 
+href="http://www.perlmonks.org/?node=Obfuscated%20Code">Obfuscation</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-008"><a href="http://www.perlmonks.org/?node=Reviews">Reviews</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-009"><a 
+href="http://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl">Cool&nbsp;Uses&nbsp;For&nbsp;Perl</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-010"><a 
+href="http://www.perlmonks.org/?node=Perl%20News">Perl&nbsp;News</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-011"><a 
+href="http://www.perlmonks.org/?node=Categorized%20Questions%20and%20Answers">Q&amp;A</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-012"><a 
+href="http://www.perlmonks.org/?node=Tutorials">Tutorials</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><br>
+<span class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-013"><a 
+href="http://www.perlmonks.org/?node=Perl%20Poetry">Poetry</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-014"><a 
+href="http://www.perlmonks.org/?node=Recently%20Active%20Threads">Recent&nbsp;Threads</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-015"><a 
+href="http://www.perlmonks.org/?node=Newest%20Nodes">Newest&nbsp;Nodes</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-016"><a 
+href="http://www.perlmonks.org/?node=Offering%20Plate">Donate</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span><span
+ id="titlebar-link-017"><a href="http://www.perlmonks.org/?node=Tidings">What's&nbsp;New</a></span><span
+ class="link-sep"><span class="navmenu-link-sep">&nbsp;|&nbsp;</span></span></span><br>
+
+        <!-- /monktitlebar -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table id="titlebar-bottom" align="center" width="98%">
+  <tbody>
+    <tr>
+      <td class="titlechooser" valign="middle">
+        <!-- superdoc title chooser(2) -->
+         <span class="addlinks">(&nbsp;#<a 
+href="http://www.perlmonks.org/?node_id=131">131</a>=superdoc:&nbsp;<a 
+href="http://www.perlmonks.org/?displaytype=print;node_id=131">print</a>&nbsp;<a
+ 
+href="http://www.perlmonks.org/?displaytype=print;node_id=131;replies=1">w/&nbsp;replies</a>,
+ <a href="http://www.perlmonks.org/?displaytype=xml;node_id=131">xml</a>&nbsp;)</span>
+        <!-- superdoc title chooser(2) -->
+      </td>
+      <td class="monktitlebar" align="right" valign="middle">
+        <a href="http://www.perlmonks.org/?node=PerlMonks%20FAQ">Need 
+Help??</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- End title bar -->
+<!-- Begin main (monktainer) -->
+
+
+<center>
+  <table width="98%">
+    <tbody><tr>
+      <td class="main_content" valign="top" width="80%">
+        <!--contained stuff-->
+        
+<center><b><a href="http://www.perlmonks.org/?node=Offering%20Plate">Donations
+ gladly accepted</a></b></center>
+
+<!--
+<table width="100%" cellpadding="0" cellspacing="0" align="left">
+  <tr align="left">
+    <td valign="top">
+-->
+    
+    <center>If you're new here please read <a 
+href="http://www.perlmonks.org/?node=PerlMonks%20FAQ">PerlMonks FAQ</a><br>
+ and <a href="http://www.perlmonks.org/?node=Create%20a%20new%20user">Create
+ a new user</a>.</center><br><p align="left">Want Mega XP? Prepare to 
+have your hopes dashed, join in on the: <font size="2"> <b><a 
+href="http://www.perlmonks.org/?node_id=815171">poll ideas quest 2010</a></b>&nbsp;&nbsp;(Don't
+ worry; you've got plenty of time.)</font></p><table cellpadding="0" 
+cellspacing="0" width="100%">
+
+  <tbody><tr class="section_title" width="100%" border="1">
+    <td class="section_title" width="100%">
+      New Questions
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellpadding="2" cellspacing="0" width="100%">
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tbody><tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840647" name="post-head-id840647" 
+href="http://www.perlmonks.org/?node_id=840647">Remove unwanted chars 
+and maintain table integrity</a><br> 
+    on May 19, 2010 at 05:14
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840647">3 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=961">Anonymous Monk</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Esteemed Monks, my mental resources are depleted trying to tackle 
+this issue, I have a file of records that has the following form 
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">Character                        Count Length Pro_ID
+Timothy Watson 12 Medulla    W     W      W
+W                            W     W      ID:10
+W                            W     W      ID:11
+W                            W     W      ID:12
+W                            W     W      ID:13
+W                            W     W      ID:14
+W                            5     W      W
+W                            W     16     W
+Maya Alabina 5 Exo           W     W      W
+W                            W     W      ID:28
+W                            W     W      ID:30
+W                            1     W      W
+W                            W     11     W
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840647;part=1">[download]</a></div></font></pre>
+ 
+However, I want to clean up the 'W' chars and yet keep the table intact 
+but better aligned, considering the 'W' to be a white space I thought 
+substituting it can allow me to reposition the non-'W' column values to 
+the top of the column such as:
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">Character                        Count Length Pro_ID
+Timothy Watson 12 Medulla         5     16    ID:10
+                                              ID:11
+                                              ID:12
+                                              ID:13
+                                              ID:14
+Maya Alabina 5 Exo               1      11    ID:28  
+                                              ID:30                   
+<font color="red">+</font>                      
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840647;part=2">[download]</a></div></font></pre>
+
+As you see, each Character has many records associated with it but they 
+need to be aligned properly to reflect this....
+<p>I tried with Perl6::Form, Text::Tabulate then many other cpan Modules
+ that provide matrices manipulation but they don't seem to achieve my 
+requirement and I tried with AoAs but couldn't make it finally but back 
+to the code where I started which doesn't produce the layout I seek:</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">while(my $line = &lt;DATA&gt;){
+        chomp;
+        #print "$line######\n" ;
+        @array = split(/E/,$line);
+        print @array;
+        }
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840647;part=3">[download]</a></div></font></pre>
+
+Thanking you, this is going to prove a great milestone in my Perl 
+learning journey...</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840647;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840583" name="post-head-id840583" 
+href="http://www.perlmonks.org/?node_id=840583">Quicker way to compare 
+these 2 strings?</a><br> 
+    on May 18, 2010 at 20:07
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840583">2 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=961">Anonymous Monk</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Hello fellow Monks!<br>
+I have 2 strings, namely:<br>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">$first= "AAAAXXXXAAAAXXXXXXXXXXXAAAA";
+$second="AXXXAXXAAXXXXXAAAAXXXXXAAAA";
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840583;part=1">[download]</a></div></font></pre>
+
+<br>
+I want to know how many letters do they share in common. The 
+"traditional" way that I'm thinking of is:<br>
+1) Split $first, split $second<br>
+2) Foreach letter in @split_first array, see if, in the same position in
+ the array @split_second you have the same letter<br>
+3)Count the times you get success<br>
+Is there something quicker than that?<br>
+I just need the number of positions in the arrays (they always have the 
+same number of letters), that the have the same letter.<br>
+Thanks!</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840583;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840572" name="post-head-id840572" 
+href="http://www.perlmonks.org/?node_id=840572">match with elements in 
+array</a><br> 
+    on May 18, 2010 at 17:55
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840572">4 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=840570">finder003</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>I have the following set of aarays:
+
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">@lane01_1=    (200900..202543); 
+@lane01_2=    (202544..204187);
+@lane01_3=    (204188..205831);
+@lane01_4=    (205832..207475);
+@lane01_5=    (207476..210119);
+@lane01_6=    (210120..211763);
+@lane01_7=    (211764..213407);
+@lane01_8=    (213408..215051);
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840572;part=1">[download]</a></div></font></pre>
+
+
+Now I have a log file which is parsed for a certain number which I store
+ in a variable <b>$vector</b>.
+Now if <b>$vector</b> matches any of the elements in @lane01_1 I need to
+ print "1", If it matches the elements in @lane01_2, I need to print "2"
+ and so on and so forth.
+Whats the best way to do this? Should I push these arrays in to a hash 
+(and whats the easiest way to do that?) or can I do it without using a 
+hash? 
+Thanks!!</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840572;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840568" name="post-head-id840568" 
+href="http://www.perlmonks.org/?node_id=840568">Unable to suppress 
+warnings using PAR-Packer on Win32 with Strawberry Perl</a><br> 
+    on May 18, 2010 at 17:30
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840568">3 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=548811">wojtyk</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Esteemed monks,
+<p>
+I've installed Strawberry Perl on my Windows 7 machine and was able to 
+successfully install both PAR::Packer and Net::SNMP (with the intent of 
+packing snmpenum.pl into a stand-alone executable).  However, I then 
+came to the realization that running snmpenum.pl under Strawberry Perl 
+bombards me with the following warning spam: "<i><b>Use of :locked is 
+deprecated at Net/SNMP.pm line XXXX</b></i>".  The only way I was able 
+to successfully mute this spam was by replacing the "-w" with a "-X" in 
+my initial snmpenum.pl perl declaration line.  I was content with this 
+solution until I ran it through pp.  The resulting binary that was 
+produced ignored my -X flag and <i><b>still</b></i> produced the flurry 
+of warnings.  All attempts to suppress this spam beyond the declaration 
+line have failed (I've tried "no warnings", "$^W = 0", and various other
+ warning suppression techniques to no avail)</p><p>
+Does anyone know what is causing this aberrant behavior?  In UNIX, the 
+warnings aren't even generated, so I don't need the "-X" flag.<br>On 
+Windows, the warnings are generated despite the fact it is the exact 
+same version of the Net::SNMP library.  However, these can be suppressed
+ with "-X"<br>
+On Windows, in a "pp-packed" executable, I've found no way to suppress 
+these warnings.
+</p><p>
+If anyone could point me in the right direction, it would be much 
+appreciated.  Am I missing something glaringly obvious?</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840568;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840514" name="post-head-id840514" 
+href="http://www.perlmonks.org/?node_id=840514">Regex question</a><br> 
+    on May 18, 2010 at 09:37
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840514">4 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=653259">memnoch</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>Dear Monks,</p>
+<p>I'm wondering if anyone can suggest an elegant solution to my regex 
+substitution question.  In the following:
+
+</p><pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">my $greekReplace = "alpha|beta|chi|delta|epsilon|eta|gamma|hbar|kappa|
+<font color="red">+</font>lambda|mu|nu|omega|phi|pi|psi|rho|sigma|tau|theta";
+my $string = '3*mu';
+$string =~ s/($greekReplace)/\\$1 /isg;
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840514;part=1">[download]</a></div></font></pre>
+
+$string would end up as '3*\mu ' (note trailing space).  This all works 
+fine.<p></p>
+<p>The issue is that I need to be able to NOT do the 'mu' substitution 
+when 'mu' is prepended with 'a', as in 'amu'.</p>
+<p>While I'm sure I can figure out a clunky way of doing the 
+substitution with multiple levels of parentheses and memory variables, 
+I'm wondering if there is a simple solution.  I tried using 'a{0}mu' in 
+the above string, but that doesn't work.
+
+</p><p>Here is some code I have used to test things I've tried:</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+my $greekReplace = "alpha|beta|chi|delta|epsilon|eta|gamma|hbar|kappa|
+<font color="red">+</font>lambda|mu|nu|omega|phi|pi|psi|rho|sigma|tau|theta";
+
+my %strings = ( 
+    mu  =&gt; { valid =&gt; '\mu ' },
+    amu =&gt; { valid =&gt; 'amu' },
+    bmu =&gt; { valid =&gt; 'b\mu ' },
+    cmu =&gt; { valid =&gt; 'c\mu ' },
+    mud =&gt; { valid =&gt; '\mu d' },
+    '3*mu' =&gt; { valid =&gt; '3*\mu ' },
+);
+
+foreach my $string (sort keys %strings) {
+    print "Before: '$string'; ";
+    my $string2 = $string;
+    $string2 =~ s/($greekReplace)/\\$1 /isg;
+    print "After: '$string2' ; Should be: $strings{$string}-&gt;{valid}; 
+<font color="red">+</font>";
+    print $string2 eq $strings{$string}-&gt;{valid} ? "Passes\n" : "FAILS
+<font color="red">+</font>\n";
+}
+print "\n";
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840514;part=2">[download]</a></div></font></pre>
+
+<p>
+Thanks
+</p>
+<p><b>Update: </b>Thanks Monks....the negative look-behind does the 
+trick!</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840514;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840420" name="post-head-id840420" 
+href="http://www.perlmonks.org/?node_id=840420">Installing a Perl module
+ to an embedded target with different Perl version</a><br> 
+    on May 17, 2010 at 16:38
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840420">2 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=688543">wanna_code_perl</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>Hi Monks.</p>
+
+<p>I have an embedded system (I make an image of the filesystem 
+beforehand) with Perl 5.8.8. My host system is Perl 5.10.0. The arch is 
+different as well, but I'm only worried about pure Perl modules right 
+now.</p>
+
+<p>The filesystem for the embedded system is built from, say, 
+/path/to/root</p>
+
+<p>I want to install a pure Perl module to the correct location under 
+/path/to/root , such that when my embedded system boots, the module will
+ be found in @INC. Currently, if I run perl Makefile.PL 
+PREFIX=/path/to/root/usr , it installs under 
+/path/to/root/usr/share/perl/5.10.0/ , which of course doesn't work:</p>
+
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">Can't locate TheModule.pm in @INC (@INC contains: /usr/lib/perl5/site_
+<font color="red">+</font>perl/5.8.8 /usr/lib/perl5/site_perl /usr/lib/perl5/5.8.8 .) at ./test
+<font color="red">+</font>_script line 6.
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840420;part=1">[download]</a></div></font></pre>
+
+
+<p>If I manually copy the files to one of the directories in @INC, it 
+works fine, but I have many such modules to install, so would very much 
+like to be able to run Makefile.PL and make install in my system build 
+script to stick the modules into the right location, rather than hacking
+ together my own install script or hacking @INC.</p>
+
+<p>(Running Makefile.PL on the embedded system is not an option; I would
+ need to do that every time the system boots, and that would require 
+putting MakeMaker, make(1), etc., on the embedded system, which I don't 
+have the space for.)</p>
+
+<p>Is this easily accomplished by MakeMaker, or am I on my own here?</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840420;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840344" name="post-head-id840344" 
+href="http://www.perlmonks.org/?node_id=840344">binmode, encoding layer,
+ ignoring encoding problems</a><br> 
+    on May 17, 2010 at 09:00
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840344">2 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=840342">McA</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Hi all,<br>
+
+<p>I searched here and on the web for hours now, found many snippets, 
+but not the solution to my problem. Hopefully you can give me wisdom.</p>
+
+<p>If I push a so called encoding layer to a file handle with</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">binmode $fh, ":encoding(cp1252)";
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840344;part=1">[download]</a></div></font></pre>
+
+<p>knowing that the source character set (in this case utf-8) is a 
+superset of the target character set, do I have a chance to instruct the
+ encoding layer to ignore encoding problems by writing a substitution 
+charater (like '?') to the output stream?</p>
+
+<p>Thank you in advance.</p>
+
+<p>Best regards<br>
+Andreas</p>
+
+</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840344;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840308" name="post-head-id840308" 
+href="http://www.perlmonks.org/?node_id=840308">string-eval code more 
+than once</a><br> 
+    on May 17, 2010 at 05:50
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840308">3 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=838875">LANTI</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>Hi,
+I am writing some tests for scripts (not modules). The test mocks some 
+objects to avoid calls to a server and than evaluates the tested script 
+several times. While this works fine now, there are still some nasty 
+warnings about redefined subroutines.  Somehow this problem is by design
+ but I wonder if there is a way to avoid this. Following the code. The 
+tested script is located beneath the DATA token.</p>
+<p>Thanks in advance, Ingo</p>
+
+<p>
+</p><div class="readmore-link"><a 
+href="http://www.perlmonks.org/?node_id=840308">Read more...</a><span 
+class="readmore-size"> (2 kB)</span></div>
+<p></p>
+
+<h2>Output</h2>
+Just for completeness the output:
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">$ ./eval_with_loop.t 
+1..20
+ok 1 - use NaServer;
+ok 2 - The class isa NaServer
+ok 3 - use NaServer;
+ok 4 - NaServer-&gt;can('new')
+ok 5 - NaServer-&gt;can('get_val')
+ok 6 - A: stdout as expected (OK 500)
+ok 7 - A: stderr as expected (emtpy)
+ok 8 - A: exit-value as expected (0)
+ok 9 - use NaServer;
+ok 10 - NaServer-&gt;can('new')
+ok 11 - NaServer-&gt;can('get_val')
+Subroutine say_it redefined at (eval 35) line 24.
+
+ok 12 - B: stdout as expected (OK 500)
+ok 13 - B: stderr as expected (emtpy)
+ok 14 - B: exit-value as expected (0)
+ok 15 - use NaServer;
+ok 16 - NaServer-&gt;can('new')
+ok 17 - NaServer-&gt;can('get_val')
+Subroutine say_it redefined at (eval 40) line 24.
+
+ok 18 - C: stdout as expected (OK 500)
+ok 19 - C: stderr as expected (emtpy)
+ok 20 - C: exit-value as expected (0)
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840308;part=2">[download]</a></div></font></pre>
+</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840308;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840299" name="post-head-id840299" 
+href="http://www.perlmonks.org/?node_id=840299">Why did this error slip 
+through?</a><br> 
+    on May 17, 2010 at 05:25
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840299">5 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=683288">rovf</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><blockquote><i>
+</i></blockquote>
+I made the following mistake:
+<p>
+</p><pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">use strict;
+use warnings FATAL =&gt; qw(all);
+...
+my @remove_env=qw(FOO BAR BAZ);
+foreach my $var (@remove_env) {
+  $ENV{$var}='something';
+}
+...
+delete $ENV{_} foreach (@remove_env);
+print "$ENV{FOO}\n"; # FOO stil in environment!!!
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840299;part=1">[download]</a></div></font></pre>
+
+Of course the error is in the <tt class="inlinecode"><font size="-1">delete</font></tt>
+ line, but I wonder why this mistake was not detected by Perl. In this 
+case, _ would be seen as file handle, but this would mean that using a 
+file handle as a hash key would be a legal usage and not even issue a 
+warning! Any comments?
+<p></p>
+<div class="pmsig"><div class="pmsig-683288">
+--&nbsp;<br>
+Ronald Fischer &lt;ynnor@mm.st&gt;
+
+</div></div></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840299;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840289" name="post-head-id840289" 
+href="http://www.perlmonks.org/?node_id=840289">string to more compact 
+format</a><br> 
+    on May 17, 2010 at 03:52
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840289">3 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=840286">Boetsie</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Hi monks,
+
+i have alot of DNA strings with only characters of A, C, G or T. This 
+string is now 32 bits, while I only need two bits for all the 
+characters;
+
+A = 00
+C = 01
+G = 10
+T = 11
+
+How can i convert, for example, 'AGTCACA' to a more compact string with 
+less bits?
+
+Basically, I want to store this string to a hash and be able to compare 
+them, and see if substrings are availabe. If so, it needs to be printed.
+
+Cheers,
+Marten </ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840289;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840278" name="post-head-id840278" 
+href="http://www.perlmonks.org/?node_id=840278">Tool with Web-Based UI 
+Interface</a><br> 
+    on May 17, 2010 at 02:17
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840278">2 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=631231">perlpal</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Hi Perl Monks,
+
+<p> I have been developing tools in Perl which are CLI based.A new tool 
+to be built has the requirement that a web-based UI interface be 
+provided for ease-of-use.
+
+</p><p> This would be the first time i explore UI interface integration 
+with a tool.
+
+</p><p> Please could you provide directions for a tool to develop the UI
+ and a connection protocol between the front-end and back-end.
+
+</p><p> Thanks!</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840278;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840230" name="post-head-id840230" 
+href="http://www.perlmonks.org/?node_id=840230">Difference between 
+inline SQL and bound data</a><br> 
+    on May 16, 2010 at 11:16
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840230">2 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=714631">MattLG</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>I'm using a mysql database and I'm finding different results when
+ I query depending on whether I use the search data 'inline' compared to
+ when I use bound data in the execute() subroutine.</p>
+<p>The table is called weathercache, with 4 columns, latitude (float), 
+longitude (float), weather(text) and cached(datetime). Both floats are 
+float(8,6).</p>
+<p>I can insert the data fine:</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">use DBI;
+$dbh = connect(.........);
+$dbh-&gt;prepare('INSERT INTO weathercache (latitude, longitude, weather,
+<font color="red">+</font> cached) VALUES (?, ?, ?, NOW())')-&gt;execute(50.530998, -4.949000, '')
+<font color="red">+</font>;
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840230;part=1">[download]</a></div></font></pre>
+
+<p>But the next line successfully finds this line again if I use:</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">$sth = $dbh-&gt;prepare('SELECT * FROM weathercache WHERE latitude = 50.5
+<font color="red">+</font>30998 AND longitude = -4.949000')-&gt;execute();
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840230;part=2">[download]</a></div></font></pre>
+
+<p>...but not if I use</p>
+<pre class="code"><div class="codeblock"><tt class="codetext"><font size="-1">$sth = $dbh-&gt;prepare('SELECT * FROM weathercache WHERE latitude = ? AN
+<font color="red">+</font>D longitude = ?')-&gt;execute(50.530998, -4.949000);
+</font></tt></div><font size="-1"><div class="embed-code-dl"><a href="http://www.perlmonks.org/?abspart=1;displaytype=displaycode;node_id=840230;part=3">[download]</a></div></font></pre>
+
+<p>What am I doing wrong here? A float is a float right? Why does it 
+matter how I use it?</p>
+<p>Cheers</p>
+<p>MattLG</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840230;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+<table cellpadding="0" cellspacing="0" width="100%">
+
+  <tbody><tr class="section_title" width="100%" border="1">
+    <td class="section_title" width="100%">
+      New Meditations
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellpadding="2" cellspacing="0" width="100%">
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tbody><tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840550" name="post-head-id840550" 
+href="http://www.perlmonks.org/?node_id=840550">Wow! Painful upgrade to 
+Perl 5.12</a><br> 
+    on May 18, 2010 at 13:13
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840550">5 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=638334">ack</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>A few days ago I decided to "bite the bullet" and upgrade from my
+ workhorse Perl 5.8 to 5.10.  I discovered that ActiveState had v5.12 
+and I thought...Wow!...bonus!</p><p>I have upgraded through three major 
+release upgrades of Perl over the past several years and it has been 
+painless and straightforward.  I had resisted this upgrade due to an 
+erronious understanding of my IDE which I thought had hard-wired itself 
+to specific versions of Perl.  But doing some research and thinking 
+about it logically (I'm not known for that kind of "good practie") I 
+realized that the IDE doesn't care what version of Perl, it only cares 
+about where to look and what the executable's name is.</p><p>So, excited
+ by a lot of what I'd heard and read about the newer versions of Perl I 
+did the upgrade.  It was as painless as deleting the old version and 
+installing the new one and my IDE just keeps on cranking along.</p><p>I 
+thought "Wow! This is terrific!  Wish I had done this earlier."</p><p>Then
+ all the world began to crumble. I discovered, after reading the upgrade
+ <i>Readme</i> file that I would have to reload all my CPAN 
+modules...all 547 of them!  So I spent almost 3 days grinding my way 
+through THAT process.  At the conclusion I thought "OK, I only had a few
+ CPAN modules in the past so I guess that's a bit of the price I have to
+ pay for becoming a more prolific CPAN user (but I've come to love my 
+CPAN modules!)."  Seems like there should be a more automated way to do 
+it.  But I didn't have the energy or will to build my own automated 
+approach in Perl so I just chalked it up to fate and was grateful I had 
+gotten it done...even it was manually.</p><p>Then more and more of my 
+scripts began failing.  I thought "What's going on?"  I did a bit more 
+researching and discovered that many of the CPAN modules can't work with
+ 5.10 or later!  Apparently, in particular, it is true for many of MY 
+scripts!</p><p>  I keep getting error messages of (I paraphrase) "Can't 
+find Perl59.dll..." which is an indication that a module (as far as my 
+research tells me) needs the old Perl 5.8.  At first I thought it was 
+because I had some how missed re-intalling the particluar modules.  The 
+error messages didn't tell me which modules, so I just presumed that it 
+is at least one of the modules in that script's <i>use</i> invocations. 
+So I just re-did the re-installs for all of that cript's modules.</p><p>
+ That did, indeed, at first seem to remedy the problem. </p><p>But then 
+more and more of my scripts kept failing even afeter I did the module 
+re-install.  And I have yet to get them to work.</p><p>So, long story 
+short, I am completely disenchanted with the upgrade and am about to get
+ rid of it and go back to 5.8.</p><p>I do almost all of my module 
+installations using ActiveState's Perl Package Manager (PPM) on my 
+Widnows XP system because it is genearlly the simplest and easiest 
+approach.  I occasionally have used the CPAN installer and have even 
+less frequently done the installs mannually using nmake.</p><p>I'm not 
+looking for any advice; but I am really frustrated as I was looking 
+forward to exploring some of the really neat features of the newest 
+versions.  I'm disappointed that apparently that is just not going to be
+ possible.</p><!-- Node text goes above. Div tags should contain sig only -->
+<div class="pmsig"><div class="pmsig-638334">
+ack
+Albuquerque, NM
+</div></div></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840550;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+<table cellpadding="0" cellspacing="0" width="100%">
+
+  <tbody><tr class="section_title" width="100%" border="1">
+    <td class="section_title" width="100%">
+      New Cool Uses for Perl
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellpadding="2" cellspacing="0" width="100%">
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tbody><tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840237" name="post-head-id840237" 
+href="http://www.perlmonks.org/?node_id=840237">Song Info</a><br> 
+    on May 16, 2010 at 13:00
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840237">0 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=838568">alexbio</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>Hi monks. I wrote a script that fetches information of a given 
+song via Last.fm, and then prints it in a specified format.</p>
+<div class="readmore-link"><a 
+href="http://www.perlmonks.org/?node_id=840237">Read more...</a><span 
+class="readmore-size"> (5 kB)</span></div>
+
+<div class="pmsig"><div class="pmsig-838568">
+Alex's Log - http://alexlog.co.cc
+</div></div></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840237;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840141" name="post-head-id840141" 
+href="http://www.perlmonks.org/?node_id=840141">Icon preview tool with 
+wxPerl</a><br> 
+    on May 15, 2010 at 11:05
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840141">0 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=764402">stefbv</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul><p>
+Hello Monks,</p>
+<p>
+Here is a quick hack tool to view all the icons in PNG format in the
+current directory.  It uses wxPerl and it's based on the tutorials I
+found here on PerlMonks and of course on the great work done by Mattia
+Barbon. Thank You!</p>
+<p>Hope it will be useful.</p>
+<div class="readmore-link"><a 
+href="http://www.perlmonks.org/?node_id=840141">Read more...</a><span 
+class="readmore-size"> (3 kB)</span></div>
+<p>
+Regards, Stefan</p></ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840141;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+<table cellpadding="0" cellspacing="0" width="100%">
+
+  <tbody><tr class="section_title" width="100%" border="1">
+    <td class="section_title" width="100%">
+      New Monk Discussion
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellpadding="2" cellspacing="0" width="100%">
+<!-- Begin Post -->
+<!-- embed node with vote container -->
+<tbody><tr class="post-head post_head">
+  <td>
+    <a id="post-head-id840110" name="post-head-id840110" 
+href="http://www.perlmonks.org/?node_id=840110">Code posted on PerlMonks</a><br>
+ 
+    on May 15, 2010 at 01:23
+  </td>
+  <td valign="top">
+    <a href="http://www.perlmonks.org/?node_id=840110">5 direct replies</a>
+  </td>
+  <td valign="top">
+    by <a href="http://www.perlmonks.org/?node_id=961">Anonymous Monk</a>
+  </td>
+</tr>
+<tr class="post-voterep">
+  <td colspan="3" class="voterep">
+  
+  </td>
+</tr>
+<tr class="post-body post_body">
+  <td colspan="2">
+<ul>Is it permissible to use the code posted on PerlMonks, Under which 
+license is it available.</ul>
+
+  </td>
+  <td class="adjunct-links"><br>
+    <a href="http://www.perlmonks.org/?parent=840110;node=Comment%20on">[Offer
+ your reply]</a>
+  </td>
+</tr>
+
+<!--  End Post  -->
+
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+<!--
+    </td>
+    </tr>
+</table>
+-->
+
+
+
+        <!--/contained stuff-->
+      </td>
+      <!--nodelet handling code (monktainer)-->
+      <td class="nodelets" align="right" valign="top" width="20%">
+        <!-- Begin nodelets -->
+<div id="minilogin">
+<form method="post" action="?" 
+enctype="application/x-www-form-urlencoded" name="login">
+<div style="display: none;"><input name="node_id" value="109" 
+type="hidden"></div>
+<input name="op" value="login" type="hidden">
+<input name="lastnode_id" value="131" type="hidden">
+<table border="0"><tbody><tr><td><font size="2">
+Login:</font></td><td>
+<input name="user" size="10" maxlength="34" type="text">
+</td></tr><tr><td><font size="2">
+Password</font></td><td>
+<input name="passwd" size="10" maxlength="8" type="password">
+
+</td></tr></tbody></table><font size="2">
+<input name="expires" value="+10y" type="checkbox">remember me
+<input name="login" value="Login" type="submit">
+</font><br>
+<a href="http://www.perlmonks.org/?node_id=2513">What's my password?</a>
+<br>
+<a href="http://www.perlmonks.org/?node_id=101">Create A New User</a>
+</form>
+</div>
+<br>
+<table class="nodelet_container" id="nodelet_container">
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Chatterbox">
+      <tr><th class="nodelet_head">
+          <span class="title">Chatterbox</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Chatterbox" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<form method="get" action="?" 
+enctype="application/x-www-form-urlencoded">
+<div style="display: none;"><input name="node_id" value="131" 
+type="hidden"></div><i>and all is quiet...</i><br>
+<input name="foo" value="Refresh" type="submit">
+</form>
+<i><br> <a href="http://www.perlmonks.org/?node=ChatterBox%20FAQ">How do
+ I use this?</a>  |  <a href="http://www.perlmonks.org/?node_id=20842">Other
+ CB clients</a></i>
+
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Other_Users">
+      <tr><th class="nodelet_head">
+          <span class="title">Other Users</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Other%20Users" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<span class="other-users-text">Others <span class="other-users-blurb">meditating
+ upon</span> the Monastery:</span> (23)<br><span class="even-row"><span 
+class="item-000"><span class="user-level-23"><span class="user-461912"><a
+ href="http://www.perlmonks.org/?node_id=461912" title="GrandFather's 
+home node. Member of: janitors, pmdev.">GrandFather</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-001"><span class="user-level-21"><span
+ class="user-616540"><a href="http://www.perlmonks.org/?node_id=616540" 
+title="moritz's home node. Member of: pmdev.">moritz</a><br></span></span></span></span>
+<span class="even-row"><span class="item-002"><span 
+class="user-level-19"><span class="user-442602"><a 
+href="http://www.perlmonks.org/?node_id=442602" title="planetscape's 
+home node. Member of: janitors, pedagogues, pollsters, power users, 
+pmdev, SiteDocClan.">planetscape</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-003"><span class="user-level-19"><span
+ class="user-170442"><a href="http://www.perlmonks.org/?node_id=170442" 
+title="jdporter's home node. Member of: pedagogues, pmdev, SiteDocClan, 
+QandAEditors.">jdporter</a><br></span></span></span></span>
+<span class="even-row"><span class="item-004"><span 
+class="user-level-19"><span class="user-368189"><a 
+href="http://www.perlmonks.org/?node_id=368189" title="wfsp's home node">wfsp</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-005"><span class="user-level-19"><span
+ class="user-237051"><a href="http://www.perlmonks.org/?node_id=237051" 
+title="tirwhan's home node">tirwhan</a><br></span></span></span></span>
+<span class="even-row"><span class="item-006"><span 
+class="user-level-18"><span class="user-622051"><a 
+href="http://www.perlmonks.org/?node_id=622051" title="toolic's home 
+node">toolic</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-007"><span class="user-level-17"><span
+ class="user-70929"><a href="http://www.perlmonks.org/?node_id=70929" 
+title="atcroft's home node">atcroft</a><br></span></span></span></span>
+<span class="even-row"><span class="item-008"><span 
+class="user-level-15"><span class="user-73441"><a 
+href="http://www.perlmonks.org/?node_id=73441" title="herveus's home 
+node">herveus</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-009"><span class="user-level-14"><span
+ class="user-272682"><a href="http://www.perlmonks.org/?node_id=272682" 
+title="Eyck's home node">Eyck</a><br></span></span></span></span>
+<span class="even-row"><span class="item-010"><span 
+class="user-level-13"><span class="user-523944"><a 
+href="http://www.perlmonks.org/?node_id=523944" title="clinton's home 
+node. Member of: pmdev.">clinton</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-011"><span class="user-level-13"><span
+ class="user-399498"><a href="http://www.perlmonks.org/?node_id=399498" 
+title="erix's home node">erix</a><br></span></span></span></span>
+<span class="even-row"><span class="item-012"><span 
+class="user-level-13"><span class="user-683288"><a 
+href="http://www.perlmonks.org/?node_id=683288" title="rovf's home node">rovf</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-013"><span class="user-level-12"><span
+ class="user-769448"><a href="http://www.perlmonks.org/?node_id=769448" 
+title="biohisham's home node">biohisham</a><br></span></span></span></span>
+<span class="even-row"><span class="item-014"><span 
+class="user-level-10"><span class="user-667680"><a 
+href="http://www.perlmonks.org/?node_id=667680" title="hominid's home 
+node">hominid</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-015"><span class="user-level-9"><span
+ class="user-635297"><a href="http://www.perlmonks.org/?node_id=635297" 
+title="baxy77bax's home node">baxy77bax</a><br></span></span></span></span>
+<span class="even-row"><span class="item-016"><span class="user-level-9"><span
+ class="user-777638"><a href="http://www.perlmonks.org/?node_id=777638" 
+title="ssandv's home node">ssandv</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-017"><span class="user-level-8"><span
+ class="user-659527"><a href="http://www.perlmonks.org/?node_id=659527" 
+title="kirillm's home node">kirillm</a><br></span></span></span></span>
+<span class="even-row"><span class="item-018"><span class="user-level-7"><span
+ class="user-776515"><a href="http://www.perlmonks.org/?node_id=776515" 
+title="sierpinski's home node">sierpinski</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-019"><span class="user-level-7"><span
+ class="user-832495"><a href="http://www.perlmonks.org/?node_id=832495" 
+title="choroba's home node">choroba</a><br></span></span></span></span>
+<span class="even-row"><span class="item-020"><span class="user-level-6"><span
+ class="user-803845"><a href="http://www.perlmonks.org/?node_id=803845" 
+title="brap's home node">brap</a><br></span></span></span></span>
+<span class="odd-row"><span class="item-021"><span class="user-level-5"><span
+ class="user-418218"><a href="http://www.perlmonks.org/?node_id=418218" 
+title="basje's home node">basje</a><br></span></span></span></span>
+<span class="even-row"><span class="item-022"><span class="user-level-1"><span
+ class="user-243505"><a href="http://www.perlmonks.org/?node_id=243505" 
+title="im2's home node">im2</a><br></span></span></span></span>
+<span class="update-time"><small>As of 2010-05-19 12:44 GMT</small></span>
+
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Sections">
+      <tr><th class="nodelet_head">
+          <span class="title">Sections</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Sections" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+     <a 
+href="http://www.perlmonks.org/?node=Seekers%20of%20Perl%20Wisdom">Seekers
+ of Perl Wisdom</a>
+<br><a href="http://www.perlmonks.org/?node=Cool%20Uses%20for%20Perl">Cool
+ Uses for Perl</a>
+<br><a href="http://www.perlmonks.org/?node=Meditations">Meditations</a>
+<br><a href="http://www.perlmonks.org/?node=Perl%20Monks%20Discussion">PerlMonks
+ Discussion</a>
+<br><a 
+href="http://www.perlmonks.org/?node=Categorized%20Questions%20and%20Answers">Categorized
+ Q&amp;A</a>
+<br><a href="http://www.perlmonks.org/?node=Tutorials">Tutorials</a>
+<br><a href="http://www.perlmonks.org/?node=Obfuscated%20Code">Obfuscated
+ Code</a>
+<br><a href="http://www.perlmonks.org/?node=Perl%20Poetry">Perl Poetry</a>
+<br><a href="http://www.perlmonks.org/?node=Perl%20News">Perl News</a>
+<br>See <a href="http://www.perlmonks.org/?node_id=483086">About the 
+sections of PerlMonks</a>
+
+
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Information">
+      <tr><th class="nodelet_head">
+          <span class="title">Information</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Information" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<a href="http://www.perlmonks.org/?node=PerlMonks%20FAQ">PerlMonks FAQ</a><br>
+<a 
+href="http://www.perlmonks.org/?node=the%20Perl%20Monks%20guide%20to%20the%20Monastery">Guide
+ to the Monastery</a><br>
+<a href="http://www.perlmonks.org/?node=Tidings">What's New at PerlMonks</a>
+ <br>
+<a href="http://www.perlmonks.org/?node=Voting%2FExperience%20System">Voting/Experience
+ System</a><br>
+<a href="http://www.perlmonks.org/?node=Tutorials">Tutorials</a><br>
+<a href="http://www.perlmonks.org/?node=Reviews">Reviews</a><br>
+<a href="http://www.perlmonks.org/?node=Library">Library</a><br>
+<a href="http://www.perlmonks.org/?node=perlman%3Aperlfaq">Perl FAQs</a><br>
+<a 
+href="http://www.perlmonks.org/?node=Where%20can%20I%20find%20more%20information%20on...">Other
+ Info Sources</a><br>
+
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Find_Nodes">
+      <tr><th class="nodelet_head">
+          <span class="title">Find Nodes</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Find%20Nodes" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<a href="http://www.perlmonks.org/?node_id=6364;user=Anonymous%20Monk">Nodes
+ You Wrote</a><br>
+<a href="http://www.perlmonks.org/?node=Super%20Search">Super Search</a><br>
+<a href="http://www.perlmonks.org/?node=Perl%20Monks%20User%20Search">List
+ Nodes By Users</a><br>
+<a href="http://www.perlmonks.org/?node=Newest%20Nodes">Newest Nodes</a><br>
+<a href="http://www.perlmonks.org/?node=Recently%20Active%20Threads">Recently
+ Active Threads</a><br>
+<a href="http://www.perlmonks.org/?node=Selected%20Best%20Nodes">Selected
+ Best Nodes</a><br>
+<a href="http://www.perlmonks.org/?node=Best%20Nodes">Best Nodes</a><br>
+<a href="http://www.perlmonks.org/?node=Worst%20Nodes">Worst Nodes</a><br>
+<a href="http://www.perlmonks.org/?node=Saints%20in%20our%20Book">Saints
+ in our Book</a>
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Leftovers">
+      <tr><th class="nodelet_head">
+          <span class="title">Leftovers</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Leftovers" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<a 
+href="http://www.perlmonks.org/?node=The%20St.%20Larry%20Wall%20Shrine">The
+ St. Larry Wall Shrine</a><br>
+<a href="http://www.perlmonks.org/?node=Offering%20Plate">Offering Plate</a><br>
+<a href="http://www.perlmonks.org/?node=Awards">Awards</a><br>
+<a href="http://www.perlmonks.org/?node=Craft">Craft</a><br>
+<a href="http://www.perlmonks.org/?node=Snippets%20Section">Snippets 
+Section</a><br>
+<a href="http://www.perlmonks.org/?node=Code%20Catacombs">Code Catacombs</a><br>
+<a href="http://www.perlmonks.org/?node=Quests">Quests</a><br>
+<a href="http://www.perlmonks.org/?node=Editor%20Requests">Editor 
+Requests</a><br>
+<a 
+href="http://www.perlmonks.org/?node=Is%20there%20PerlMonks%20merchandise%20I%20can%20buy%3F">Buy
+ PerlMonks Gear</a><br>
+<a href="http://shop.cafepress.com/perlmonks">PerlMonks Merchandise</a><br>
+<a href="http://planet.perl.org/">Planet Perl</a><br>
+<a href="http://perlsphere.net/">Perlsphere</a><br>
+<a href="http://use.perl.org/">Use Perl</a><br>
+<a href="http://perl.com/">Perl.com</a><br>
+<a href="http://www.perlfoundation.org/perl5/index.cgi">Perl 5 Wiki</a><br>
+<a href="http://jobs.perl.org/">Perl Jobs</a><br>
+<a href="http://www.pm.org/">Perl Mongers</a><br>
+<a href="http://www.perl.org/">Perl Directory</a><br>
+<a href="http://perldoc.perl.org/">Perl documentation</a><br>
+<a href="http://cpan.perl.org/">CPAN</a><br>
+<a href="http://www.perlmonks.org/?op=randomnode">Random Node</a><br>
+
+      </td></tr>
+
+    </tbody>
+
+<!-- Nodelet Break -->
+    <tbody class="nodelet" id="Voting_Booth">
+      <tr><th class="nodelet_head">
+          <span class="title">Voting Booth</span><a 
+href="http://www.perlmonks.org/?node=About%20the%20Voting%20Booth" 
+class="nodelethead-annot"><sup>?</sup></a> 
+      </th></tr>
+      <tr><td class="nodelet_body">
+
+<h4>My handwriting implement of choice is&#8230;</h4><form method="post" 
+action="?" enctype="application/x-www-form-urlencoded">
+<div style="display: none;"><input name="displaytype" value="display" 
+type="hidden"><input name="node_id" value="837929" type="hidden"></div>
+<p>
+<input name="vote" value="0" checked="checked" type="radio">Chisel
+<br> <input name="vote" value="1" type="radio">Stylus
+<br> <input name="vote" value="2" type="radio">Quill
+<br> <input name="vote" value="3" type="radio">Brush
+<br> <input name="vote" value="4" type="radio">Fountain pen
+<br> <input name="vote" value="5" type="radio">Wooden pencil
+<br> <input name="vote" value="6" type="radio">Mechanical pencil
+<br> <input name="vote" value="7" type="radio">Cheap ballpoint pen
+<br> <input name="vote" value="8" type="radio">Quality ballpoint pen
+<br> <input name="vote" value="9" type="radio">Gel pen
+<br> <input name="vote" value="10" type="radio">Felt-tip pen
+<br> <input name="vote" value="11" type="radio">Whiteboard marker
+<br> <input name="vote" value="12" type="radio">Chalk
+<br> <input name="vote" value="13" type="radio">Crayon
+<br> <input name="vote" value="14" type="radio">Tattoo needle
+<br> <input name="vote" value="15" type="radio">Spray paint
+<br> <input name="vote" value="16" type="radio">Other
+<br> <input name="vote" value="17" type="radio">I never write by hand<br><input
+ value="Vote" type="submit">
+</p>
+</form>
+
+<p>
+<a href="http://www.perlmonks.org/?node_id=837929">Results (617 votes)</a>,
+ 
+<a href="http://www.perlmonks.org/?node=past%20polls">past polls</a></p>
+      </td></tr>
+
+    </tbody>
+
+
+</table>
+
+        <!-- End nodelets -->
+      </td>
+
+      <!--/nodelet handling code (monktainer)-->
+
+    </tr>
+  </tbody></table>
+</center>
+
+<!-- End main (monktainer)-->
+<br>
+<br>
+
+<div id="footer">
+          PerlMonks parthenogenetically spawned by <a 
+href="http://www.perlmonks.org/?node=vroom">Tim Vroom</a>.<br>
+      PerlMonks is a proud member of the
+      <a href="http://www.perlfoundation.org/">The Perl Foundation</a>.<br>
+      Beefy Boxes and Bandwidth Generously Provided by
+      <a href="http://promote.pair.com/direct.pl?perlmonks.org">
+      pair Networks</a>
+
+</div>
+<!-- /monktainer -->
+
+  
+  </body></html>

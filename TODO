@@ -1,0 +1,37 @@
+1. Upload results to the database.
+
+2. Make sure that regular expression is case insensitive
+
+3. Add in table to contain the edges.
+
+4. Add debugging information for DB connection
+
+5. Normalize the FQP
+
+6. Create tests for URIRegexGetFPQ
+
+7. Currently URIExract has no awarness of the base 
+   URI which can be specified in the content section of
+   a HTML document (see RFC 1866),  this has to be added.
+
+8. A sanity check using DNS should be done before a 
+   URI is doenloaded, as well address qualification 
+   and normalization.
+
+9. Test to see if the URI is with a politeness policy
+
+10.Remove irrelivent sections of the URI.
+
+11.Check headers to see if the URI is a supported
+   type.
+
+12. Need to fix up the while loop in DownloadURI.  This should
+    return back the entire string of URIs in a linked list and 
+    then iterate through them.
+
+BUGS
+1. Not reading all URL's in the page.
+
+2. Need to qualify the address when relitive
+
+

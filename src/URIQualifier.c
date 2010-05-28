@@ -209,8 +209,10 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 			list_for_each( uq_pos, &uq->uq_list ) {
 				uq_tmp = list_entry(uq_pos, URIQualify_t, uq_list);
 				
-				if( strncmp( href, URIQualifyGetThisFqp(uq_tmp), BUFSIZ) == 0 )
+				if( strncmp( href, URIQualifyGetThisFqp(uq_tmp), BUFSIZ) == 0 ) {
 					found = true;
+					break;
+				}
 			}
 
 			pthread_mutex_unlock( URIQualifyGetLock( uq ));
@@ -232,4 +234,41 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 
 	return rv;
 }		/* -----  end of function URIQualifyDlURI  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CleanUpURIQualifyElement
+ *  Description:  
+ * =====================================================================================
+ */
+static inline void 
+CleanUpURIQualifyElement( URIQualify_t *uq )
+{
+	if( *uq->uq_fqp != NULL ) {
+		free( *uq->uq_fqp );
+	}
+	free( uq->uq_fqp );
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CleanUpURIQualify
+ *  Description:  
+ * =====================================================================================
+ */
+void 
+CleanUpURIQualify( URIQualify_t *uq )
+{
+	struct list_head *pos;
+	struct list_head *uq_pos;
+	URIQualify_t *uq_tmp;
+
+	list_for_each( uq_pos, &uq->uq_list ) {
+		uq_tmp = list_entry(uq_pos, URIQualify_t, uq_list);
+		list_del( &uq_tmp->uq_list );
+		CleanUpURIQualifyElement( uq_tmp);
+	}
+
+}
+
 

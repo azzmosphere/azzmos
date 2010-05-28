@@ -20,19 +20,18 @@
 /* #####   HEADER FILE INCLUDES   ################################################### */
 
 #define __URIQUALIFIER_H__
-#ifndef __COMMON_H__
-#include <common.h>
+
+#ifndef __DOWNLOADURITYPES_H__
+#include <DownloadURITypes.h>
 #endif
+
 #ifndef _URIEXTRACT_H_
 #include <URIExtract.h>
 #endif
+
 #ifndef _URIOBJ_H_
 #include <URIObj.h>
 #endif
-#ifndef _DOWNLOADURI_H_
-#include <DownloadURI.h>
-#endif
-
 
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
@@ -51,8 +50,8 @@ char * URIQualify(  URIRegex_t *urirel, const char *seed,  URIObj_t *uri,  URIOb
 char * URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri );
 
 URIQualify_t * URIQualifyInit();
-int URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
-
+int  URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
+void CleanUpURIQualify( URIQualify_t *uq );
 
 /* #####   EXPORTED MACROS   ######################################################## */
 

@@ -42,7 +42,8 @@ SchedulerProcess( Scheduler_t *sc )
 
 	/* Create URIQualifier list */
  	/* REMAINS TO BE IMPLEMENTED */
-	//INIT_LIST_HEAD(  );
+	URIQualify_t *uq = URIQualifyInit();
+	INIT_LIST_HEAD( &uq->uq_list );
 
 
 	if( (dl = InitDownloadHTML( opts )) == NULL ) {
@@ -71,7 +72,7 @@ SchedulerProcess( Scheduler_t *sc )
 			
 
 			/* For each iteration of the loop get the next seed*/	
-			if( DownloadURI( dl, seed, urire, 0, uri, db, opts) ) {
+			if( DownloadURI( dl, uq, seed, urire, 0, uri, db, opts) ) {
 				syslog(LOG_ERR, "error downloading site");
 				SchedulerSetStatus( sc, EXIT_FAILURE);
 			}
@@ -80,7 +81,8 @@ SchedulerProcess( Scheduler_t *sc )
 		URIObjCleanUp(uri);
 		DBSQLHandleCleanUp(db);
 	}
-
+	
+	CleanUpURIQualify( uq );
 	CleanUpDownloadHTML( dl );
 	URIRegexCleanUp( urire );
 	syslog(LOG_DEBUG, "downloader finished");

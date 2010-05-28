@@ -87,12 +87,13 @@ DownloadURIPerform(
  */
 int 
 DownloadURI(DownloadHTML_t *dl, 
+	    URIQualify_t *uq,
 	    const char *seed, 
 	    URIRegex_t *urirel, 
 	    int recurse, 
 	    URIObj_t *uri, 
 	    DBObj_t *db, 
-	    Opts_t *opts
+	    const Opts_t *opts
 )
 {
 	int       urirv = 0;

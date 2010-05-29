@@ -221,8 +221,10 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 				list_del(&duri_tmp->du_list );
 				DownloadURICleanUp( duri_tmp );
 			}
-			else 
+			else {
 				URIQualifyAppend( uq, href );
+				DownloadURISetHref( duri_tmp, href );
+			}
 
 		}
 		else {

@@ -54,10 +54,10 @@
 int DownloadURI(DownloadHTML_t *dl, URIQualify_t *uq, const char *seed, URIRegex_t *urire, 
 		int maxrecurse, URIObj_t *luri, DBObj_t *db, const Opts_t *opts);
 
-int DownloadURISetListItem(  DownloadURI_t *tmp, DownloadURI_t *duri,  char *href);
+int             DownloadURISetListItem(  DownloadURI_t *tmp, DownloadURI_t *duri,  char *href);
 DownloadURI_t * GetHrefList( URIRegex_t *reuri,  URIObj_t *uri );
 DownloadURI_t * DownloadURIPerform( DownloadHTML_t *dl, const char *seed, URIRegex_t *urirel,  URIObj_t *uri, int recurse, DBObj_t *db);
-void DownloadURICleanUp ( DownloadURI_t *du );
+void            DownloadURICleanUp ( DownloadURI_t *du );
 
 
 

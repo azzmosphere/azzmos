@@ -23,4 +23,6 @@ azzmos_SOURCES = azzmos.c \
 		 Scheduler.c \
 		 URIQualifier.c \
 		 URIQualifier.h \
-		 list.h
+		 list.h \
+		 DownloadURITypes.c \
+		 DownloadURITypes.h

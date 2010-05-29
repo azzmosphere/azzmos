@@ -51,7 +51,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_azzmos_OBJECTS = azzmos.$(OBJEXT) DownloadHTML.$(OBJEXT) \
 	URIObj.$(OBJEXT) DownloadURI.$(OBJEXT) Utils.$(OBJEXT) \
 	URIExtract.$(OBJEXT) Options.$(OBJEXT) DBSQLHandle.$(OBJEXT) \
-	Scheduler.$(OBJEXT) URIQualifier.$(OBJEXT)
+	Scheduler.$(OBJEXT) URIQualifier.$(OBJEXT) \
+	DownloadURITypes.$(OBJEXT)
 azzmos_OBJECTS = $(am_azzmos_OBJECTS)
 azzmos_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -210,7 +211,9 @@ azzmos_SOURCES = azzmos.c \
 		 Scheduler.c \
 		 URIQualifier.c \
 		 URIQualifier.h \
-		 list.h
+		 list.h \
+		 DownloadURITypes.c \
+		 DownloadURITypes.h
 
 all: all-am
 
@@ -286,6 +289,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadHTML.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURI.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURITypes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Options.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Scheduler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIExtract.Po@am__quote@

@@ -1,37 +1,32 @@
-1. Upload results to the database.
+1. Normalize the FQP
 
-2. Make sure that regular expression is case insensitive
+2. Handle UNIX Signals
 
-3. Add in table to contain the edges.
+3. DownloadURISetHref
 
-4. Add debugging information for DB connection
-
-5. Normalize the FQP
-
-6. Create tests for URIRegexGetFPQ
-
-7. Currently URIExract has no awarness of the base 
+4. Currently URIExract has no awarness of the base 
    URI which can be specified in the content section of
    a HTML document (see RFC 1866),  this has to be added.
 
-8. A sanity check using DNS should be done before a 
+5. A sanity check using DNS should be done before a 
    URI is doenloaded, as well address qualification 
    and normalization.
 
-9. Test to see if the URI is with a politeness policy
+6. Test to see if the URI is with a politeness policy
 
-10.Remove irrelivent sections of the URI.
-
-11.Check headers to see if the URI is a supported
+7. Check headers to see if the URI is a supported
    type.
 
-12. Need to fix up the while loop in DownloadURI.  This should
-    return back the entire string of URIs in a linked list and 
-    then iterate through them.
+8. Run in multi-threaded mode using pthread
+
+9. Detach from current TTY and become a full daemon
+
+10. Add debug, and verbose options to the program
+
+11. Create a logger function and a set of logging macros
 
 BUGS
-1. Not reading all URL's in the page.
 
-2. Need to qualify the address when relitive
-
+1. Geting insain FQP when URL is relative and does
+   not begin with "/" character.
 

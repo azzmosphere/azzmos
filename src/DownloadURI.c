@@ -107,7 +107,8 @@ DownloadURI(DownloadHTML_t *dl,
 
 	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-	else {
+	else if( (urirv = URIQualifyDlURI(uq, urirel, dl, uri)) == 0 ){
+
 
 		/* Start reading each link and transversing through them */
 		list_for_each( pos, &duri->du_list ) {
@@ -118,16 +119,23 @@ DownloadURI(DownloadHTML_t *dl,
 			URIObjFreeContent( nexturi );
 
 			/* URIQualification should happen outside of the list_for_loop on the duri  */
-			if( (href = (char *) URIQualify( urirel, href , nexturi, NULL)) != NULL ) { 
+			//if( (href = (char *) URIQualify( urirel, href , nexturi, NULL)) != NULL ) { 
 
-				syslog( LOG_DEBUG, "href is = '%s'",  href);
-				//DownloadURI( dl, href, urirel, (recurse + 1), nexturi, db, opts);
-				free( href );
-			}
+			syslog( LOG_DEBUG, "href is = '%s'",  href);
+			//DownloadURI( dl, href, urirel, (recurse + 1), nexturi, db, opts);
+			free( href );
+			//}
 			URIObjCleanUp(nexturi);
 
 		}	
 	} 
+	else {
+		syslog( LOG_ERR, 
+			"could not allocate URI list when reading seed - %s - %s", 
+			seed,
+			strerror( urirv )
+		);
+	}
 
 	syslog( LOG_DEBUG, "recursion level = '%d'", recurse);
 	return urirv;

@@ -50,8 +50,8 @@ char * URIQualify(  URIRegex_t *urirel, const char *seed,  URIObj_t *uri,  URIOb
 char * URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri );
 
 URIQualify_t * URIQualifyInit();
-int  URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
-void CleanUpURIQualify( URIQualify_t *uq );
+int            URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
+void           CleanUpURIQualify( URIQualify_t *uq );
 
 /* #####   EXPORTED MACROS   ######################################################## */
 

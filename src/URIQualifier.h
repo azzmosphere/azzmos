@@ -55,7 +55,7 @@ void           CleanUpURIQualify( URIQualify_t *uq );
 
 /* #####   EXPORTED MACROS   ######################################################## */
 
-#define URIQualifySetFqp(uq, fqp)   ( *uq->uq_fqp = strdup(fqp))
+#define URIQualifySetFqp(uq, fqp)   ( *(uq->uq_fqp) = strdup(fqp))
 #define URIQualifySetLock( uq, l )  (  uq->uq_lock = l )
 #define URIQualifyGetThisFqp( uq)   *uq->uq_fqp
 #define URIQualifyGetLock( uq )      uq->uq_lock 

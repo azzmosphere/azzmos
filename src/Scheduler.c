@@ -31,6 +31,7 @@ void
 SchedulerProcess( Scheduler_t *sc )
 {
 	const Opts_t *opts = SchedulerGetOpts(sc);
+	int rv = 0;
 
 	/* This section here is the section that will represent each downloader */
 	syslog( LOG_DEBUG, "downloader started");
@@ -42,20 +43,29 @@ SchedulerProcess( Scheduler_t *sc )
 
 	/* Create URIQualifier list */
  	/* REMAINS TO BE IMPLEMENTED */
-	URIQualify_t *uq = URIQualifyInit();
-	INIT_LIST_HEAD( &uq->uq_list );
+	URIQualify_t *uq;
+	pthread_mutex_t uq_lock;
+	if( rv = pthread_mutex_init( &uq_lock, NULL) ) {
+		syslog( LOG_CRIT, "could not create mutex lock for URI Qualifier - %s", strerror( rv ));
+		SchedulerSetStatus( sc, EXIT_FAILURE);
+	}
+	else {
+		uq = URIQualifyInit();
+		URIQualifySetLock( uq, &uq_lock );
+		INIT_LIST_HEAD( &uq->uq_list );
+	}
 
 
 	if( (dl = InitDownloadHTML( opts )) == NULL ) {
 		syslog( LOG_ERR, "could not initilize DownloadHTML");
 		SchedulerSetStatus( sc, EXIT_FAILURE);
 	} 
-	else {
+	else if ( rv == 0 ){
 		/*  create initial URI and qualify it */
 		URIObj_t *uri =  URIObjInit();
 
 		/* get initial URI seed */
-		char *seed = (char *) URIQualify( urire, opts->o_seed, uri, NULL );
+		char *seed = URIQualify( urire, opts->o_seed, uri, NULL );
 
 		/* create connection to the database */
 		DBObj_t *db;
@@ -65,7 +75,7 @@ SchedulerProcess( Scheduler_t *sc )
 		else if( DBSQLPrepareAzFootprint( db ) ) {
 			DBSQLHandleCleanUp( db );
 			CleanUpDownloadHTML( dl );
-			syslog(LOG_ERR, "could not create STH");
+			syslog(LOG_CRIT, "could not create STH");
 			SchedulerSetStatus(sc, EXIT_FAILURE);
 		} 
 		else {
@@ -81,7 +91,8 @@ SchedulerProcess( Scheduler_t *sc )
 		URIObjCleanUp(uri);
 		DBSQLHandleCleanUp(db);
 	}
-	
+
+	pthread_mutex_destroy(&uq_lock);
 	CleanUpURIQualify( uq );
 	CleanUpDownloadHTML( dl );
 	URIRegexCleanUp( urire );

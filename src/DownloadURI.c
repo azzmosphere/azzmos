@@ -107,7 +107,7 @@ DownloadURI(DownloadHTML_t *dl,
 
 	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-	else if( (urirv = URIQualifyDlURI(uq, urirel, dl, uri)) == 0 ){
+	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri)) == 0 ){
 
 
 		/* Start reading each link and transversing through them */
@@ -118,13 +118,11 @@ DownloadURI(DownloadHTML_t *dl,
 			nexturi = URIObjClone(uri);
 			URIObjFreeContent( nexturi );
 
-			/* URIQualification should happen outside of the list_for_loop on the duri  */
-			//if( (href = (char *) URIQualify( urirel, href , nexturi, NULL)) != NULL ) { 
-
 			syslog( LOG_DEBUG, "href is = '%s'",  href);
-			//DownloadURI( dl, href, urirel, (recurse + 1), nexturi, db, opts);
+
+		        /* REMAINS TO BE IMPLEMENTED */
+			DownloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, db, opts);
 			free( href );
-			//}
 			URIObjCleanUp(nexturi);
 
 		}	
@@ -189,7 +187,7 @@ DownloadURISetListItem(DownloadURI_t *tmp, DownloadURI_t *duri,  char *href)
 	if( tmp->du_href == NULL) 
 		return errno;
 
-	*tmp->du_href = href;
+	*(tmp->du_href) = strdup(href);
 	list_add(&(tmp->du_list), &(duri->du_list));
 	return rv;
 }

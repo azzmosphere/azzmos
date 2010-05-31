@@ -186,13 +186,13 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 	int rv = 0;
 	DownloadURI_t *duri_tmp;
 	struct list_head *pos;
-	struct list_head *uq_pos;
+	struct list_head *uq_pos, *q;
 	char * href;
 	URIObj_t *nexturi;
 	URIQualify_t *uq_tmp;
 	bool found = false;
 
-	list_for_each( pos, &duri->du_list ) {
+	list_for_each_safe( pos, q, &duri->du_list ) {
 		duri_tmp  = list_entry(pos,  DownloadURI_t, du_list);
 		href = DownloadURIGetHref(duri_tmp);
 
@@ -220,6 +220,7 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 			if( found ) {
 				list_del(&duri_tmp->du_list );
 				DownloadURICleanUp( duri_tmp );
+				free( duri_tmp );
 			}
 			else {
 				URIQualifyAppend( uq, href );
@@ -246,7 +247,7 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 static inline void 
 CleanUpURIQualifyElement( URIQualify_t *uq )
 {
-	if( *uq->uq_fqp != NULL ) {
+	if( *(uq->uq_fqp) != NULL ) {
 		free( *uq->uq_fqp );
 	}
 	free( uq->uq_fqp );
@@ -262,13 +263,14 @@ void
 CleanUpURIQualify( URIQualify_t *uq )
 {
 	struct list_head *pos;
-	struct list_head *uq_pos;
+	struct list_head *uq_pos, *q;
 	URIQualify_t *uq_tmp;
 
-	list_for_each( uq_pos, &uq->uq_list ) {
+	list_for_each_safe( uq_pos, q, &uq->uq_list ) {
 		uq_tmp = list_entry(uq_pos, URIQualify_t, uq_list);
 		list_del( &uq_tmp->uq_list );
 		CleanUpURIQualifyElement( uq_tmp);
+		free( uq_tmp );
 	}
 
 }

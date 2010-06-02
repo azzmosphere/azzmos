@@ -32,9 +32,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = test_SUtilsTest$(EXEEXT) test_URIExtractTest$(EXEEXT) \
-	test_DownloadURITest$(EXEEXT)
+	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT)
 TESTS = test_SUtilsTest$(EXEEXT) test_URIExtractTest$(EXEEXT) \
-	test_DownloadURITest$(EXEEXT)
+	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -49,7 +49,8 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__objects_1 = CuTest.$(OBJEXT) Utils.$(OBJEXT) URIExtract.$(OBJEXT) \
 	URIObj.$(OBJEXT) DownloadHTML.$(OBJEXT) URIQualifier.$(OBJEXT) \
-	DownloadURI.$(OBJEXT) DBSQLHandle.$(OBJEXT)
+	DownloadURI.$(OBJEXT) DBSQLHandle.$(OBJEXT) \
+	URIHeaders.$(OBJEXT) DownloadURITypes.$(OBJEXT)
 am_test_DownloadURITest_OBJECTS = DownloadURITest.$(OBJEXT) \
 	$(am__objects_1)
 test_DownloadURITest_OBJECTS = $(am_test_DownloadURITest_OBJECTS)
@@ -61,6 +62,10 @@ am_test_URIExtractTest_OBJECTS = URIExtractTest.$(OBJEXT) \
 	$(am__objects_1)
 test_URIExtractTest_OBJECTS = $(am_test_URIExtractTest_OBJECTS)
 test_URIExtractTest_LDADD = $(LDADD)
+am_test_URIHeadersTest_OBJECTS = URIHeadersTest.$(OBJEXT) \
+	$(am__objects_1)
+test_URIHeadersTest_OBJECTS = $(am_test_URIHeadersTest_OBJECTS)
+test_URIHeadersTest_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -74,7 +79,8 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DIST_SOURCES = $(test_DownloadURITest_SOURCES) \
-	$(test_SUtilsTest_SOURCES) $(test_URIExtractTest_SOURCES)
+	$(test_SUtilsTest_SOURCES) $(test_URIExtractTest_SOURCES) \
+	$(test_URIHeadersTest_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -199,13 +205,16 @@ SOURCES = CuTest.c CuTest.h \
 	  $(top_srcdir)/src/DownloadHTML.c \
 	  $(top_srcdir)/src/URIQualifier.c \
 	  $(top_srcdir)/src/DownloadURI.c  \
-	  $(top_srcdir)/src/DBSQLHandle.c
+	  $(top_srcdir)/src/DBSQLHandle.c \
+	  $(top_srcdir)/src/URIHeaders.c  \
+	  $(top_srcdir)/src/DownloadURITypes.c
 
 AM_CFLAGS = -I$(top_srcdir)/src @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
 AM_LDFLAGS = @POSTGRESQL_LDFLAGS@ @LIBCURL@ 
 test_SUtilsTest_SOURCES = SUtilsTest.c $(SOURCES) 
 test_URIExtractTest_SOURCES = URIExtractTest.c $(SOURCES)
 test_DownloadURITest_SOURCES = DownloadURITest.c $(SOURCES)
+test_URIHeadersTest_SOURCES = URIHeadersTest.c $(SOURCES)
 all: all-am
 
 .SUFFIXES:
@@ -255,6 +264,9 @@ test_SUtilsTest$(EXEEXT): $(test_SUtilsTest_OBJECTS) $(test_SUtilsTest_DEPENDENC
 test_URIExtractTest$(EXEEXT): $(test_URIExtractTest_OBJECTS) $(test_URIExtractTest_DEPENDENCIES) 
 	@rm -f test_URIExtractTest$(EXEEXT)
 	$(LINK) $(test_URIExtractTest_OBJECTS) $(test_URIExtractTest_LDADD) $(LIBS)
+test_URIHeadersTest$(EXEEXT): $(test_URIHeadersTest_OBJECTS) $(test_URIHeadersTest_DEPENDENCIES) 
+	@rm -f test_URIHeadersTest$(EXEEXT)
+	$(LINK) $(test_URIHeadersTest_OBJECTS) $(test_URIHeadersTest_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -267,9 +279,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadHTML.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURI.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURITest.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURITypes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SUtilsTest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIExtract.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIExtractTest.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIHeaders.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIHeadersTest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIObj.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIQualifier.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Utils.Po@am__quote@
@@ -392,6 +407,34 @@ DBSQLHandle.obj: $(top_srcdir)/src/DBSQLHandle.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DBSQLHandle.c' object='DBSQLHandle.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DBSQLHandle.obj `if test -f '$(top_srcdir)/src/DBSQLHandle.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DBSQLHandle.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DBSQLHandle.c'; fi`
+
+URIHeaders.o: $(top_srcdir)/src/URIHeaders.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.o -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.o `test -f '$(top_srcdir)/src/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIHeaders.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIHeaders.Tpo $(DEPDIR)/URIHeaders.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIHeaders.c' object='URIHeaders.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.o `test -f '$(top_srcdir)/src/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIHeaders.c
+
+URIHeaders.obj: $(top_srcdir)/src/URIHeaders.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.obj -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.obj `if test -f '$(top_srcdir)/src/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIHeaders.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIHeaders.Tpo $(DEPDIR)/URIHeaders.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIHeaders.c' object='URIHeaders.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.obj `if test -f '$(top_srcdir)/src/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIHeaders.c'; fi`
+
+DownloadURITypes.o: $(top_srcdir)/src/DownloadURITypes.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.o -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.o `test -f '$(top_srcdir)/src/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURITypes.c
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURITypes.Tpo $(DEPDIR)/DownloadURITypes.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURITypes.c' object='DownloadURITypes.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.o `test -f '$(top_srcdir)/src/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURITypes.c
+
+DownloadURITypes.obj: $(top_srcdir)/src/DownloadURITypes.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.obj -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/src/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURITypes.c'; fi`
+@am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURITypes.Tpo $(DEPDIR)/DownloadURITypes.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURITypes.c' object='DownloadURITypes.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/src/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURITypes.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -42,3 +42,34 @@ URIHeaderInit ( )
 	return uh;
 }		/* -----  end of function URIHeaderInit  ----- */
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderCleanUp
+ *  Description:  Deconstruct the URIHeader object
+ * =====================================================================================
+ */
+void
+URIHeaderCleanUp ( URIHeader_t *uh )
+{
+       URIHeader_t *tmp;
+       struct list_head *pos, *q;
+
+       list_for_each_safe( pos, q, &uh->uh_list ) {
+	       tmp = list_entry(pos, URIHeader_t, uh_list);
+	       list_del( &uh->uh_list);
+	       
+	       if ( tmp->uh_key ) {
+		       *(tmp->uh_key) = NULL;
+		       free( *(tmp->uh_key));
+	       }
+
+	       if( tmp->uh_val ) {
+		       *(tmp->uh_val) = NULL;
+		       free( *(tmp->uh_val));
+	       }
+	       free(tmp);
+	       tmp = NULL;
+       }
+}		/* -----  end of function URIHeaderCleanUp  ----- */
+

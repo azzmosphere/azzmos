@@ -20,6 +20,7 @@
 #include <URIHeaders.h>
 
 URIHeader_t *uh;
+URIRegex_t  *re;
 
 
 /* 
@@ -147,11 +148,13 @@ GetSuite ( )
 int
 main ( )
 {
+	re = URIRegexInit();
 	CuSuite  *suite  = CuSuiteNew();
 	CuString *output = CuStringNew();
 	CuSuiteAddSuite( suite, GetSuite());
 	CuSuiteRun(suite);
 	CuSuiteSummary( suite, output);
+	URIRegexCleanUp( re );
 	fprintf( stdout, "%s", output->buffer);
 	exit( suite->failCount);
 }		/* -----  end of function main  ----- */

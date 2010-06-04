@@ -20,9 +20,12 @@
 
 #include <URIExtract.h>
 
-/**
- * Initilize the regular expression object.
- */	
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexInit
+ *  Description:  Initilize the Regex object
+ * =====================================================================================
+ */
 URIRegex_t *
 URIRegexInit( )
 {
@@ -33,15 +36,18 @@ URIRegexInit( )
 
 	/* allocate memory for RE pointers */
 	reuri->ur_regex = ( pcre **) malloc( (sizeof(pcre *) * REGEX_T_LAST));
-	for( i = 0; i < REGEX_T_LAST; i ++ ) {
+	for( i = 0; i < REGEX_T_LAST; i ++ ) 
 		reuri->ur_regex[i] = NULL;
-	}
+
         return reuri;
 }
 
-/**
- * Release the compiled RE and free regular
- * expression.
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexCleanUp
+ *  Description:  Deconstruct the URIHeader object
+ * =====================================================================================
  */
 void
 URIRegexCleanUp( URIRegex_t * reuri )
@@ -65,9 +71,13 @@ URIRegexCleanUp( URIRegex_t * reuri )
         free( reuri );
 }
 
-/**
- * Compile regular expression,  if an error occurs handle it
- * and return the offset.
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexCompile
+ *  Description:  Compile the regular expression, if an error occurs handle it and 
+ *                return the offset.
+ * =====================================================================================
  */
 static pcre *
 URIRegexCompile( URIRegex_t *reuri, const char *pattern, long opts, regex_types regex )
@@ -90,22 +100,30 @@ URIRegexCompile( URIRegex_t *reuri, const char *pattern, long opts, regex_types 
 				*reuri->ur_errptr
 		);
 		syslog(LOG_DEBUG, "using pattern - '%s'", pattern);
-	} else {
+	} 
+	else {
 		reuri->ur_opts |= opts;
 		reuri->ur_regex[regex] = re;
 	}
 	return re;
 }
 
-/**
- * return the fist match as string from 
- * offset ur_suboffset and reset ur_suboffset
- * to the end of first match.
- *
- * On any return NULL and print the error.
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexExec
+ *  Description:  Execute the regular expression.   return the fist match as string
+ *                from  offset ur_suboffset and reset ur_suboffset to the end of first 
+ *                match.  On any return NULL and print the error.
+ * =====================================================================================
  */
 static char *
-URIRegexExec( URIRegex_t *ruri, pcre *code, const char *subject, long opts, int *offset, int ovecsize,int  *ovector )
+URIRegexExec( URIRegex_t *ruri, 
+	      pcre *code, 
+	      const char *subject, 
+	      long opts, 
+	      int *offset, 
+	      int ovecsize,
+	      int  *ovector )
 {
 	char *rstr = NULL;
 	int rv = 0;
@@ -137,6 +155,14 @@ URIRegexExec( URIRegex_t *ruri, pcre *code, const char *subject, long opts, int 
 }
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  ProcRegEx
+ *  Description:  Process the regular expression,  that is compile it if the regular 
+ *                was not previously compiled and execute.  Return the resultent of 
+ *                URIRegexExec, or NULL on failure.
+ * =====================================================================================
+ */
 inline static char *
 ProcRegEx( URIRegex_t *reuri, 
 	  const char *subject, 
@@ -169,6 +195,13 @@ ProcRegEx( URIRegex_t *reuri,
 
 }
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexecNextHREF
+ *  Description:  Return the next HREF in subject startoing at position offset.
+ * =====================================================================================
+ */
 char * 
 URIRegexecNextHREF( URIRegex_t *reuri, const char *subject, int *offset, URIObj_t *uri )
 {
@@ -193,20 +226,16 @@ URIRegexecNextHREF( URIRegex_t *reuri, const char *subject, int *offset, URIObj_
 	return href;
 }
 
-/**
- * return the FQP from a given seed, if the seed is not a FQP then
- * look at the URI that was previously passed and contruct it from
- * that URI.  On error return NULL
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  IsFQP
+ *  Description:  allocate the Fully Qualified Path (FQP) from a given seed, if the seed 
+ *                is not a FQP then return false, otherwise return true. 
  *
- * All though RFC3986 section 1.2.3 statesthat the ':' charcter is 
- * delimeter for the scheme it is included here as part of the scheme
- * so that the URI can be reconstructed. As is the path start
+ *                A Fully Qualified Path is one that has all three sections, they are:
+ *                the scheme, authority and path. 
+ * =====================================================================================
  */
-
-/**
- * A Fully Qualified Path is one that has all three sections, they are:
- * the scheme, authority and path.
- */	
 bool 
 IsFQP( URIRegex_t *reuri, const char *subject, URIObj_t *uri)
 {
@@ -277,10 +306,12 @@ IsPathOnly( URIRegex_t *reuri, const char *subject, URIObj_t *uri)
 	return rc;
 }
 
-/*
- * If the a string is defined where there is no path, then
- * this routine will return true so that URIRegexFPQ can
- * add the default "/" to the path.
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  IsNoPath
+ *  Description:  Return true if the string is defined as no_path
+ *             
+ * =====================================================================================
  */
 bool
 IsNoPath(URIRegex_t *reuri, const char *subject, URIObj_t *uri)
@@ -305,6 +336,22 @@ IsNoPath(URIRegex_t *reuri, const char *subject, URIObj_t *uri)
 
 	return rc;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIRegexSplitURIHeader
+ *  Description:  When subject is URI header then split it into two parts based upon 
+ *                the ':', on success return '0' otherwise return the appropriate
+ *                error message.
+ * =====================================================================================
+ */
+int
+URIRegexSplitURIHeader ( URIRegex_t *reuri, const char *subject, char **key, char **val)
+{
+	int rv = 0;
+	return rv;
+}		/* -----  end of function URIRegexSplitURIHeader  ----- */
 
 
 

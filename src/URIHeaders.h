@@ -27,6 +27,10 @@
 #include <DownloadHTML.h>
 #endif
 
+#ifndef _URIEXTRACT_H_
+#include <URIExtract.h>
+#endif
+
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
 struct URIHeader_s {
 	char **          uh_key;   /* The key value that should be used */
@@ -81,13 +85,18 @@ struct URIHeader_s {
 #define AHN_VARY                 "Vary"
 #define AHN_VIA                  "Via"
 
+/* special response allways called by Azzmos first that states that
+ * the foreign host that states what level (version) of HTTP is supported
+ */
+#define AHN_HTTP_OK             "Http-Suported"
+
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 URIHeader_t *URIHeaderInit();
 void         URIHeaderCleanUp( URIHeader_t *uh );
-int          URIHeaderAllocate( URIHeader_t *uh, DownloadHTML_t *dl, const char *seed); 
+int          URIHeaderAllocate( URIHeader_t *uh, DownloadHTML_t *dl, URIRegex_t *re, const char *seed); 
 char *       URIHeaderGetValue( URIHeader_t *uh, const char *key);
 bool         URIHeaderHasValue( URIHeader_t *uh, const char *key);
 int          URIHeaderSetValue( URIHeader_t *uh, const char *key, const char *value);
-int          URIHeaderAllocateFromFile( URIHeader_t *uh, FILE *in);
+int          URIHeaderAllocateFromFile( URIHeader_t *uh, URIRegex_t *ue, FILE *in);
 
 

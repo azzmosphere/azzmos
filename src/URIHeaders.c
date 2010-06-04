@@ -73,3 +73,39 @@ URIHeaderCleanUp ( URIHeader_t *uh )
        }
 }		/* -----  end of function URIHeaderCleanUp  ----- */
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderAllocateFromFile
+ *  Description:  Allocate URI headers from a file using the URIRegex object
+ *                to determine the headers.
+ *
+ *                On sucess return 0 on any failure return the appropriate error
+ *                number
+ * =====================================================================================
+ */
+int
+URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
+{
+	int   rv = 0;
+	char  buf[BUFSIZ];
+
+	rewind( in );
+
+	if ( in == NULL ) {
+		syslog( LOG_ERR, "couldn't URI header file; %s",
+			strerror(errno) );
+		rv = errno;
+	}
+
+	if( rv == 0 ) {
+	}
+
+	if( rv == 0 && fclose(in) == EOF ) {			/* close input file   */
+		syslog( LOG_ERR, "couldn't close URI header file; %s",
+			strerror(errno) );
+		rv = errno;
+	}
+
+	return rv;
+}		/* -----  end of function URIHeaderAllocateFromFile  ----- */

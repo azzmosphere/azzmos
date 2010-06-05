@@ -31,6 +31,10 @@
 #include <URIExtract.h>
 #endif
 
+#ifndef _UTILS_H_
+#include <Utils.h>
+#endif
+
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
 struct URIHeader_s {
 	char **          uh_key;   /* The key value that should be used */
@@ -96,7 +100,6 @@ void         URIHeaderCleanUp( URIHeader_t *uh );
 int          URIHeaderAllocate( URIHeader_t *uh, DownloadHTML_t *dl, URIRegex_t *re, const char *seed); 
 char *       URIHeaderGetValue( URIHeader_t *uh, const char *key);
 bool         URIHeaderHasValue( URIHeader_t *uh, const char *key);
-int          URIHeaderSetValue( URIHeader_t *uh, const char *key, const char *value);
 int          URIHeaderAllocateFromFile( URIHeader_t *uh, URIRegex_t *ue, FILE *in);
 
 

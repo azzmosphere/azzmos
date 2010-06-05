@@ -59,7 +59,7 @@ TestURIHeaderAllocateFromFile ( CuTest *tc )
 		exit (EXIT_FAILURE);
 	}
 
-	//CuAssertIntEquals( tc, 0, URIHeaderAllocateFromFile( uc, in ));
+	CuAssertIntEquals( tc, 0, URIHeaderAllocateFromFile( uh,re, in ));
 
 	if( fclose(in) == EOF ) {			/* close input file   */
 		fprintf ( stderr, "couldn't close file '%s'; %s\n",
@@ -79,7 +79,7 @@ TestURIHeaderAllocateFromFile ( CuTest *tc )
 void
 TestURIHeaderHasValue1 ( CuTest *tc )
 {
-	//CuAssertIntEquals( tc, true, URIHeaderHasValue( uc, AHN_CONTENT_TYPE));
+	CuAssertIntEquals( tc, true, URIHeaderHasValue( uh, AHN_CONTENT_TYPE));
 }		/* -----  end of function TestURIHeaderHasValue  ----- */
 
 /* 

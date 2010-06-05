@@ -43,7 +43,7 @@
 #define O_RENOP   0x10 /* No path defined */
 #define O_REHDR   0x20 /* URI header */
 
-#define O_OVECCOUNT 30; /* maximum vector count,  should be how many sub strings 
+#define O_OVECCOUNT 30 /* maximum vector count,  should be how many sub strings 
                            that may happen times 3*/
 
 

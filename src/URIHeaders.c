@@ -76,6 +76,41 @@ URIHeaderCleanUp ( URIHeader_t *uh )
 
 /* 
  * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderAllocateElement
+ *  Description:  Allocate the next element of the URIHeader object.
+ * =====================================================================================
+ */
+static inline int
+URIHeaderSetListItem( URIHeader_t *uh, const char *key, const char *val )
+{
+	int rv = 0;
+	URIHeader_t *tmp = (URIHeader_t *) malloc( sizeof( URIHeader_t));
+	if( uh == NULL ) {
+		syslog( LOG_ERR, 
+			"could not allocate memory for URIHeader - %s", 
+			strerror(errno));
+		return errno;
+	}
+	if( (tmp->uh_key = (char **) malloc( sizeof(char *))) == NULL ) {
+		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		return errno;
+	}
+
+	if( (tmp->uh_val = (char **) malloc( sizeof(char *))) == NULL ) {
+		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		return errno;
+	}
+
+	*(tmp->uh_key) = strdup(key);
+	*(tmp->uh_val) = strdup(val);
+
+	list_add(&tmp->uh_list, &(uh->uh_list));
+
+	return rv;
+}		/* -----  end of static function URIHeaderAllocateElement  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
  *         Name:  URIHeaderAllocateFromFile
  *  Description:  Allocate URI headers from a file using the URIRegex object
  *                to determine the headers.
@@ -89,23 +124,78 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 {
 	int   rv = 0;
 	char  buf[BUFSIZ];
+	char *key, *val;
 
 	rewind( in );
 
 	if ( in == NULL ) {
 		syslog( LOG_ERR, "couldn't URI header file; %s",
 			strerror(errno) );
-		rv = errno;
+		return errno;
 	}
 
-	if( rv == 0 ) {
+	/* first line of headers is allways the HTTP version */
+	if( fgets( buf, BUFSIZ, in ) == NULL ) {
+		syslog( LOG_ERR, "could not find any headers - %s", strerror(errno));
+		return errno;
 	}
 
-	if( rv == 0 && fclose(in) == EOF ) {			/* close input file   */
-		syslog( LOG_ERR, "couldn't close URI header file; %s",
-			strerror(errno) );
-		rv = errno;
+	if( (uh->uh_key = (char **) malloc( sizeof(char *))) == NULL ) {
+		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		return errno;
+	}
+
+	if( (uh->uh_val = (char **) malloc( sizeof(char *))) == NULL ) {
+		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		return errno;
+	}
+
+	*(uh->uh_key) = strdup(AHN_HTTP_OK);
+	*(uh->uh_val) = USplice( buf, 0, (strnlen(buf,BUFSIZ) -1)); 
+
+	/* get uri headers from the file */
+	while( feof(in) == false ) {
+		if( fgets( buf, BUFSIZ, in) != NULL) {
+			if( (rv = URIRegexSplitURIHeader(ue, buf, &key, &val )) != 0) {
+				syslog(LOG_ERR, "could not allocate header - %s", strerror(rv));
+				break;
+			}
+
+			if( (rv = URIHeaderSetListItem( uh, key, val)) != 0) {
+				syslog(LOG_ERR, "could not set list item for - %s - %s", key, strerror(rv));
+				break;
+			}
+		}
 	}
 
 	return rv;
 }		/* -----  end of function URIHeaderAllocateFromFile  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderHasValue
+ *  Description:  Check the URIHeaders object for a list item.  If it exists then
+ *                return true,  otherwise return false.  It should also mean that 
+ *                list is set to item when a consquent call is made to
+ *                URIHeaderGetValue
+ * =====================================================================================
+ */
+bool
+URIHeaderHasValue ( URIHeader_t *uh, const char *key )
+{
+	bool rv = false;
+	URIHeader_t *tmp;
+	struct list_head *pos;
+
+	list_for_each(pos, &uh->uh_list) {
+		tmp = list_entry( pos, URIHeader_t, uh_list);
+
+		if( strncmp(key, *(tmp->uh_key), BUFSIZ) == 0) {
+			rv = true;
+			break;
+		}
+	}
+
+	return rv;
+}		/* -----  end of function URIHeaderHasValue  ----- */

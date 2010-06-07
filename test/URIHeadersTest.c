@@ -91,7 +91,7 @@ TestURIHeaderHasValue1 ( CuTest *tc )
 void
 TestURIHeaderHasValue2 ( CuTest *tc )
 {
-	//CuAssertIntEquals( tc, false, URIHeaderHasValue( uc, AHN_REFERER));
+	CuAssertIntEquals( tc, false, URIHeaderHasValue( uh, AHN_REFERER));
 }		/* -----  end of function TestURIHeaderHasValue  ----- */
 
 
@@ -104,7 +104,7 @@ TestURIHeaderHasValue2 ( CuTest *tc )
 void
 TestURIHeaderGetValue ( CuTest *tc )
 {
-	//CuAssertStrEquals( tc, "text/html", URIHeaderGetValue( uc, AHN_CONTENT_TYPE));
+	CuAssertStrEquals( tc, "text/html", URIHeaderGetValue( uh, AHN_CONTENT_TYPE));
 }		/* -----  end of function TestURIHeaderGetValue  ----- */
 
 

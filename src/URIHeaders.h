@@ -92,7 +92,7 @@ struct URIHeader_s {
 /* special response allways called by Azzmos first that states that
  * the foreign host that states what level (version) of HTTP is supported
  */
-#define AHN_HTTP_OK             "Http-Suported"
+#define AHN_HTTP_OK             "Http-Supported"
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 URIHeader_t *URIHeaderInit();

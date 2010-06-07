@@ -350,14 +350,14 @@ int
 URIRegexSplitURIHeader ( URIRegex_t *reuri, const char *subject, char **key, char **val)
 {
 	int rv = 0, offset = 0, ovector[O_OVECCOUNT]; 
-	const char *pattern = "^\\s*([^:\\s]+):([^:\\s]+)\\s*\\r$";
+	const char *pattern = "^\\s*([^:]+[^\\s]*)\\s*:\\s*([^\\r]+)\\s*";
 	const char *re = ProcRegEx(
 		reuri,
 		subject,
 		NULL,
 		pattern,
 		"(public) URIRegexURIHeader",
-		REGEX_T_HDR,
+		O_REHDR,
 		REGEX_T_HDR,
 		&offset,
 		O_OVECCOUNT,
@@ -368,8 +368,8 @@ URIRegexSplitURIHeader ( URIRegex_t *reuri, const char *subject, char **key, cha
 		rv = errno;
 	}
 	else {
-		*(key) = USplice( subject, ovector[2], ovector[ (3 - 1)]);
-		*(val) = USplice( subject, ovector[4], ovector[ (5 - 1)]);
+		*(key) = USplice( subject, ovector[2], (ovector[3] - 1));
+		*(val) = USplice( subject, ovector[4], (ovector[5] - 1));
 	} 
 
 	return rv;

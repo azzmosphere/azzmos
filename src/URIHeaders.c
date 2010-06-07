@@ -57,19 +57,20 @@ URIHeaderCleanUp ( URIHeader_t *uh )
 
        list_for_each_safe( pos, q, &uh->uh_list ) {
 	       tmp = list_entry(pos, URIHeader_t, uh_list);
-	       list_del( &uh->uh_list);
+	       list_del( &tmp->uh_list);
 	       
 	       if ( tmp->uh_key ) {
 		       *(tmp->uh_key) = NULL;
 		       free( *(tmp->uh_key));
+		       free( tmp->uh_key );
 	       }
 
 	       if( tmp->uh_val ) {
 		       *(tmp->uh_val) = NULL;
 		       free( *(tmp->uh_val));
+		       free( tmp->uh_val );
 	       }
 	       free(tmp);
-	       tmp = NULL;
        }
 }		/* -----  end of function URIHeaderCleanUp  ----- */
 
@@ -81,10 +82,9 @@ URIHeaderCleanUp ( URIHeader_t *uh )
  * =====================================================================================
  */
 static inline int
-URIHeaderSetListItem( URIHeader_t *uh, const char *key, const char *val )
+URIHeaderSetListItem( URIHeader_t *uh, URIHeader_t *tmp, const char *key, const char *val )
 {
 	int rv = 0;
-	URIHeader_t *tmp = (URIHeader_t *) malloc( sizeof( URIHeader_t));
 	if( uh == NULL ) {
 		syslog( LOG_ERR, 
 			"could not allocate memory for URIHeader - %s", 
@@ -125,6 +125,7 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 	int   rv = 0;
 	char  buf[BUFSIZ];
 	char *key, *val;
+	URIHeader_t *tmp;
 
 	rewind( in );
 
@@ -151,17 +152,24 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 	}
 
 	*(uh->uh_key) = strdup(AHN_HTTP_OK);
-	*(uh->uh_val) = USplice( buf, 0, (strnlen(buf,BUFSIZ) -1)); 
+	*(uh->uh_val) = USplice( buf, 0, (strnlen(buf,BUFSIZ) - 3)); 
 
 	/* get uri headers from the file */
 	while( feof(in) == false ) {
-		if( fgets( buf, BUFSIZ, in) != NULL) {
+		if( (tmp = (URIHeader_t *) malloc(sizeof(URIHeader_t))) == NULL ) {
+			syslog( LOG_ERR, 
+				"could allocate memory for URIHeader object %s",
+				strerror(errno)
+			);
+			break;
+
+		}
+		else if( fgets( buf, BUFSIZ, in) != NULL) {
 			if( (rv = URIRegexSplitURIHeader(ue, buf, &key, &val )) != 0) {
 				syslog(LOG_ERR, "could not allocate header - %s", strerror(rv));
 				break;
 			}
-
-			if( (rv = URIHeaderSetListItem( uh, key, val)) != 0) {
+			else if( (rv = URIHeaderSetListItem( uh, tmp, key, val)) != 0) {
 				syslog(LOG_ERR, "could not set list item for - %s - %s", key, strerror(rv));
 				break;
 			}
@@ -199,3 +207,32 @@ URIHeaderHasValue ( URIHeader_t *uh, const char *key )
 
 	return rv;
 }		/* -----  end of function URIHeaderHasValue  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderGetValue
+ *  Description:  Loop through URIHeaders object and return the value of the header
+ *                that has the key of key. On failure routine will return NULL.  However
+ *                this should not happen because it should be qualified by the HasValue
+ *                function first.
+ * =====================================================================================
+ */
+char *
+URIHeaderGetValue ( URIHeader_t *uh, const char *key )
+{
+	char *ret = NULL;
+	URIHeader_t *tmp;
+	struct list_head *pos;
+
+	list_for_each(pos, &uh->uh_list) {
+		tmp = list_entry( pos, URIHeader_t, uh_list);
+
+		if( strncmp(key, *(tmp->uh_key), BUFSIZ) == 0) {
+			ret = strdup( *(tmp->uh_val));
+			break;
+		}
+	}
+
+	return ret;
+}		/* -----  end of function URIHeaderGetValue  ----- */

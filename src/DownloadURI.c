@@ -107,7 +107,7 @@ DownloadURI(DownloadHTML_t *dl,
 
 	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri)) == 0 ){
+	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl)) == 0 ){
 
 
 		/* Start reading each link and transversing through them */

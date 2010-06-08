@@ -236,3 +236,28 @@ URIHeaderGetValue ( URIHeader_t *uh, const char *key )
 
 	return ret;
 }		/* -----  end of function URIHeaderGetValue  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIHeaderAllocate
+ *  Description:  Download the headers from the seed argument and then
+ *                allocate them. On error return the corresponding error message
+ *                otherwise return 0.
+ * =====================================================================================
+ */
+int
+URIHeaderAllocate ( URIHeader_t *uh, DownloadHTML_t *dl, URIRegex_t *re, const char *seed )
+{
+	int ret = 0;
+	CURLcode res = CURLE_OK;
+
+	if( (res = DownloadHTMLGetHeaders(dl, seed)) != CURLE_OK) {
+		syslog( LOG_ERR, "could not download headers - %s", curl_easy_strerror( res ));
+		ret = 1;
+	}
+	else 
+		ret = URIHeaderAllocateFromFile( uh, re, DownloadHTMLGetFh(dl)); 
+	
+	return ret;
+}		/* -----  end of function URIHeaderAllocate  ----- */

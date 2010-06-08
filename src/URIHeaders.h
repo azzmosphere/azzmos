@@ -19,6 +19,8 @@
  */
 
 /* #####   HEADER FILE INCLUDES   ################################################### */
+#define _URIHEADERS_H_
+
 #ifndef __COMMON_H__
 #include <common.h>
 #endif

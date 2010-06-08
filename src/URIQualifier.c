@@ -160,6 +160,41 @@ URIQualifyAppend ( URIQualify_t *uqin, const char *seed )
 }		/* -----  end of function URIQualifyAppend  ----- */
 
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIQualifyChkHeaders
+ *  Description:  Download and test the URIHeaders with previously downloaded headers.
+ *                On any rejected reason return a non 0 value otherwise return 0. 
+ * =====================================================================================
+ */
+inline static int 
+URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, URIRegex_t *re )
+{
+	int   res = 0, i = 0;
+	char *valid_ctype[UQ_VALID_CTYPE_COUNT] = UQ_VALID_CTYPES, *ct;
+
+	if( (res = URIHeaderAllocate( uh, dl, re, href)) == 0) {
+		if( !URIHeaderHasValue( uh, AHN_CONTENT_TYPE)) {
+			syslog( LOG_ERR, "%s header is not defined", AHN_CONTENT_TYPE);
+			res = 1;
+		}
+		else 
+			ct = URIHeaderGetValue( uh, AHN_CONTENT_TYPE);
+	}	
+
+	if( res == 0) {
+		res = 1;
+		for( i = 0; i < UQ_VALID_CTYPE_COUNT; i ++ ) {
+			if( strncmp( ct, valid_ctype[i], BUFSIZ) == 0)	{
+				res = 0;
+				break;
+			}
+		}
+	}
+	return res;
+}		/* -----  end of function URIQualifyChkHeaders  ----- */
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  URIQualifyDlURI
@@ -181,7 +216,7 @@ URIQualifyAppend ( URIQualify_t *uqin, const char *seed )
  * =====================================================================================
  */
 int
-URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri )
+URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri, DownloadHTML_t *dl )
 {
 	int rv = 0;
 	DownloadURI_t *duri_tmp;
@@ -190,6 +225,7 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 	char * href;
 	URIObj_t *nexturi;
 	URIQualify_t *uq_tmp;
+	URIHeader_t  *uh;
 	bool found = false;
 
 	list_for_each_safe( pos, q, &duri->du_list ) {
@@ -199,7 +235,7 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 		nexturi = URIObjClone(uri);
 		URIObjFreeContent( nexturi );
 
-		if( (href = (char *)  URIQualify( urire, href , nexturi, NULL)) != NULL ) { 
+		if( (href = URIQualify( urire, href , nexturi, NULL)) != NULL ) { 
 			found = false;
 
 			/* locking is not taken to seriosly at this point as we are not
@@ -216,6 +252,13 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 			}
 
 			pthread_mutex_unlock( URIQualifyGetLock( uq ));
+			if( ! found ) {
+				uh = URIHeaderInit();
+				if( URIQualifyChkHeaders( uh, href, dl, urire) != 0) {
+					found = true;
+					URIHeaderCleanUp(uh);
+				}
+			}
 
 			if( found ) {
 				list_del(&duri_tmp->du_list );

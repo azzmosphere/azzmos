@@ -33,6 +33,14 @@
 #include <URIObj.h>
 #endif
 
+#ifndef _URIHEADERS_H_
+#include <URIHeaders.h>
+#endif
+
+#ifndef _DOWNLOADHTML_H_
+#include <DownloadHTML.h>
+#endif
+
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
 struct URIQualify_s {
@@ -52,6 +60,8 @@ char * URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri );
 URIQualify_t * URIQualifyInit();
 int            URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
 void           CleanUpURIQualify( URIQualify_t *uq );
+int URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri, DownloadHTML_t *dl );
+
 
 /* #####   EXPORTED MACROS   ######################################################## */
 
@@ -59,6 +69,10 @@ void           CleanUpURIQualify( URIQualify_t *uq );
 #define URIQualifySetLock( uq, l )  (  uq->uq_lock = l )
 #define URIQualifyGetThisFqp( uq)   *uq->uq_fqp
 #define URIQualifyGetLock( uq )      uq->uq_lock 
+
+#define UQ_VALID_CTYPES       {"text/html"}  /* Each content type that azzmos supports 
+                                               should be appended to this list */
+#define UQ_VALID_CTYPE_COUNT  1              /* The list count goes here */
 
 
 

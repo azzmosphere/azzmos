@@ -261,6 +261,8 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 					found = true;
 					URIHeaderCleanUp(uh);
 				}
+				else
+					duri_tmp->du_uh = uh;
 			}
 
 			if( found ) {

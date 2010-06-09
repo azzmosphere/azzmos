@@ -50,7 +50,7 @@ struct URIObj_s {
 
 	int uri_content_offset; /* offset value for getting URI content */
 
-	//URIHeader_t *uri_uh;    /* linked list of URI headers */
+	URIHeader_t *uri_uh;    /* linked list of URI headers */
 
 	int uri_id;
 } typedef URIObj_t;
@@ -81,6 +81,7 @@ char * NormalizeFQP( URIObj_t *uri );
 #define URIObjGetId( uri )       uri->uri_id
 
 #define URIObjSetId( uri, id )  (uri->uri_id = id )
+#define URIObjSetUH( uri, uh )  (uri->uri_uh = uh )
 
 #define URIObjFreeContent( uri ) URIObjFreeElement( uri->uri_content )
 #define URIObjFreeFQP( uri )     URIObjFreeElement( uri->uri_fqp )

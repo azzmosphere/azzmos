@@ -143,16 +143,21 @@ DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri )
 	CURL    *cl  = DownloadHTMLGetCH(dl);
 	FILE    *fh  = DownloadHTMLGetFh(dl);
 
+	rewind( fh );
 	if(  (res = curl_easy_setopt( cl, CURLOPT_HEADER, true )) != CURLE_OK ) 
 		syslog( LOG_ERR, "could not get headers - %s", curl_easy_strerror(res));
 	else if ( (res = curl_easy_setopt( cl, CURLOPT_URL, uri )) != CURLE_OK )
 		syslog( LOG_ERR, "could not set URL - %s - %s", uri, curl_easy_strerror(res));
-	rewind( fh );
-	
-	res = curl_easy_perform( cl );
+	else if ( (res = curl_easy_setopt( cl, CURLOPT_WRITEHEADER, fh)) != CURLE_OK) {
+		syslog( LOG_ERR, "could not set file handle for headers - %s - %s", uri, curl_easy_strerror(res));
+	}
+	else	
+		res = curl_easy_perform( cl );
 	
 	if( res == CURLE_OK)	
 		res = curl_easy_setopt( cl, CURLOPT_HEADER, false );
+
+	curl_easy_setopt( cl, CURLOPT_WRITEDATA, fh);
 	return res;
 }		/* -----  end of function DownloadHTMLGetHeaders  ----- */
 

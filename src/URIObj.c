@@ -63,6 +63,7 @@ URIObjInit()
 		uri = NULL;
 	}
 
+	uri->uri_uh = NULL;
 	uri->uri_scheme_so = uri->uri_scheme_eo 
 		           = uri->uri_auth_so 
 			   = uri->uri_auth_eo 
@@ -119,6 +120,12 @@ URIObjCleanUp( URIObj_t *uri )
 			uri->uri_fqp = NULL;
 			free( uri->uri_fqp);
 		}
+
+		/* note that the headers are not initilized the downloader will
+		 * allocate these for us */
+		if( uri->uri_uh != NULL ) {
+			URIHeaderCleanUp( uri->uri_uh );
+		}
 	} 
 	uri = NULL;
 	free( uri );
@@ -129,7 +136,7 @@ URIObjCleanUp( URIObj_t *uri )
  * ===  FUNCTION  ======================================================================
  *         Name:  URIObjSetFQP
  *  Description:  Sets the Fully Qualified Path (FQP) of a specific URI and returns
- *  0 on success or EFAULT on error
+ *                0 on success or EFAULT on error
  * =====================================================================================
  */
 int 
@@ -145,8 +152,9 @@ URIObjSetFQP( URIObj_t *uri, const char *fqp)
 	else if( strlen( fqp ) >= BUFSIZ) {
 		SYSLOG_ERR( "URIObjSetFQP", "FPQ exceeds BUFSIZ in length", EFAULT);
 		rv = EFAULT;
-	} else {
-		*uri->uri_fqp = strdup( fqp );
+	} 
+	else {
+		*(uri->uri_fqp) = strdup( fqp );
 		if( *uri->uri_fqp == NULL ) {
 			SYSLOG_ERR("URIObjSetFPQ","could not add FQP to URI",errno);
 			rv = errno;
@@ -156,11 +164,12 @@ URIObjSetFQP( URIObj_t *uri, const char *fqp)
 	return rv;
 }
 
-
-/**
- * Set the content section of the URI.
- * Read a file handle and write it to the
- * URI content string.
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIObjSetContent
+ *  Description:  Read file handle and allocate contents dynamically to the content 
+ *                string.
+ * =====================================================================================
  */
 int
 URIObjSetContent( URIObj_t *uri, DownloadHTML_t *dl_t)

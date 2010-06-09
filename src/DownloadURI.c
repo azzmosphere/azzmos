@@ -120,7 +120,6 @@ DownloadURI(DownloadHTML_t *dl,
 
 			syslog( LOG_DEBUG, "href is = '%s'",  href);
 
-		        /* REMAINS TO BE IMPLEMENTED */
 			DownloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, db, opts);
 			free( href );
 			URIObjCleanUp(nexturi);

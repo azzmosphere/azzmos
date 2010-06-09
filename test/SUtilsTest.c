@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 
+#include <stdlib.h>
 #include <Utils.h>
 #include <CuTest.h>
 
@@ -64,7 +65,6 @@ CuSuite *GetSuite()
 	SUITE_ADD_TEST( suite, USplice4);
 }
 
-#include	<stdlib.h>
 
 /* 
  * ===  FUNCTION  ======================================================================

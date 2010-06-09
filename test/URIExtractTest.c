@@ -163,9 +163,9 @@ TestPathOnly2( CuTest *tc )
 void
 TestURINormalization( CuTest *tc )
 {
-	NormalizeFQP( uri );
+	URIQualify( urire, "htTP://WWW.ato.GOV.aU/SomePath/", uri, luri );
 	CuAssertStrEquals( tc,
-			"http://www.ato.gov.au/",
+			"http://www.ato.gov.au/SomePath/",
 			URIObjGetFQP( uri )
 	);
 			
@@ -190,9 +190,7 @@ CuSuite *GetSuite()
 	SUITE_ADD_TEST( suite, TestURINoPath );
 	SUITE_ADD_TEST( suite, TestURIQualify3 );
 	SUITE_ADD_TEST( suite, TestPathOnly2 );
-
-	 /* REMAINS TO BE IMPLEMENTED */
-	//SUITE_ADD_TEST( suite, TestURINormalization );
+	SUITE_ADD_TEST( suite, TestURINormalization );
 }
 
 /* 

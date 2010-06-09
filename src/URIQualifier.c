@@ -41,6 +41,9 @@ URIQualify(  URIRegex_t *urire, const char *seed,  URIObj_t *uri,  URIObj_t *lur
 
 
 	/* Normalize string */
+	if( (fqp = NormalizeFQP( uri )) == NULL ) {
+		syslog( LOG_ERR, "could not normalize FQP");
+	}
 
 	/* test sanity of authority using DNS */
 

@@ -37,8 +37,12 @@ URIObjFreeElement( char **uriel )
 	free( uriel );
 }
 
-/**
- * Object initilization.
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  URIObjInit
+ *  Description:  Construct the URI object
+ * =====================================================================================
  */
 URIObj_t *
 URIObjInit()
@@ -46,11 +50,13 @@ URIObjInit()
 	URIObj_t *uri = (URIObj_t *) malloc(sizeof( URIObj_t));
 	if( uri == NULL ) {
 		SYSLOG_ERR( "URIObjInit", "could not allocate memory for URIObj", errno);
-	} else if ( ( uri->uri_content = (char **) malloc(sizeof( char *))) == NULL) {
+	} 
+	else if ( ( uri->uri_content = (char **) malloc(sizeof( char *))) == NULL) {
 		SYSLOG_ERR( "URIObjInit", "could not allocate memory for content", errno);
 		free( uri );
 		uri = NULL;
-	} else if( (uri->uri_fqp = (char **) malloc( sizeof( char *))) == NULL) {
+	} 
+	else if( (uri->uri_fqp = (char **) malloc( sizeof( char *))) == NULL) {
 		SYSLOG_ERR("URIObjInit", "could not allocate memory for FQP",errno);
 		free( uri->uri_content);
 		free(uri);
@@ -67,19 +73,25 @@ URIObjInit()
 	return uri;
 }
 
-/**
- * Convert the FQP to lower case for the scheme and the authority
- * sections. 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  NormalizeFQP
+ *  Description:  Convert the authority section of the FQP to lower case and return
+ *                it as character array
+ * =====================================================================================
  */
 char *
 NormalizeFQP( URIObj_t *uri )
 {
 	char *fqp = strdup(*uri->uri_fqp);
 	int i = 0;
-	for( ; i < uri->uri_path_eo; i ++ )
-		fqp[i] = tolower( fqp[i]);
+	for( ; i < uri->uri_path_so; i ++ )
+		if( isupper(fqp[i]) )
+			fqp[i] = tolower( fqp[i]);
 
-	fqp = (char *) URIObjSetFQP( uri, fqp);
+	if( URIObjSetFQP( uri, fqp) != 0)
+		return NULL;	
 	return fqp;
 }
 
@@ -94,12 +106,22 @@ void
 URIObjCleanUp( URIObj_t *uri )
 {
 	if ( uri != NULL ) {
-		uri = NULL;
-		free(uri);
-	} else {
-		uri = NULL;
-		free( uri );
-	}
+		if( uri->uri_content != NULL ) {
+			*(uri->uri_content) = NULL;
+			free( *(uri->uri_content) );
+			uri->uri_content = NULL;
+			free(uri->uri_content);
+		}
+
+		if( uri->uri_fqp != NULL ) {
+			*(uri->uri_fqp) = NULL;
+			free( *(uri->uri_fqp) );
+			uri->uri_fqp = NULL;
+			free( uri->uri_fqp);
+		}
+	} 
+	uri = NULL;
+	free( uri );
 }
 
 

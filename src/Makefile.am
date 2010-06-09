@@ -15,4 +15,4 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 URIQualifier.c URIQualifier.h \
 		 list.h \
 		 DownloadURITypes.c DownloadURITypes.h \
-		 URIHeaders.c  URIHeaders.h
+		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h

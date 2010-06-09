@@ -15,11 +15,25 @@
  *
  * =====================================================================================
  */
+
+/* #####   HEADER FILE INCLUDES   ################################################### */
+
 #define _URIOBJ_H_
+
+#ifndef __COMMON_H__
 #include <common.h>
+#endif
+
 #ifndef _DOWNLOADHTML_H_
 #include <DownloadHTML.h>
 #endif
+
+#ifndef _URIHEADERSTYPES_H_
+#include <URIHeadersTypes.h>
+#endif
+
+
+/* #####   EXPORTED DATA TYPES   #################################################### */
 
 struct URIObj_s {
 	char ** uri_content;  /* The HTML content of the URI */
@@ -36,8 +50,13 @@ struct URIObj_s {
 
 	int uri_content_offset; /* offset value for getting URI content */
 
+	//URIHeader_t *uri_uh;    /* linked list of URI headers */
+
 	int uri_id;
 } typedef URIObj_t;
+
+
+/* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
 URIObj_t *URIObjInit();
 void      URIObjCleanUp(URIObj_t * uri);
@@ -47,6 +66,11 @@ int  URIObjSetFQP( URIObj_t *uri, const char *fqp);
 void URIObjFreeElement( char **uriel );
 URIObj_t * URIObjClone( URIObj_t *uriin );
 
+char * NormalizeFQP( URIObj_t *uri );
+
+
+
+/* #####   EXPORTED MACROS   ######################################################## */
 
 #define URIObjGetScheme( uri )    USplice( *uri->uri_fqp, uri->uri_scheme_so, uri->uri_scheme_eo)
 #define URIObjGetAuth( uri )      USplice( *uri->uri_fqp, uri->uri_auth_so, uri->uri_auth_eo)

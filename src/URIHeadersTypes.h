@@ -54,7 +54,7 @@ struct URIHeader_s {
 #define AHN_CONTENT_ENCODING     "Content-Encoding"
 #define AHN_CONTENT_LANGUAGE     "Content-Language"
 #define AHN_CONTENT_LENGTH       "Content-Length"
-#define AHN_CONTENT_LOCATION     "Content-Location:" /* - not this can be a relative or absolute path */
+#define AHN_CONTENT_LOCATION     "Content-Location" /* - not this can be a relative or absolute path */
 #define AHN_CONTENT_MD5          "Content-MD5"      /* - refer to RFC 1864 */
 #define AHN_CONTENT_RANGE        "Content-Range"
 #define AHN_CONTENT_TYPE         "Content-Type"
@@ -90,7 +90,7 @@ struct URIHeader_s {
 /* special response allways called by Azzmos first that states that
  * the foreign host that states what level (version) of HTTP is supported
  */
-#define AHN_HTTP_OK             "Http-Supported"
+#define AHN_HTTP_RESPONSE        "Http-Response"
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 URIHeader_t *URIHeaderInit();

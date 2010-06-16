@@ -207,7 +207,7 @@ SOURCES = CuTest.c CuTest.h \
 	  $(top_srcdir)/src/DownloadURI.c  \
 	  $(top_srcdir)/src/DBSQLHandle.c \
 	  $(top_srcdir)/src/URIHeaders.c  \
-	  $(top_srcdir)/src/DownloadURITypes.c
+	  $(top_srcdir)/src/DownloadURITypes.c 
 
 AM_CFLAGS = -I$(top_srcdir)/src @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
 AM_LDFLAGS = @POSTGRESQL_LDFLAGS@ @LIBCURL@ 

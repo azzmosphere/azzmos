@@ -63,7 +63,8 @@ char *
 URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri )
 {
 	char *fqp = NULL;
-	int err = 0;
+	int   err = 0;
+	char *path;
 	
 	if( IsFQP( urire, seed, uri ) )
 		fqp = strdup( seed );
@@ -81,20 +82,13 @@ URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri )
 		asprintf(&fqp, "%s/", seed);
 
 	/* some sites will use a non standard path such as 'ml.asp?45937'  */
-	else if( strnlen( seed, BUFSIZ) < BUFSIZ ) {
-	  	if( asprintf(&fqp, 
+	else if( IsPathNq(urire,seed, uri, &path) ) {
+	  	asprintf(&fqp, 
 			 "%s://%s/%s", 
 			 URIObjGetScheme( uri ),
 			 URIObjGetAuth( uri ), 
-			 seed
-		) == -1 ) {
-			fqp = NULL;
-			syslog( LOG_ERR, 
-				"when trying to get FQP - the following happened - %s", 
-				strerror( errno)
-			);
-		}
-
+			 path
+		) ;
 	}
 
 	return fqp;

@@ -135,7 +135,7 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 		return errno;
 	}
 
-	/* first line of headers is allways the HTTP version */
+	/* first line of headers is allways the HTTP response */
 	if( fgets( buf, BUFSIZ, in ) == NULL ) {
 		syslog( LOG_ERR, "could not find any headers - %s", strerror(errno));
 		return errno;
@@ -151,7 +151,7 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 		return errno;
 	}
 
-	*(uh->uh_key) = strdup(AHN_HTTP_OK);
+	*(uh->uh_key) = strdup(AHN_HTTP_RESPONSE);
 	*(uh->uh_val) = USplice( buf, 0, (strnlen(buf,BUFSIZ) - 3)); 
 
 	/* get uri headers from the file */
@@ -165,6 +165,9 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 
 		}
 		else if( fgets( buf, BUFSIZ, in) != NULL) {
+			if( strncmp(buf, "\r\n", BUFSIZ) == 0 )
+				continue;
+
 			if( (rv = URIRegexSplitURIHeader(ue, buf, &key, &val )) != 0) {
 				syslog(LOG_ERR, "could not allocate header - %s", strerror(rv));
 				break;

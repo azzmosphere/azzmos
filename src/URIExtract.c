@@ -268,6 +268,38 @@ IsFQP( URIRegex_t *reuri, const char *subject, URIObj_t *uri)
 }
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  IsPathNq
+ *  Description:  For valid paths that do not have a '/' at start match them here.
+ * =====================================================================================
+ */
+bool
+IsPathNq ( URIRegex_t *reuri, const char *subject, URIObj_t *uri, char **out )
+{
+	const char *pattern = "^\\s*([\\w\\d-\\._\\~\\?\\#]+)\\s*$"; 
+	bool rc = false;
+	int offset = 0, ovector[O_OVECCOUNT];
+	char *rv =  ProcRegEx(
+		reuri,
+		subject,
+		uri,
+		pattern,
+		"(private function) IsPathNq",
+		O_REUPTH,
+		REGEX_T_UPTH,
+		&offset,
+		O_OVECCOUNT,
+		ovector
+	);
+
+	if( rv != NULL ) {
+		rc = true;
+		*(out) = USplice( subject, ovector[2], (ovector[3] -1));
+	}
+
+	return rc;
+}		/* -----  end of function IsPathNq  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================

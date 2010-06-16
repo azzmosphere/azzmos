@@ -42,6 +42,7 @@
 #define O_RENPTH  0x08 /* Address does not have path defined */
 #define O_RENOP   0x10 /* No path defined */
 #define O_REHDR   0x20 /* URI header */
+#define O_REUPTH  0x40 /* No starting '/' on path */
 
 #define O_OVECCOUNT 30 /* maximum vector count,  should be how many sub strings 
                            that may happen times 3*/
@@ -56,6 +57,7 @@ enum {
 	REGEX_T_ISP,
 	REGEX_T_NOP,
 	REGEX_T_HDR,
+	REGEX_T_UPTH,
 	REGEX_T_LAST
 } typedef regex_types;
 
@@ -77,3 +79,4 @@ char *       URIRegexecNextHREF( URIRegex_t *reuri, const char *subject, int *of
 bool         IsNoPath(URIRegex_t *reuri, const char *subject, URIObj_t *uri);
 bool         IsPathOnly( URIRegex_t *reuri, const char *subject, URIObj_t *uri);
 bool         IsFQP( URIRegex_t *reuri, const char *subject, URIObj_t *uri);
+bool         IsPathNq( URIRegex_t *reuri, const char *subject, URIObj_t *uri, char **out);

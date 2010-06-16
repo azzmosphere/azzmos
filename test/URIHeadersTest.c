@@ -19,7 +19,7 @@
 #include <CuTest.h>
 #include <URIHeaders.h>
 
-URIHeader_t *uh;
+URIHeader_t *uh, *uh2;
 URIRegex_t  *re;
 
 
@@ -110,6 +110,52 @@ TestURIHeaderGetValue ( CuTest *tc )
 
 /* 
  * ===  FUNCTION  ======================================================================
+ *         Name:  TestURIHeadersAllocate
+ *  Description:  Test allocations of headers from a foreign web site
+ * =====================================================================================
+ */
+void
+TestURIHeadersAllocate ( CuTest *tc )
+{
+	Opts_t          opts;
+	DownloadHTML_t *dl    = InitDownloadHTML(&opts);
+	URIRegex_t     *re   = URIRegexInit();
+	const char     *seed = "http://www.ato.gov.au/";
+	char           *fname;
+	CURL           *ch;
+
+	uh2   = URIHeaderInit();
+	asprintf(&fname, "%s/headers.tmp.txt", __DATA__);	
+
+	FILE *f = fopen( fname, "w+");
+	curl_global_init(CURL_GLOBAL_NOTHING);
+	ch = curl_easy_init();
+	DownloadHTMLSetFH(dl, f);
+
+	CuAssertIntEquals(tc, CURLE_OK, URIHeaderAllocate( uh2, dl, re, seed));
+	
+	curl_easy_cleanup( ch );
+	curl_global_cleanup();
+
+	fclose(f);
+	unlink(f);
+}		/* -----  end of function TestURIHeadersAllocate  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  TestURIHeaderHasValue3
+ *  Description:  Test that the correct value is returned.
+ * =====================================================================================
+ */
+void
+TestURIHeaderHasValue3 ( CuTest *tc )
+{
+	CuAssertIntEquals( tc, true, URIHeaderHasValue( uh, AHN_CONTENT_TYPE));
+}	
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
  *         Name:  TestURIHeaderCleanUp
  *  Description:  Test that object can be decontructed
  * =====================================================================================
@@ -118,7 +164,9 @@ void
 TestURIHeaderCleanUp ( CuTest *tc )
 {
 	URIHeaderCleanUp( uh );
+	//URIHeaderCleanUp( uh2 );
 }		/* -----  end of function TestURIHeaderCleanUp  ----- */
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  GetSuite
@@ -135,6 +183,7 @@ GetSuite ( )
 	SUITE_ADD_TEST( suite, TestURIHeaderHasValue2  );
 	SUITE_ADD_TEST( suite, TestURIHeaderGetValue  );
 	SUITE_ADD_TEST( suite, TestURIHeaderCleanUp  );
+	SUITE_ADD_TEST( suite, TestURIHeadersAllocate );
 	return suite;
 }		/* -----  end of function GetSuite  ----- */
 

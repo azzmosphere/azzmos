@@ -172,14 +172,17 @@ URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, UR
 	char *valid_ctype[UQ_VALID_CTYPE_COUNT] = UQ_VALID_CTYPES, *ct;
 
 	if( (res = URIHeaderAllocate( uh, dl, re, href)) == 0) {
+
 		if( !URIHeaderHasValue( uh, AHN_CONTENT_TYPE)) {
 			syslog( LOG_ERR, "%s header is not defined", AHN_CONTENT_TYPE);
 			res = 1;
 		}
 		else 
 			ct = URIHeaderGetValue( uh, AHN_CONTENT_TYPE);
-	}	
-
+	}
+	
+	syslog( LOG_ERR,"%s:%s - %d res to '%d'", __FILE__, "URIQualifyChkHeaders", __LINE__, res);
+	
 	if( res == 0) {
 		res = 1;
 		for( i = 0; i < UQ_VALID_CTYPE_COUNT; i ++ ) {

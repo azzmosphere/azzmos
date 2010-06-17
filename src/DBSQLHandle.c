@@ -1,10 +1,20 @@
-/**
- * perform all database functions form here.
- */
-
-/**
- * connect to databae using the info given to us in the 
- * connstr
+/*
+ * =====================================================================================
+ *
+ *       Filename:  DBSQLHandle.c
+ *
+ *    Description:  This is the primary database interface for postgresql,  all database
+ *                  functions belong in here.
+ *
+ *        Version:  1.0
+ *        Created:  17/06/2010 22:17:49
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Aaron Spiteri
+ *        Company:  
+ *
+ * =====================================================================================
  */
 
 #include <DBSQLHandle.h>

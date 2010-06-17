@@ -168,10 +168,9 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 			if( strncmp(buf, "\r\n", BUFSIZ) == 0 )
 				continue;
 
-			if( (rv = URIRegexSplitURIHeader(ue, buf, &key, &val )) != 0) {
-				syslog(LOG_ERR, "could not allocate header - %s", strerror(rv));
-				break;
-			}
+			if( URIRegexSplitURIHeader(ue, buf, &key, &val ) != 0) 
+				continue;
+
 			else if( (rv = URIHeaderSetListItem( uh, tmp, key, val)) != 0) {
 				syslog(LOG_ERR, "could not set list item for - %s - %s", key, strerror(rv));
 				break;

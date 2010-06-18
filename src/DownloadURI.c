@@ -104,6 +104,7 @@ DownloadURI(DownloadHTML_t *dl,
 
 	syslog(LOG_DEBUG, "%s:%d - DownloadURI started", __FILE__, __LINE__);
 	URIObjSetFQP( uri, seed );
+	URIQualify(urirel, seed, uri, NULL);
 
 	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);

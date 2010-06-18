@@ -239,7 +239,7 @@ URIRegexecNextHREF( URIRegex_t *reuri, const char *subject, int *offset, URIObj_
 bool 
 IsFQP( URIRegex_t *reuri, const char *subject, URIObj_t *uri)
 {
-	const char *pattern = "^([\\w\\d\\+\\-\\.]+)://([\\w\\d\\.]+:?\\d*)([/\\?#][\\w/\\.\\d\\?\\=]*)$";
+	const char *pattern = "^([\\w\\d\\+\\-\\.]+)://([\\w\\d\\.]+:?\\d*)([/\\?#][\\w/\\.\\d\\?\\=\\%\\;]*)$";
 	int offset = 0, ovecsize = 30, ovector[ovecsize];
 	bool rc = false;
 	char *rv =  ProcRegEx(

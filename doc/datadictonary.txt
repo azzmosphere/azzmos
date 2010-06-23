@@ -1,4 +1,17 @@
+EDGES
+=====
 
+An edge refers to graph theory edge which has two coordinates, a
+X and a Y.  The X coordinate refers to the URI containing the link.
+The Y coordinate is the URI that the link points too.
+
+ID    INTEGER   Primary key
+XURI  INTEGER   Foreign key URI
+YURI  INTEGER   Foreign key URI
+CDATE DATETIME  Time that edge was created.
+MDATE DATETIME  Time edge was last modified
+CURR  BOOLEAN   If true then edge was available
+                last time the URI was checked.
 
 
 

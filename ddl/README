@@ -1,0 +1,3 @@
+The directory contains the designs and source code for the 
+data definitions of Azmos.  The DDL is designed to install
+on a PostgreSQL server running on a NIX platform.  

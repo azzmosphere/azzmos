@@ -1,0 +1,6 @@
+CREATE TABLE path(
+	id INTEGER PRIMARY KEY,
+	value TEXT NOT NULL
+);
+
+CREATE SEQUENCE seq_path;

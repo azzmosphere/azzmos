@@ -69,14 +69,15 @@ SchedulerProcess( Scheduler_t *sc )
 
 		/* create connection to the database */
 		DBObj_t *db;
-		if( (db = DBSQLHandleInit( opts)) == NULL)
+		if( (db = DBSQLHandleInit( opts)) == NULL) {
 			SchedulerSetStatus( sc, EXIT_FAILURE);
-		
-		else if( DBSQLPrepareAzFootprint( db ) ) {
+
+		/* REMAINS TO BE IMPLEMENTED */
+		/*  else if( DBSQLPrepareAzFootprint( db ) ) {
 			DBSQLHandleCleanUp( db );
 			CleanUpDownloadHTML( dl );
 			syslog(LOG_CRIT, "could not create STH");
-			SchedulerSetStatus(sc, EXIT_FAILURE);
+			SchedulerSetStatus(sc, EXIT_FAILURE);*/
 		} 
 		else {
 			

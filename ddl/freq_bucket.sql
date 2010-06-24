@@ -7,7 +7,8 @@
 
 CREATE TABLE freq_bucket (
 	id      INTEGER   PRIMARY KEY,
-	range   INTERVAL  NOT NULL
+	boundl  INTERVAL  UNIQUE NOT NULL,
+	boundu  INTERVAL  UNIQUE NOT NULL
 );
 
 CREATE SEQUENCE seq_freq_bucket;
@@ -16,8 +17,9 @@ CREATE SEQUENCE seq_freq_bucket;
  * ALl URIs get placed into this buket when they are first 
  * created and then moved by azzmos as they are checked.
  */
-INSERT INTO freq_bucket(id, range) 
+INSERT INTO freq_bucket(id, boundl, boundu) 
 VALUES(
 	nextval('seq_freq_bucket'),
+	'3650 00:00:00',
 	'36500 00:00:00'
 );

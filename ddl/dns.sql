@@ -1,0 +1,6 @@
+CREATE TABLE dns (
+	id    INTEGER   PRIMARY KEY,
+	cdate TIMESTAMP DEFAULT now()
+);
+
+CREATE SEQUENCE dns;

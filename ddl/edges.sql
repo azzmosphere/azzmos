@@ -1,0 +1,10 @@
+CREATE TABLE edges (
+	id   INTEGER PRIMARY KEY,
+	xuri INTEGER NOT NULL,
+	yuri INTEGER,
+	FOREIGN KEY(xuri) REFERENCES uri(id),
+	FOREIGN KEY(yuri) REFERENCES uri(id),
+	UNIQUE(xuri, yuri)
+);
+
+CREATE SEQUENCE seq_edge;

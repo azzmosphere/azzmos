@@ -1,0 +1,5 @@
+CREATE TABLE scheme (
+	id INTEGER PRIMARY KEY,
+	value TEXT UNIQUE NOT NULL
+);
+CREATE SEQUENCE seq_scheme;

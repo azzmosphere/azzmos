@@ -5,7 +5,7 @@
 # access to postgresql
 #
 USERNAME=azzmosphereadmin
-DBNAME=test1
+DBNAME=azzmos
 
 CREATEDB=`which createdb`
 DROPDB=`which dropdb`

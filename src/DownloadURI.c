@@ -53,12 +53,14 @@ DownloadURIPerform(
 	else if( (urirv = URIObjSetContent(uri, dl)) != 0)
 		SYSLOG_ERR("DownloadURI","URI" ,urirv);
 
-	/* upload URI to database */
-	else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
+	/* upload URL to database */
+ /* REMAINS TO BE IMPLEMENTED */
+	/*  else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
 		syslog(LOG_CRIT, "can not upload to database!!!!");
 		URIObjCleanUp(uri);
 		urirv = 1;
-	}
+	}*/
+
 	/* Extract Href List from content */
 	else if( (duri = GetHrefList(urirel, uri)) == NULL ) {
 		syslog(LOG_ERR, "could not get HREF list");

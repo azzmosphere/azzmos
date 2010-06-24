@@ -1,4 +1,4 @@
-AC_INIT( [azzmos], [1.2], [azzmosphere@gmail.com])
+AC_INIT( [azzmos], [0.1], [azzmosphere@gmail.com])
 AM_CONFIG_HEADER(config.h)
 
 dnl Package information

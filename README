@@ -1,21 +1,18 @@
 AZZMOS PROJECT
 ==============
 
-The azzmos project (WIP) is attmpt to build a generic webcrawler that can be used for a 
-variety of purposes.  Including:
-	 Intelligient marketing;
-	 Federal and international security; 
-         Market Research;
-and much more.
+VERSION 0.1
 
-The intention of the project is that it is used with a indexing engine that will allow 
-indivuals, corpoarations, government bodies and other communities a means to seek relevent
-data from the web.
+Azzmos is WIP project that attempts to build a multi-threaded web crawler that can use different
+index algoritms.  The aim of the project is to provide three programs on completion:
 
-The project is in it's early sages and is far from a alpha release.  The alpha release 
-is expected to only be tested on FreeBSD and OS X (XNU Kernels).  It will also be bound
-to use a PostgresQL backend. It is intended that future releases allow for testing on
-many more platforms and also allow for different backends such as Oracle and Sybase.
+These are:
+   azzmos  - web crawler.
+   azidx   - indexer
+   azctl   - controller function.
+
+The program requires a running and multi-threaded version of postgresQL database.
+
 
 To install azzmos the following is required:
     PostgresQL compiled to run in multi-threaded mode (v 8.2.16)

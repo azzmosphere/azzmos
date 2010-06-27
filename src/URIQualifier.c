@@ -216,7 +216,12 @@ URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, UR
  * =====================================================================================
  */
 int
-URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri, DownloadHTML_t *dl )
+URIQualifyDlURI ( URIQualify_t *uq, 
+		  URIRegex_t *urire, 
+		  DownloadURI_t *duri, 
+		  URIObj_t *uri, 
+		  DownloadHTML_t *dl, 
+		  DBObj_t *db )
 {
 	int rv = 0;
 	DownloadURI_t *duri_tmp;
@@ -258,7 +263,7 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 					found = true;
 					URIHeaderCleanUp(uh);
 				}
-				else
+				else 
 					duri_tmp->du_uh = uh;
 			}
 
@@ -270,6 +275,13 @@ URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIO
 			else {
 				URIQualifyAppend( uq, href );
 				DownloadURISetHref( duri_tmp, href );
+
+				/* upload to database */
+				/* REMAINS TO BE IMPLEMENTED */
+				syslog( LOG_DEBUG, "%s:%d - dbupload uri     = '%s'", __FILE__, __LINE__,URIObjGetFQP(uri));
+				syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
+				//if( uh != NULL )
+				//	syslog( LOG_DEBUG, "%s:%s - response         = '%s'", __FILE__, __LINE__,URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
 			}
 
 		}

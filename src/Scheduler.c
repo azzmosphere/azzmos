@@ -33,16 +33,11 @@ SchedulerProcess( Scheduler_t *sc )
 	const Opts_t *opts = SchedulerGetOpts(sc);
 	int rv = 0;
 
-	/* This section here is the section that will represent each downloader */
-	syslog( LOG_DEBUG, "downloader started");
-	/* create regular expression pattern holder */
-	URIRegex_t *urire = URIRegexInit( );
 
-	/* create internet socket and start downloading stuff */
-	DownloadHTML_t *dl;
+ 	/* REMAINS TO BE IMPLEMENTED */
+	/* Create the schedulers database handle. */
 
 	/* Create URIQualifier list */
- 	/* REMAINS TO BE IMPLEMENTED */
 	URIQualify_t *uq;
 	pthread_mutex_t uq_lock;
 	if( rv = pthread_mutex_init( &uq_lock, NULL) ) {
@@ -55,6 +50,18 @@ SchedulerProcess( Scheduler_t *sc )
 		INIT_LIST_HEAD( &uq->uq_list );
 	}
 
+	/* donwloader engine starts here */
+	/* 
+	 * Note that database, regular expresion handler,
+	 * should be done in the object initilization.  
+	 */
+	/* This section here is the section that will represent each downloader */
+	syslog( LOG_DEBUG, "downloader started");
+	/* create regular expression pattern holder */
+	URIRegex_t *urire = URIRegexInit( );
+
+	/* create internet socket and start downloading stuff */
+	DownloadHTML_t *dl;
 
 	if( (dl = InitDownloadHTML( opts )) == NULL ) {
 		syslog( LOG_ERR, "could not initilize DownloadHTML");

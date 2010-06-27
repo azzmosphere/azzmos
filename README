@@ -13,7 +13,27 @@ These are:
 
 The program requires a running and multi-threaded version of postgresQL database.
 
+INSTALLATION INSTRUCTIONS
+=========================
+Ensure that psotgres is installed and running.
 
+Modify the ddl/install.sh script.
+
+Create a build directory 'mkdir build'
+
+Change directory to build,  'cd build'
+
+Use the following commands:
+
+../configure
+make 
+make check
+make install
+
+
+
+PREQUISITS
+=========
 To install azzmos the following is required:
     PostgresQL compiled to run in multi-threaded mode (v 8.2.16)
     cURL development headers

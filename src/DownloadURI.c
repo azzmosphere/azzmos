@@ -54,7 +54,7 @@ DownloadURIPerform(
 		SYSLOG_ERR("DownloadURI","URI" ,urirv);
 
 	/* upload URL to database */
- /* REMAINS TO BE IMPLEMENTED */
+        /* REMAINS TO BE IMPLEMENTED */
 	/*  else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
 		syslog(LOG_CRIT, "can not upload to database!!!!");
 		URIObjCleanUp(uri);
@@ -67,8 +67,9 @@ DownloadURIPerform(
 		urirv = 1;
 	} 
 	else if ( urirv == 0 ) {
+		/* set URL id */
 		/* set the URIID */
-		URIObjSetId( uri, uriid);
+		//URIObjSetId( uri, uriid);
 		URIObjFreeContent( uri );	
 	}
 	
@@ -110,7 +111,7 @@ DownloadURI(DownloadHTML_t *dl,
 
 	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl)) == 0 ){
+	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl, db)) == 0 ){
 
 
 		/* Start reading each link and transversing through them */

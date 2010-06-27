@@ -41,6 +41,10 @@
 #include <DownloadHTML.h>
 #endif
 
+#ifndef _DBSQLHANDLE_H_
+#include <DBSQLHandle.h>
+#endif
+
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
 struct URIQualify_s {
@@ -60,7 +64,7 @@ char * URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri );
 URIQualify_t * URIQualifyInit();
 int            URIQualifyAppend ( URIQualify_t *uqin, const char *seed );
 void           CleanUpURIQualify( URIQualify_t *uq );
-int URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri, DownloadHTML_t *dl );
+int            URIQualifyDlURI ( URIQualify_t *uq, URIRegex_t *urire, DownloadURI_t *duri, URIObj_t *uri, DownloadHTML_t *dl, DBObj_t *db );
 
 
 /* #####   EXPORTED MACROS   ######################################################## */

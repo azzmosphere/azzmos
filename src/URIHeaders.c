@@ -201,6 +201,9 @@ URIHeaderHasValue ( URIHeader_t *uh, const char *key )
 	list_for_each(pos, &uh->uh_list) {
 		tmp = list_entry( pos, URIHeader_t, uh_list);
 
+		if( tmp->uh_key == NULL || *(tmp->uh_key) == NULL)
+			continue;
+
 		if( strncmp(key, *(tmp->uh_key), BUFSIZ) == 0) {
 			rv = true;
 			break;
@@ -227,12 +230,21 @@ URIHeaderGetValue ( URIHeader_t *uh, const char *key )
 	URIHeader_t *tmp;
 	struct list_head *pos;
 
-	list_for_each(pos, &uh->uh_list) {
-		tmp = list_entry( pos, URIHeader_t, uh_list);
+	/* Check to see if this the right header if it is 
+	 * dont bother transversing the list */
+	if( uh->uh_key != NULL && *(uh->uh_key) != NULL && strncmp(key, *(uh->uh_key), BUFSIZ) == 0 )
+		ret = strdup( *(uh->uh_val) );
+	else {
+		list_for_each(pos, &uh->uh_list) {
+			tmp = list_entry( pos, URIHeader_t, uh_list);
 
-		if( strncmp(key, *(tmp->uh_key), BUFSIZ) == 0) {
-			ret = strdup( *(tmp->uh_val));
-			break;
+			if( tmp->uh_key == NULL || *(tmp->uh_key) == NULL)
+				continue;
+
+			if( strncmp(key, *(tmp->uh_key), BUFSIZ) == 0) {
+				ret = strdup( *(tmp->uh_val));
+				break;
+			}
 		}
 	}
 

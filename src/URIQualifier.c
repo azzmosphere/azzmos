@@ -276,12 +276,13 @@ URIQualifyDlURI ( URIQualify_t *uq,
 				URIQualifyAppend( uq, href );
 				DownloadURISetHref( duri_tmp, href );
 
-				/* upload to database */
+				/* upload FQP and link */
 				/* REMAINS TO BE IMPLEMENTED */
 				syslog( LOG_DEBUG, "%s:%d - dbupload uri     = '%s'", __FILE__, __LINE__,URIObjGetFQP(uri));
 				syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
-				//if( uh != NULL )
-				//	syslog( LOG_DEBUG, "%s:%s - response         = '%s'", __FILE__, __LINE__,URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
+
+				/*  upload response and headers */
+				syslog( LOG_DEBUG, "%s:%d - response = '%s'", __FILE__, __LINE__,URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
 			}
 
 		}

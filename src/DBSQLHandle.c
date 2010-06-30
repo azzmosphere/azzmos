@@ -19,8 +19,12 @@
 
 #include <DBSQLHandle.h>
 
-/**
- * Read configuration file and return connstr
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  GetConnStr
+ *  Description:  Read database configuration file and return a the string to connect
+ *                to database.
+ * =====================================================================================
  */
 static const char *
 GetConnStr( const char *dbconf )
@@ -54,11 +58,11 @@ GetConnStr( const char *dbconf )
 	return connstr;
 }
 
-
-/**
- * Create a active connection to the database.
- *
- * This function must be ran outside of threads.
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DBSQLHandleInit
+ *  Description:  Connect to database, and return handle containing the connection.
+ * =====================================================================================
  */
 DBObj_t *
 DBSQLHandleInit(const Opts_t *opts )
@@ -93,7 +97,8 @@ DBSQLHandleInit(const Opts_t *opts )
 			PQerrorMessage( db->dbconn)
 		);
 		return NULL;
-	} else {
+	} 
+	else {
 		/* Check the client_encoding, we want it to be iso-8559-1 if
 		 * it isn't thne try and set it otherwise it is fatal. */
 		clientenc = (char *) PQparameterStatus(db->dbconn, "client_encoding");
@@ -124,14 +129,27 @@ DBSQLHandleInit(const Opts_t *opts )
 	return db;
 }
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DBSQLHandleCleanUp
+ *  Description:  Destroy the datbase object.
+ * =====================================================================================
+ */
 void     
 DBSQLHandleCleanUp( DBObj_t *db )
 {
-	if( db != NULL )
+	if( db != NULL ) {
 		PQfinish( db->dbconn );
+		free(db);
+	}
 }
 
 
+
+// EVERYTHING BELOW THIS LINE WILL BE REMOVED, 
+// the SQL routines will need to be refactored to cope with the 
+// new back end.
 /**
  * Prepares the insert_footprint command so
  * that it can be executed multiple times without
@@ -155,14 +173,14 @@ DBSQLPrepareAzFootprint(DBObj_t *db )
 	};
 
 	rc = PQprepare( conn, stmtName, query, nParams, paramTypes);
-	if( PQresultStatus( rc ) != PGRES_COMMAND_OK )
-	{
+	if( PQresultStatus( rc ) != PGRES_COMMAND_OK ) {
 		syslog(LOG_ERR, "could not prepare db footprint STH - %s ", PQresultErrorMessage(rc));
 		rv = 1;
 	}
 	
 	return rv;
 }
+
 
 /**
  * replicate the SQL statement in the event of error

@@ -282,7 +282,7 @@ URIQualifyDlURI ( URIQualify_t *uq,
 				syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
 
 				/*  upload response and headers */
-				syslog( LOG_DEBUG, "%s:%d - response = '%s'", __FILE__, __LINE__,URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
+				syslog( LOG_DEBUG, "%s:%d - response = '%s'", __FILE__, __LINE__, URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
 			}
 
 		}

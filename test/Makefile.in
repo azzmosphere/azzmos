@@ -199,17 +199,17 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SOURCES = CuTest.c CuTest.h \
-	  $(top_srcdir)/src/Utils.c \
-	  $(top_srcdir)/src/URIExtract.c \
-	  $(top_srcdir)/src/URIObj.c \
-	  $(top_srcdir)/src/DownloadHTML.c \
-	  $(top_srcdir)/src/URIQualifier.c \
-	  $(top_srcdir)/src/DownloadURI.c  \
-	  $(top_srcdir)/src/DBSQLHandle.c \
-	  $(top_srcdir)/src/URIHeaders.c  \
-	  $(top_srcdir)/src/DownloadURITypes.c 
+	  $(top_srcdir)/bin/Utils.c \
+	  $(top_srcdir)/bin/URIExtract.c \
+	  $(top_srcdir)/bin/URIObj.c \
+	  $(top_srcdir)/bin/DownloadHTML.c \
+	  $(top_srcdir)/bin/URIQualifier.c \
+	  $(top_srcdir)/bin/DownloadURI.c  \
+	  $(top_srcdir)/bin/DBSQLHandle.c \
+	  $(top_srcdir)/bin/URIHeaders.c  \
+	  $(top_srcdir)/bin/DownloadURITypes.c 
 
-AM_CFLAGS = -I$(top_srcdir)/src @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
+AM_CFLAGS = -I$(top_srcdir)/bin @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
 AM_LDFLAGS = @POSTGRESQL_LDFLAGS@ @LIBCURL@ 
 test_SUtilsTest_SOURCES = SUtilsTest.c $(SOURCES) 
 test_URIExtractTest_SOURCES = URIExtractTest.c $(SOURCES)
@@ -310,131 +310,131 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-Utils.o: $(top_srcdir)/src/Utils.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Utils.o -MD -MP -MF $(DEPDIR)/Utils.Tpo -c -o Utils.o `test -f '$(top_srcdir)/src/Utils.c' || echo '$(srcdir)/'`$(top_srcdir)/src/Utils.c
+Utils.o: $(top_srcdir)/bin/Utils.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Utils.o -MD -MP -MF $(DEPDIR)/Utils.Tpo -c -o Utils.o `test -f '$(top_srcdir)/bin/Utils.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/Utils.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/Utils.Tpo $(DEPDIR)/Utils.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/Utils.c' object='Utils.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/Utils.c' object='Utils.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Utils.o `test -f '$(top_srcdir)/src/Utils.c' || echo '$(srcdir)/'`$(top_srcdir)/src/Utils.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Utils.o `test -f '$(top_srcdir)/bin/Utils.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/Utils.c
 
-Utils.obj: $(top_srcdir)/src/Utils.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Utils.obj -MD -MP -MF $(DEPDIR)/Utils.Tpo -c -o Utils.obj `if test -f '$(top_srcdir)/src/Utils.c'; then $(CYGPATH_W) '$(top_srcdir)/src/Utils.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/Utils.c'; fi`
+Utils.obj: $(top_srcdir)/bin/Utils.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT Utils.obj -MD -MP -MF $(DEPDIR)/Utils.Tpo -c -o Utils.obj `if test -f '$(top_srcdir)/bin/Utils.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/Utils.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/Utils.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/Utils.Tpo $(DEPDIR)/Utils.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/Utils.c' object='Utils.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/Utils.c' object='Utils.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Utils.obj `if test -f '$(top_srcdir)/src/Utils.c'; then $(CYGPATH_W) '$(top_srcdir)/src/Utils.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/Utils.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o Utils.obj `if test -f '$(top_srcdir)/bin/Utils.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/Utils.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/Utils.c'; fi`
 
-URIExtract.o: $(top_srcdir)/src/URIExtract.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIExtract.o -MD -MP -MF $(DEPDIR)/URIExtract.Tpo -c -o URIExtract.o `test -f '$(top_srcdir)/src/URIExtract.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIExtract.c
+URIExtract.o: $(top_srcdir)/bin/URIExtract.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIExtract.o -MD -MP -MF $(DEPDIR)/URIExtract.Tpo -c -o URIExtract.o `test -f '$(top_srcdir)/bin/URIExtract.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIExtract.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIExtract.Tpo $(DEPDIR)/URIExtract.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIExtract.c' object='URIExtract.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIExtract.c' object='URIExtract.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIExtract.o `test -f '$(top_srcdir)/src/URIExtract.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIExtract.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIExtract.o `test -f '$(top_srcdir)/bin/URIExtract.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIExtract.c
 
-URIExtract.obj: $(top_srcdir)/src/URIExtract.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIExtract.obj -MD -MP -MF $(DEPDIR)/URIExtract.Tpo -c -o URIExtract.obj `if test -f '$(top_srcdir)/src/URIExtract.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIExtract.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIExtract.c'; fi`
+URIExtract.obj: $(top_srcdir)/bin/URIExtract.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIExtract.obj -MD -MP -MF $(DEPDIR)/URIExtract.Tpo -c -o URIExtract.obj `if test -f '$(top_srcdir)/bin/URIExtract.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIExtract.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIExtract.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIExtract.Tpo $(DEPDIR)/URIExtract.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIExtract.c' object='URIExtract.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIExtract.c' object='URIExtract.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIExtract.obj `if test -f '$(top_srcdir)/src/URIExtract.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIExtract.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIExtract.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIExtract.obj `if test -f '$(top_srcdir)/bin/URIExtract.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIExtract.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIExtract.c'; fi`
 
-URIObj.o: $(top_srcdir)/src/URIObj.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIObj.o -MD -MP -MF $(DEPDIR)/URIObj.Tpo -c -o URIObj.o `test -f '$(top_srcdir)/src/URIObj.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIObj.c
+URIObj.o: $(top_srcdir)/bin/URIObj.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIObj.o -MD -MP -MF $(DEPDIR)/URIObj.Tpo -c -o URIObj.o `test -f '$(top_srcdir)/bin/URIObj.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIObj.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIObj.Tpo $(DEPDIR)/URIObj.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIObj.c' object='URIObj.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIObj.c' object='URIObj.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIObj.o `test -f '$(top_srcdir)/src/URIObj.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIObj.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIObj.o `test -f '$(top_srcdir)/bin/URIObj.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIObj.c
 
-URIObj.obj: $(top_srcdir)/src/URIObj.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIObj.obj -MD -MP -MF $(DEPDIR)/URIObj.Tpo -c -o URIObj.obj `if test -f '$(top_srcdir)/src/URIObj.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIObj.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIObj.c'; fi`
+URIObj.obj: $(top_srcdir)/bin/URIObj.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIObj.obj -MD -MP -MF $(DEPDIR)/URIObj.Tpo -c -o URIObj.obj `if test -f '$(top_srcdir)/bin/URIObj.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIObj.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIObj.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIObj.Tpo $(DEPDIR)/URIObj.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIObj.c' object='URIObj.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIObj.c' object='URIObj.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIObj.obj `if test -f '$(top_srcdir)/src/URIObj.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIObj.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIObj.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIObj.obj `if test -f '$(top_srcdir)/bin/URIObj.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIObj.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIObj.c'; fi`
 
-DownloadHTML.o: $(top_srcdir)/src/DownloadHTML.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadHTML.o -MD -MP -MF $(DEPDIR)/DownloadHTML.Tpo -c -o DownloadHTML.o `test -f '$(top_srcdir)/src/DownloadHTML.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadHTML.c
+DownloadHTML.o: $(top_srcdir)/bin/DownloadHTML.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadHTML.o -MD -MP -MF $(DEPDIR)/DownloadHTML.Tpo -c -o DownloadHTML.o `test -f '$(top_srcdir)/bin/DownloadHTML.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadHTML.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadHTML.Tpo $(DEPDIR)/DownloadHTML.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadHTML.c' object='DownloadHTML.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadHTML.c' object='DownloadHTML.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadHTML.o `test -f '$(top_srcdir)/src/DownloadHTML.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadHTML.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadHTML.o `test -f '$(top_srcdir)/bin/DownloadHTML.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadHTML.c
 
-DownloadHTML.obj: $(top_srcdir)/src/DownloadHTML.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadHTML.obj -MD -MP -MF $(DEPDIR)/DownloadHTML.Tpo -c -o DownloadHTML.obj `if test -f '$(top_srcdir)/src/DownloadHTML.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadHTML.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadHTML.c'; fi`
+DownloadHTML.obj: $(top_srcdir)/bin/DownloadHTML.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadHTML.obj -MD -MP -MF $(DEPDIR)/DownloadHTML.Tpo -c -o DownloadHTML.obj `if test -f '$(top_srcdir)/bin/DownloadHTML.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadHTML.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadHTML.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadHTML.Tpo $(DEPDIR)/DownloadHTML.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadHTML.c' object='DownloadHTML.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadHTML.c' object='DownloadHTML.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadHTML.obj `if test -f '$(top_srcdir)/src/DownloadHTML.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadHTML.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadHTML.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadHTML.obj `if test -f '$(top_srcdir)/bin/DownloadHTML.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadHTML.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadHTML.c'; fi`
 
-URIQualifier.o: $(top_srcdir)/src/URIQualifier.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIQualifier.o -MD -MP -MF $(DEPDIR)/URIQualifier.Tpo -c -o URIQualifier.o `test -f '$(top_srcdir)/src/URIQualifier.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIQualifier.c
+URIQualifier.o: $(top_srcdir)/bin/URIQualifier.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIQualifier.o -MD -MP -MF $(DEPDIR)/URIQualifier.Tpo -c -o URIQualifier.o `test -f '$(top_srcdir)/bin/URIQualifier.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIQualifier.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIQualifier.Tpo $(DEPDIR)/URIQualifier.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIQualifier.c' object='URIQualifier.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIQualifier.c' object='URIQualifier.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIQualifier.o `test -f '$(top_srcdir)/src/URIQualifier.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIQualifier.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIQualifier.o `test -f '$(top_srcdir)/bin/URIQualifier.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIQualifier.c
 
-URIQualifier.obj: $(top_srcdir)/src/URIQualifier.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIQualifier.obj -MD -MP -MF $(DEPDIR)/URIQualifier.Tpo -c -o URIQualifier.obj `if test -f '$(top_srcdir)/src/URIQualifier.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIQualifier.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIQualifier.c'; fi`
+URIQualifier.obj: $(top_srcdir)/bin/URIQualifier.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIQualifier.obj -MD -MP -MF $(DEPDIR)/URIQualifier.Tpo -c -o URIQualifier.obj `if test -f '$(top_srcdir)/bin/URIQualifier.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIQualifier.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIQualifier.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIQualifier.Tpo $(DEPDIR)/URIQualifier.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIQualifier.c' object='URIQualifier.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIQualifier.c' object='URIQualifier.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIQualifier.obj `if test -f '$(top_srcdir)/src/URIQualifier.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIQualifier.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIQualifier.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIQualifier.obj `if test -f '$(top_srcdir)/bin/URIQualifier.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIQualifier.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIQualifier.c'; fi`
 
-DownloadURI.o: $(top_srcdir)/src/DownloadURI.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURI.o -MD -MP -MF $(DEPDIR)/DownloadURI.Tpo -c -o DownloadURI.o `test -f '$(top_srcdir)/src/DownloadURI.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURI.c
+DownloadURI.o: $(top_srcdir)/bin/DownloadURI.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURI.o -MD -MP -MF $(DEPDIR)/DownloadURI.Tpo -c -o DownloadURI.o `test -f '$(top_srcdir)/bin/DownloadURI.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadURI.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURI.Tpo $(DEPDIR)/DownloadURI.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURI.c' object='DownloadURI.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadURI.c' object='DownloadURI.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURI.o `test -f '$(top_srcdir)/src/DownloadURI.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURI.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURI.o `test -f '$(top_srcdir)/bin/DownloadURI.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadURI.c
 
-DownloadURI.obj: $(top_srcdir)/src/DownloadURI.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURI.obj -MD -MP -MF $(DEPDIR)/DownloadURI.Tpo -c -o DownloadURI.obj `if test -f '$(top_srcdir)/src/DownloadURI.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURI.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURI.c'; fi`
+DownloadURI.obj: $(top_srcdir)/bin/DownloadURI.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURI.obj -MD -MP -MF $(DEPDIR)/DownloadURI.Tpo -c -o DownloadURI.obj `if test -f '$(top_srcdir)/bin/DownloadURI.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadURI.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadURI.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURI.Tpo $(DEPDIR)/DownloadURI.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURI.c' object='DownloadURI.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadURI.c' object='DownloadURI.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURI.obj `if test -f '$(top_srcdir)/src/DownloadURI.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURI.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURI.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURI.obj `if test -f '$(top_srcdir)/bin/DownloadURI.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadURI.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadURI.c'; fi`
 
-DBSQLHandle.o: $(top_srcdir)/src/DBSQLHandle.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DBSQLHandle.o -MD -MP -MF $(DEPDIR)/DBSQLHandle.Tpo -c -o DBSQLHandle.o `test -f '$(top_srcdir)/src/DBSQLHandle.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DBSQLHandle.c
+DBSQLHandle.o: $(top_srcdir)/bin/DBSQLHandle.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DBSQLHandle.o -MD -MP -MF $(DEPDIR)/DBSQLHandle.Tpo -c -o DBSQLHandle.o `test -f '$(top_srcdir)/bin/DBSQLHandle.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DBSQLHandle.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DBSQLHandle.Tpo $(DEPDIR)/DBSQLHandle.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DBSQLHandle.c' object='DBSQLHandle.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DBSQLHandle.c' object='DBSQLHandle.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DBSQLHandle.o `test -f '$(top_srcdir)/src/DBSQLHandle.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DBSQLHandle.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DBSQLHandle.o `test -f '$(top_srcdir)/bin/DBSQLHandle.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DBSQLHandle.c
 
-DBSQLHandle.obj: $(top_srcdir)/src/DBSQLHandle.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DBSQLHandle.obj -MD -MP -MF $(DEPDIR)/DBSQLHandle.Tpo -c -o DBSQLHandle.obj `if test -f '$(top_srcdir)/src/DBSQLHandle.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DBSQLHandle.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DBSQLHandle.c'; fi`
+DBSQLHandle.obj: $(top_srcdir)/bin/DBSQLHandle.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DBSQLHandle.obj -MD -MP -MF $(DEPDIR)/DBSQLHandle.Tpo -c -o DBSQLHandle.obj `if test -f '$(top_srcdir)/bin/DBSQLHandle.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DBSQLHandle.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DBSQLHandle.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DBSQLHandle.Tpo $(DEPDIR)/DBSQLHandle.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DBSQLHandle.c' object='DBSQLHandle.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DBSQLHandle.c' object='DBSQLHandle.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DBSQLHandle.obj `if test -f '$(top_srcdir)/src/DBSQLHandle.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DBSQLHandle.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DBSQLHandle.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DBSQLHandle.obj `if test -f '$(top_srcdir)/bin/DBSQLHandle.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DBSQLHandle.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DBSQLHandle.c'; fi`
 
-URIHeaders.o: $(top_srcdir)/src/URIHeaders.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.o -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.o `test -f '$(top_srcdir)/src/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIHeaders.c
+URIHeaders.o: $(top_srcdir)/bin/URIHeaders.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.o -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.o `test -f '$(top_srcdir)/bin/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIHeaders.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIHeaders.Tpo $(DEPDIR)/URIHeaders.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIHeaders.c' object='URIHeaders.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIHeaders.c' object='URIHeaders.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.o `test -f '$(top_srcdir)/src/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/src/URIHeaders.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.o `test -f '$(top_srcdir)/bin/URIHeaders.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/URIHeaders.c
 
-URIHeaders.obj: $(top_srcdir)/src/URIHeaders.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.obj -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.obj `if test -f '$(top_srcdir)/src/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIHeaders.c'; fi`
+URIHeaders.obj: $(top_srcdir)/bin/URIHeaders.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT URIHeaders.obj -MD -MP -MF $(DEPDIR)/URIHeaders.Tpo -c -o URIHeaders.obj `if test -f '$(top_srcdir)/bin/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIHeaders.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/URIHeaders.Tpo $(DEPDIR)/URIHeaders.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/URIHeaders.c' object='URIHeaders.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/URIHeaders.c' object='URIHeaders.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.obj `if test -f '$(top_srcdir)/src/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/src/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/URIHeaders.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o URIHeaders.obj `if test -f '$(top_srcdir)/bin/URIHeaders.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/URIHeaders.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/URIHeaders.c'; fi`
 
-DownloadURITypes.o: $(top_srcdir)/src/DownloadURITypes.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.o -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.o `test -f '$(top_srcdir)/src/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURITypes.c
+DownloadURITypes.o: $(top_srcdir)/bin/DownloadURITypes.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.o -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.o `test -f '$(top_srcdir)/bin/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadURITypes.c
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURITypes.Tpo $(DEPDIR)/DownloadURITypes.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURITypes.c' object='DownloadURITypes.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadURITypes.c' object='DownloadURITypes.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.o `test -f '$(top_srcdir)/src/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/src/DownloadURITypes.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.o `test -f '$(top_srcdir)/bin/DownloadURITypes.c' || echo '$(srcdir)/'`$(top_srcdir)/bin/DownloadURITypes.c
 
-DownloadURITypes.obj: $(top_srcdir)/src/DownloadURITypes.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.obj -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/src/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURITypes.c'; fi`
+DownloadURITypes.obj: $(top_srcdir)/bin/DownloadURITypes.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT DownloadURITypes.obj -MD -MP -MF $(DEPDIR)/DownloadURITypes.Tpo -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/bin/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadURITypes.c'; fi`
 @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/DownloadURITypes.Tpo $(DEPDIR)/DownloadURITypes.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/src/DownloadURITypes.c' object='DownloadURITypes.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$(top_srcdir)/bin/DownloadURITypes.c' object='DownloadURITypes.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/src/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/src/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/src/DownloadURITypes.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o DownloadURITypes.obj `if test -f '$(top_srcdir)/bin/DownloadURITypes.c'; then $(CYGPATH_W) '$(top_srcdir)/bin/DownloadURITypes.c'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/bin/DownloadURITypes.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

@@ -5,6 +5,10 @@
 CREATE TABLE uri (
 	id           INTEGER   PRIMARY KEY,
 	cdate        TIMESTAMP NOT NULL DEFAULT now(),
+	last_checked TIMESTAMP NOT NULL,
+	last_updated TIMESTAMP NOT NULL,
+	recheck      BOOLEAN   NOT NULL DEFAULT false,
+	importance   INTEGER   NOT NULL DEFAULT 0,
 	url          INTEGER,
 	freq_bucket  INTEGER,   
   	FOREIGN KEY(url) REFERENCES url(id),

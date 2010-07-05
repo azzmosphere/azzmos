@@ -12,18 +12,19 @@ CREATE OR REPLACE FUNCTION upload_fqp (
 	ascheme VARCHAR(10),
 	aauth   TEXT,
 	apath   TEXT
-) RETURNS INTGER AS $$
+) RETURNS INTEGER AS $$
 DECLARE 
 	fqpid    INTEGER;
 	schemeid INTEGER;
 	authid   INTEGER;
-	pathid   INTEGER;
 BEGIN
-	schemeid := 0;
+	RAISE NOTICE 'started function';
+	schemeid := NULL;
 	SELECT id INTO schemeid FROM scheme
 		WHERE value = ascheme;
 
-	IF schemeid = 0 THEN
+
+	IF schemeid IS NULL THEN
 		SELECT nextval('seq_scheme') INTO schemeid;	
 		INSERT INTO scheme( id, value) VALUES(
 			schemeid,
@@ -31,16 +32,28 @@ BEGIN
 		);
 	END IF;
 
-	authid := 0;
+	RAISE NOTICE 'scheme = %', schemeid;
+
+	authid := NULL;
 	SELECT id INTO authid FROM authority 
 		WHERE cname = aauth;
-	IF authid = 0 THEN
+	IF authid IS NULL THEN
 		SELECT nextval('seq_authority') INTO authid;
 		INSERT INTO authority( id, cname ) VALUES(
 			authid,
 			aauth
 		);
 	END IF;
+	
+	fqpid := NULL;
+	SELECT id INTO fqpid FROM fqp 
+		WHERE scheme    = schemeid AND
+		      authority = authid   AND
+                      path      = apath;
+	IF fqpid IS NULL THEN
+		
+	END IF;
+	RETURN fqpid;
 		
 END;
 $$ LANGUAGE plpgsql;

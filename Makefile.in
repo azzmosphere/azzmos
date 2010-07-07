@@ -190,7 +190,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = bin test
-EXTRA_DIST = autogen.sh TODO m4 doc sql data
+EXTRA_DIST = autogen.sh TODO m4 doc sql data ddl
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

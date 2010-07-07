@@ -11,14 +11,14 @@
 CREATE OR REPLACE FUNCTION upload_fqp (
 	ascheme VARCHAR(10),
 	aauth   TEXT,
-	apath   TEXT
+	apath   TEXT,
+	auri    INTEGER
 ) RETURNS INTEGER AS $$
 DECLARE 
 	fqpid    INTEGER;
 	schemeid INTEGER;
 	authid   INTEGER;
 BEGIN
-	RAISE NOTICE 'started function';
 	schemeid := NULL;
 	SELECT id INTO schemeid FROM scheme
 		WHERE value = ascheme;
@@ -31,8 +31,6 @@ BEGIN
 			ascheme
 		);
 	END IF;
-
-	RAISE NOTICE 'scheme = %', schemeid;
 
 	authid := NULL;
 	SELECT id INTO authid FROM authority 
@@ -51,6 +49,21 @@ BEGIN
 		      authority = authid   AND
                       path      = apath;
 	IF fqpid IS NULL THEN
+		SELECT nextval('seq_fqp') INTO fqpid;
+		INSERT INTO fqp( 
+			id,
+			scheme,
+			authority,
+			uri,
+			path
+		) 
+		VALUES(
+			fqpid,
+			schemeid,
+			authid,
+			auri,
+			apath
+		);
 		
 	END IF;
 	RETURN fqpid;

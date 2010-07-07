@@ -2,6 +2,7 @@ CREATE TABLE fqp (
 	id        INTEGER PRIMARY KEY,
 	scheme    INTEGER NOT NULL,
 	authority INTEGER NOT NULL,
+	uri       INTEGER NOT NULL,
 	path      TEXT    NOT NULL,
 	md5hash   CHAR(32),
 	

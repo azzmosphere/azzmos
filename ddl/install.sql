@@ -25,3 +25,4 @@
  * start installing database functions
  */
 \i upload_fqp.plsql
+\i upload_uri.plsql

@@ -9,4 +9,3 @@ CREATE TABLE ip(
 	authority INTEGER,
 	FOREIGN KEY(authority) REFERENCES authority(id)
 );
-CREATE SEQUENCE seq_ip;

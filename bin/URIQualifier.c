@@ -243,8 +243,19 @@ URIQualifyDlURI ( URIQualify_t *uq,
 		if( (href = URIQualify( urire, href , nexturi, NULL)) != NULL ) { 
 			found = false;
 
+			/* upload the edge here this will also give a URI id that can be
+			 * used later on. */
+			/* upload reposnse and headers */
+			/* REMAINS TO BE IMPLEMENTED */
+			syslog( LOG_DEBUG, "%s:%d - dbupload uri     = '%s'", __FILE__, __LINE__,URIObjGetFQP(uri));
+			syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
+
+
 			/* locking is not taken to seriosly at this point as we are not
 			 * writing to the list */
+
+			/*  FROM THIS SECTION BEYOND WE WILL REPLACE WITH 
+			 *  THE MD5 ALGORITM */
 			pthread_mutex_lock( URIQualifyGetLock( uq ) );
 
 			list_for_each( uq_pos, &uq->uq_list ) {
@@ -255,6 +266,7 @@ URIQualifyDlURI ( URIQualify_t *uq,
 					break;
 				}
 			}
+			/*  ABOVE WILL BE REPLACED WITH MD5 */
 
 			pthread_mutex_unlock( URIQualifyGetLock( uq ));
 			if( ! found ) {
@@ -276,10 +288,6 @@ URIQualifyDlURI ( URIQualify_t *uq,
 				URIQualifyAppend( uq, href );
 				DownloadURISetHref( duri_tmp, href );
 
-				/* upload FQP and link */
-				/* REMAINS TO BE IMPLEMENTED */
-				syslog( LOG_DEBUG, "%s:%d - dbupload uri     = '%s'", __FILE__, __LINE__,URIObjGetFQP(uri));
-				syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
 
 				/*  upload response and headers */
 				syslog( LOG_DEBUG, "%s:%d - response = '%s'", __FILE__, __LINE__, URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));

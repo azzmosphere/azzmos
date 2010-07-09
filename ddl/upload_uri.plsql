@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION upload_uri (
 	apath   TEXT
 )RETURNS INTEGER AS $$
 DECLARE 
-	luri  INTEGER
+	luri  INTEGER;
 BEGIN
 	SELECT u.id INTO luri
 	FROM 
@@ -26,18 +26,16 @@ BEGIN
 		AND f.path = apath;
 
 	IF luri IS NULL THEN
-		SELECT nextavl('seq_uri') INTO luri;
+		SELECT nextval('seq_uri') INTO luri;
 		INSERT INTO uri(
 			id,
-			last_checked,
-			last_updated
+			last_checked
 		)
 		VALUES(
 			luri,
-			now(),
 			now()
 		);
-		SELECT upload_fqp( ascheme, acname, apath, luri);
+		PERFORM upload_fqp( ascheme, acname, apath, luri);
 	ELSE
 		UPDATE uri SET last_checked = now() WHERE id = luri;
 	END IF;

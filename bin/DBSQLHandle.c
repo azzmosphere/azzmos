@@ -146,6 +146,48 @@ DBSQLHandleCleanUp( DBObj_t *db )
 }
 
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  int  DBSQLPrepareStatement( DBObj_t *db, 
+ *                                            const char *stmtName,
+ *                                            const char *sql,
+ *                                            const Oid  *paramTypes
+ *                                            const char *errmsg,
+ *                                            int   nParams
+ *                )
+ *
+ *  Description: Prepare a statement handle that can be reused throughout the program.
+ *               the handle should have a unique name (stmtName) than can be called
+ *               at a later time and reused with the value parameters.
+ *
+ *               On success this routine will return '0' on failure '1' is returned.
+ * =====================================================================================
+ */
+int
+DBSQLPrepareStatement ( DBObj_t *db,  
+		        const char *stmtName,
+			const char *query,
+			const Oid  *paramTypes,
+			const char *errmsg,
+			int         nParams
+)
+{
+	PGresult *rc;
+	PGconn *  conn = db->dbconn;
+	int       rv   = 0;
+
+	rc = PQprepare( conn, stmtName, query, nParams, paramTypes);
+	if( PQresultStatus( rc ) != PGRES_COMMAND_OK ) {
+		syslog(LOG_ERR, "%s(%s) %s - %s ",
+		      __FILE__, 
+		      "DBSQLPrepareStatement",
+		      errmsg,
+		      PQresultErrorMessage(rc));
+		rv = 1;
+	}
+	
+	return rv;
+}		/* -----  end of function DBSQLPrepareStatement  ----- */
 
 // EVERYTHING BELOW THIS LINE WILL BE REMOVED, 
 // the SQL routines will need to be refactored to cope with the 

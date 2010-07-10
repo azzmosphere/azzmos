@@ -125,6 +125,8 @@ DBSQLHandleInit(const Opts_t *opts )
 		}
 	}
 
+	/* Set initial index value */
+	db->dbidx = 0;
 
 	return db;
 }
@@ -144,6 +146,105 @@ DBSQLHandleCleanUp( DBObj_t *db )
 		free(db);
 	}
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DBObj_t *DBSQLInitSth( DBObj_t *db, 
+ *                                            const char *sql,
+ *                                            const Oid  *paramTypes
+ *                                            const char *errmsg,
+ *                                            int   nParams
+ *                )
+
+ *
+ *  Description: Prepare a statement handle that can be reused throughout the program.
+ *               the handle should have a unique name (stmtName) than can be called
+ *               at a later time and reused with the value parameters.
+ *
+ *               On success this routine will return the new handle on failure 
+ *               the it will return NULL.
+ * =====================================================================================
+ */
+DBSth_t *DBSQLSthInit( DBObj_t *db, 
+                       const char *sql,
+                       const Oid  *paramTypes,
+                       const char *errmsg,
+                       int   nParams
+)
+{
+	Oid *lparamTypes;
+	int i;
+	DBSth_t *sth = (DBSth_t *) malloc( sizeof(DBSth_t));
+
+	if( ! sth ) {
+		syslog( LOG_ERR, "%s - could not initlize the statment handle", errmsg);
+		return NULL;
+	}
+
+	/*  clone parameter types */
+	lparamTypes = ( Oid *) malloc( (sizeof( Oid ) * nParams) );
+	for( i = 0; i < nParams; i ++ ) {
+		lparamTypes[i] = paramTypes[i];
+	}
+
+	/* Get the index value and then increment it by 1  */
+	sth->db_stmtName = itoa( db->dbidx );
+	db->dbidx ++;
+
+	/*  Set the values argued to us in the handle */
+	sth->db_conn       = db;
+	sth->db_nParams    = nParams;
+	sth->db_paramTypes = lparamTypes;
+	sth->db_errmsg     = strdup( errmsg );
+
+	/*  Set parameters that will are a little hard coded */
+	sth->db_paramLengths = NULL;
+	sth->db_paramFormats = NULL;  /* parameters assumed as text */
+	sth->db_resultFormat = 0;
+
+	/* Finally prepare our statement */
+	i = DBSQLPrepareStatement( sth->db_conn, 
+			           sth->db_stmtName, 
+				   sql, 
+				   sth->db_paramTypes , 
+				   sth->db_errmsg, 
+				   sth->db_nParams,
+				   sth->db_rc);
+
+	if( i ) {
+		syslog( LOG_ERR, "%s - could not prepare statement", sth->db_errmsg);
+		return NULL;
+	}
+
+	return sth;
+}
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  DBSQLExecSthExec
+ *  Description:  Executes the statment handle.  On success 0 is returned otherwise the 
+ *                assosiated error value is returned.  Any error message will be printed
+ *                to the system log.
+ * =====================================================================================
+ */
+int
+DBSQLExecSthExec ( DBSth_t *sth, const char **paramValues )
+{
+	int rv = 0;
+	sth->db_rc = PQexecPrepared( sth->db_conn->dbconn, 
+			sth->db_stmtName, 
+			sth->db_nParams, 
+			paramValues, 
+			sth->db_paramLengths, 
+			sth->db_paramFormats, 
+			sth->db_resultFormat
+	);
+	if( PQresultStatus( sth->db_rc ) != PGRES_TUPLES_OK ) {
+		syslog(LOG_ERR, "%s - %s ", sth->db_errmsg ,PQresultErrorMessage(sth->db_rc));
+		rv =  PQresultStatus( sth->db_rc );
+	}
+
+	return rv;
+}		/* -----  end of function DBSQLExecSthExec  ----- */
 
 
 /* 
@@ -169,10 +270,10 @@ DBSQLPrepareStatement ( DBObj_t *db,
 			const char *query,
 			const Oid  *paramTypes,
 			const char *errmsg,
-			int         nParams
+			int         nParams,
+			PGresult   *rc
 )
 {
-	PGresult *rc;
 	PGconn *  conn = db->dbconn;
 	int       rv   = 0;
 
@@ -188,6 +289,8 @@ DBSQLPrepareStatement ( DBObj_t *db,
 	
 	return rv;
 }		/* -----  end of function DBSQLPrepareStatement  ----- */
+
+
 
 // EVERYTHING BELOW THIS LINE WILL BE REMOVED, 
 // the SQL routines will need to be refactored to cope with the 

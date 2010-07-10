@@ -59,17 +59,57 @@
 
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
+/*===================================================================================== 
+ * DBObj_t
+ * =======
+ *
+ * The database object is used for two purposes,  the primary purpose is to keep a 
+ * active handle to the database. The secondary purpose is to provide a unique index
+ * to the statement handles.
+ *=====================================================================================*/
 struct DBObj_s {
 	PGconn *dbconn;
+	int     dbidx;
 } typedef DBObj_t;
 
+ 
+/*===================================================================================== 
+ * DBSth_t
+ * =======
+ *
+ * The statement handle is used to provide a SQL statement handle that can re-executed
+ * many times.  The handle once initilized keeps the compiled executatble SQL statement
+ * on the database until the handle is destroyed.  After each execution of the handle it
+ * will need to cleared before it is reused.  However it will keep the results on the 
+ * database and they can be retrieved in sequence useing the fetch statement.
+ *=====================================================================================*/
+struct DBSth_s {
+	DBObj_t    *db_conn; 
+	const char *db_stmtName; 
+	int         db_nParams; 
+	const int  *db_paramLengths; 
+	const int  *db_paramFormats;
+	const Oid  *db_paramTypes;
+       	int         db_resultFormat;
+	PGresult   *db_rc;
+	const char *db_errmsg;
+} typedef DBSth_t;
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
 DBObj_t *DBSQLHandleInit( const Opts_t *opts );
 void     DBSQLHandleCleanUp( DBObj_t *db );
-int      DBSQLPrepareStatement( DBObj_t *db,  const char *stmtName, const char *sql, const Oid *paramTypes, const char *errmsg, int nParams);
+DBSth_t *DBSQLSthInit( DBObj_t *, const char *, const Oid  *, const char *, int);
+int      DBSQLPrepareStatement( DBObj_t *db,  const char *stmtName, const char *sql, const Oid *paramTypes, const char *errmsg, int nParams, PGresult *);
 
+
+/* #####   EXPORTED MACROS   ######################################################## */
+
+/*===================================================================================== 
+ * The following macros are special in that they are to be used as if they where 
+ * functions hence the lack of upper casing on them.
+ *=====================================================================================*/
+#define DBSQLGetIdx( db ) ( db->dbidx )
 
 // Soon to be obsolete
 int      DBSQLPrepareAzFootprint( DBObj_t *db );

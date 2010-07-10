@@ -32,9 +32,11 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = test_SUtilsTest$(EXEEXT) test_URIExtractTest$(EXEEXT) \
-	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT)
+	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT) \
+	test_DBSQLHandleTest$(EXEEXT)
 TESTS = test_SUtilsTest$(EXEEXT) test_URIExtractTest$(EXEEXT) \
-	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT)
+	test_DownloadURITest$(EXEEXT) test_URIHeadersTest$(EXEEXT) \
+	test_DBSQLHandleTest$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -51,6 +53,10 @@ am__objects_1 = CuTest.$(OBJEXT) Utils.$(OBJEXT) URIExtract.$(OBJEXT) \
 	URIObj.$(OBJEXT) DownloadHTML.$(OBJEXT) URIQualifier.$(OBJEXT) \
 	DownloadURI.$(OBJEXT) DBSQLHandle.$(OBJEXT) \
 	URIHeaders.$(OBJEXT) DownloadURITypes.$(OBJEXT)
+am_test_DBSQLHandleTest_OBJECTS = DBSQLHandleTest.$(OBJEXT) \
+	$(am__objects_1)
+test_DBSQLHandleTest_OBJECTS = $(am_test_DBSQLHandleTest_OBJECTS)
+test_DBSQLHandleTest_LDADD = $(LDADD)
 am_test_DownloadURITest_OBJECTS = DownloadURITest.$(OBJEXT) \
 	$(am__objects_1)
 test_DownloadURITest_OBJECTS = $(am_test_DownloadURITest_OBJECTS)
@@ -78,9 +84,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-DIST_SOURCES = $(test_DownloadURITest_SOURCES) \
-	$(test_SUtilsTest_SOURCES) $(test_URIExtractTest_SOURCES) \
-	$(test_URIHeadersTest_SOURCES)
+DIST_SOURCES = $(test_DBSQLHandleTest_SOURCES) \
+	$(test_DownloadURITest_SOURCES) $(test_SUtilsTest_SOURCES) \
+	$(test_URIExtractTest_SOURCES) $(test_URIHeadersTest_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -207,14 +213,15 @@ SOURCES = CuTest.c CuTest.h \
 	  $(top_srcdir)/bin/DownloadURI.c  \
 	  $(top_srcdir)/bin/DBSQLHandle.c \
 	  $(top_srcdir)/bin/URIHeaders.c  \
-	  $(top_srcdir)/bin/DownloadURITypes.c 
+	  $(top_srcdir)/bin/DownloadURITypes.c  
 
 AM_CFLAGS = -I$(top_srcdir)/bin @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
 AM_LDFLAGS = @POSTGRESQL_LDFLAGS@ @LIBCURL@ 
-test_SUtilsTest_SOURCES = SUtilsTest.c $(SOURCES) 
-test_URIExtractTest_SOURCES = URIExtractTest.c $(SOURCES)
+test_SUtilsTest_SOURCES = SUtilsTest.c      $(SOURCES) 
+test_URIExtractTest_SOURCES = URIExtractTest.c  $(SOURCES)
 test_DownloadURITest_SOURCES = DownloadURITest.c $(SOURCES)
-test_URIHeadersTest_SOURCES = URIHeadersTest.c $(SOURCES)
+test_URIHeadersTest_SOURCES = URIHeadersTest.c  $(SOURCES)
+test_DBSQLHandleTest_SOURCES = DBSQLHandleTest.c $(SOURCES)
 all: all-am
 
 .SUFFIXES:
@@ -255,6 +262,9 @@ clean-checkPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+test_DBSQLHandleTest$(EXEEXT): $(test_DBSQLHandleTest_OBJECTS) $(test_DBSQLHandleTest_DEPENDENCIES) 
+	@rm -f test_DBSQLHandleTest$(EXEEXT)
+	$(LINK) $(test_DBSQLHandleTest_OBJECTS) $(test_DBSQLHandleTest_LDADD) $(LIBS)
 test_DownloadURITest$(EXEEXT): $(test_DownloadURITest_OBJECTS) $(test_DownloadURITest_DEPENDENCIES) 
 	@rm -f test_DownloadURITest$(EXEEXT)
 	$(LINK) $(test_DownloadURITest_OBJECTS) $(test_DownloadURITest_LDADD) $(LIBS)
@@ -276,6 +286,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CuTest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandleTest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadHTML.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURI.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURITest.Po@am__quote@

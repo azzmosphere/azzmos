@@ -7,15 +7,24 @@ SOURCES = CuTest.c CuTest.h \
 	  $(top_srcdir)/bin/DownloadURI.c  \
 	  $(top_srcdir)/bin/DBSQLHandle.c \
 	  $(top_srcdir)/bin/URIHeaders.c  \
-	  $(top_srcdir)/bin/DownloadURITypes.c 
+	  $(top_srcdir)/bin/DownloadURITypes.c  
 
 AM_CFLAGS = -I$(top_srcdir)/bin @POSTGRESQL_CFLAGS@ -D__DATA__=\"$(top_srcdir)/data\"
 AM_LDFLAGS = @POSTGRESQL_LDFLAGS@ @LIBCURL@ 
-test_SUtilsTest_SOURCES =  SUtilsTest.c $(SOURCES) 
-test_URIExtractTest_SOURCES  = URIExtractTest.c $(SOURCES)
+test_SUtilsTest_SOURCES      = SUtilsTest.c      $(SOURCES) 
+test_URIExtractTest_SOURCES  = URIExtractTest.c  $(SOURCES)
 test_DownloadURITest_SOURCES = DownloadURITest.c $(SOURCES)
-test_URIHeadersTest_SOURCES =  URIHeadersTest.c $(SOURCES)
+test_URIHeadersTest_SOURCES  = URIHeadersTest.c  $(SOURCES)
+test_DBSQLHandleTest_SOURCES = DBSQLHandleTest.c $(SOURCES)
 
-check_PROGRAMS = test_SUtilsTest test_URIExtractTest test_DownloadURITest test_URIHeadersTest
+check_PROGRAMS = test_SUtilsTest \
+		 test_URIExtractTest \
+		 test_DownloadURITest \
+		 test_URIHeadersTest \
+		 test_DBSQLHandleTest
 
-TESTS = test_SUtilsTest test_URIExtractTest test_DownloadURITest test_URIHeadersTest
+TESTS = test_SUtilsTest \
+	test_URIExtractTest \
+	test_DownloadURITest \
+	test_URIHeadersTest \
+	test_DBSQLHandleTest

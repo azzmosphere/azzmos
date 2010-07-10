@@ -20,6 +20,7 @@
 \i headers.sql
 \i headers_h.sql
 \i fqp.sql
+\i footprint.sql
 
 /*
  * start installing database functions

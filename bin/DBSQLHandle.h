@@ -100,7 +100,13 @@ struct DBSth_s {
 DBObj_t *DBSQLHandleInit( const Opts_t *opts );
 void     DBSQLHandleCleanUp( DBObj_t *db );
 DBSth_t *DBSQLSthInit( DBObj_t *, const char *, const Oid  *, const char *, int);
+void     DBSQLSthFinit ( DBSth_t *sth );
 int      DBSQLPrepareStatement( DBObj_t *db,  const char *stmtName, const char *sql, const Oid *paramTypes, const char *errmsg, int nParams, PGresult *);
+int      DBSQLExecSthQuery ( DBSth_t *sth, const char **paramValues );
+int      DBSQLExecSthCmd ( DBSth_t *sth, const char **paramValues );
+int      DBSQLExecSth ( DBSth_t *sth, const char **paramValues, int pgcheck );
+
+
 
 
 /* #####   EXPORTED MACROS   ######################################################## */
@@ -110,8 +116,6 @@ int      DBSQLPrepareStatement( DBObj_t *db,  const char *stmtName, const char *
  * functions hence the lack of upper casing on them.
  *=====================================================================================*/
 #define DBSQLGetIdx( db ) ( db->dbidx )
-
-// Soon to be obsolete
-int      DBSQLPrepareAzFootprint( DBObj_t *db );
-int      DBSQLExecFootprint( DBObj_t *db, URIObj_t *uri, int reclevel );
+#define DBSQLGetResult( sth, row, col ) ( PQgetvalue( sth->db_rc, row, col) )
+#define DBSQLClearResult( sth )  ( PQclear(sth->db_rc ))
 

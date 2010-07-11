@@ -1,4 +1,3 @@
-#AM_LDFLAGS   = @LIBCURL@  @PCRE_LIBS@
 AM_LDFLAGS   = @LIBCURL@ @POSTGRESQL_LDFLAGS@
 AM_CFLAGS = @POSTGRESQL_CFLAGS@
 bin_PROGRAMS = azzmos
@@ -15,4 +14,5 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 URIQualifier.c URIQualifier.h \
 		 list.h \
 		 DownloadURITypes.c DownloadURITypes.h \
-		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h
+		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h \
+		 URIQualifierDB.h URIQualfifier.h

@@ -186,8 +186,6 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-
-#AM_LDFLAGS   = @LIBCURL@  @PCRE_LIBS@
 AM_LDFLAGS = @LIBCURL@ @POSTGRESQL_LDFLAGS@
 AM_CFLAGS = @POSTGRESQL_CFLAGS@
 azzmos_SOURCES = azzmos.c azzmos.h \
@@ -203,7 +201,8 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 URIQualifier.c URIQualifier.h \
 		 list.h \
 		 DownloadURITypes.c DownloadURITypes.h \
-		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h
+		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h \
+		 URIQualifierDB.h URIQualfifier.h
 
 all: all-am
 

@@ -52,7 +52,8 @@ am_azzmos_OBJECTS = azzmos.$(OBJEXT) DownloadHTML.$(OBJEXT) \
 	URIObj.$(OBJEXT) DownloadURI.$(OBJEXT) Utils.$(OBJEXT) \
 	URIExtract.$(OBJEXT) Options.$(OBJEXT) DBSQLHandle.$(OBJEXT) \
 	Scheduler.$(OBJEXT) URIQualifier.$(OBJEXT) \
-	DownloadURITypes.$(OBJEXT) URIHeaders.$(OBJEXT)
+	DownloadURITypes.$(OBJEXT) URIHeaders.$(OBJEXT) \
+	URIQualifierDB.$(OBJEXT) DBSQLHandleSTH.$(OBJEXT)
 azzmos_OBJECTS = $(am_azzmos_OBJECTS)
 azzmos_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -202,7 +203,8 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 list.h \
 		 DownloadURITypes.c DownloadURITypes.h \
 		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h \
-		 URIQualifierDB.h URIQualfifier.h
+		 URIQualifierDB.c URIQualifierDB.h \
+		 DBSQLHandleSTH.c DBSQLHandleSTH.h DBSQLHandleSTHTypes.h
 
 all: all-am
 
@@ -276,6 +278,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandleSTH.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadHTML.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURI.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadURITypes.Po@am__quote@
@@ -285,6 +288,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIHeaders.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIObj.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIQualifier.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/URIQualifierDB.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Utils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/azzmos.Po@am__quote@
 

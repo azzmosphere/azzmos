@@ -33,13 +33,13 @@
  * =====================================================================================
  */
 DownloadURI_t *
-DownloadURIPerform( 
+downloadURIPerform( 
 		    DownloadHTML_t *dl, 
 		    const char *seed, 
 		    URIRegex_t *urirel,  
 		    URIObj_t *uri, 
 		    int recurse, 
-		    DBObj_t *db
+		    DBSQLHandleSth_t *dbsth
 )
 {
 	DownloadURI_t *duri = NULL;
@@ -79,7 +79,6 @@ DownloadURIPerform(
 	return duri;
 }
 
-
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  DownloadURI
@@ -88,15 +87,15 @@ DownloadURIPerform(
  *                a recursive algoritm.
  * =====================================================================================
  */
-int 
-DownloadURI(DownloadHTML_t *dl, 
+extern int 
+downloadURI(DownloadHTML_t *dl, 
 	    URIQualify_t *uq,
 	    const char *seed, 
 	    URIRegex_t *urirel, 
 	    int recurse, 
 	    URIObj_t *uri, 
-	    DBObj_t *db, 
-	    const Opts_t *opts
+	    const Opts_t *opts,
+	    DBSQLHandleSth_t *dbsth
 )
 {
 	int       urirv = 0;
@@ -109,10 +108,10 @@ DownloadURI(DownloadHTML_t *dl,
 	URIObjSetFQP( uri, seed );
 	URIQualify(urirel, seed, uri, NULL);
 
-	if( (duri = DownloadURIPerform(dl, seed, urirel, uri, recurse, db)) == NULL )
+	if( (duri = downloadURIPerform(dl, seed, urirel, uri, recurse, dbsth)) == NULL )
 		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl, db)) == 0 ){
 
+	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl)) == 0 ){
 
 		/* Start reading each link and transversing through them */
 		list_for_each( pos, &duri->du_list ) {
@@ -124,7 +123,7 @@ DownloadURI(DownloadHTML_t *dl,
 
 			syslog( LOG_DEBUG, "href is = '%s'",  href);
 
-			DownloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, db, opts);
+			downloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, opts, dbsth);
 			free( href );
 			URIObjCleanUp(nexturi);
 

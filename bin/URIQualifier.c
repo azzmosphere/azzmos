@@ -220,8 +220,7 @@ URIQualifyDlURI ( URIQualify_t *uq,
 		  URIRegex_t *urire, 
 		  DownloadURI_t *duri, 
 		  URIObj_t *uri, 
-		  DownloadHTML_t *dl, 
-		  DBObj_t *db )
+		  DownloadHTML_t *dl)
 {
 	int rv = 0;
 	DownloadURI_t *duri_tmp;

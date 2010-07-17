@@ -50,7 +50,7 @@ SchedulerProcess( Scheduler_t *sc )
 		INIT_LIST_HEAD( &uq->uq_list );
 	}
 
-	/* donwloader engine starts here */
+	/* downloader engine starts here */
 	/* 
 	 * Note that database, regular expresion handler,
 	 * should be done in the object initilization.  
@@ -62,6 +62,8 @@ SchedulerProcess( Scheduler_t *sc )
 
 	/* create internet socket and start downloading stuff */
 	DownloadHTML_t *dl;
+	DBObj_t *db;
+	DBSQLHandleSth_t *dbsth;
 
 	if( (dl = InitDownloadHTML( opts )) == NULL ) {
 		syslog( LOG_ERR, "could not initilize DownloadHTML");
@@ -75,9 +77,12 @@ SchedulerProcess( Scheduler_t *sc )
 		char *seed = URIQualify( urire, opts->o_seed, uri, NULL );
 
 		/* create connection to the database */
-		DBObj_t *db;
+		
 		if( (db = DBSQLHandleInit( opts)) == NULL) {
 			SchedulerSetStatus( sc, EXIT_FAILURE);
+		
+		/* Initilize the database statement handle */
+		
 
 		/* REMAINS TO BE IMPLEMENTED */
 		/*  else if( DBSQLPrepareAzFootprint( db ) ) {
@@ -90,7 +95,7 @@ SchedulerProcess( Scheduler_t *sc )
 			
 
 			/* For each iteration of the loop get the next seed*/	
-			if( DownloadURI( dl, uq, seed, urire, 0, uri, db, opts) ) {
+			if( downloadURI( dl, uq, seed, urire, 0, uri, opts, dbsth) ) {
 				syslog(LOG_ERR, "error downloading site");
 				SchedulerSetStatus( sc, EXIT_FAILURE);
 			}

@@ -165,7 +165,8 @@ DBSQLHandleCleanUp( DBObj_t *db )
  *               the it will return NULL.
  * =====================================================================================
  */
-DBSth_t *DBSQLSthInit( DBObj_t *db, 
+DBSth_t *
+DBSQLSthInit( DBObj_t *db, 
                        const char *sql,
                        const Oid  *paramTypes,
                        const char *errmsg,

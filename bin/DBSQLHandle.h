@@ -35,8 +35,6 @@
 
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
 
-#define DBH_SQL_AZ_FOOTPRINT "DBH_SQL_AZ_FOOTPRINT"
-
 
 /*=====================================================================================
  * To find Oid these you need to look into 

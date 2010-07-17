@@ -26,31 +26,31 @@
 /* #####   HEADER FILE INCLUDES   ################################################### */
 #define __URIQUALIFIERDB_H__
 
-#ifndef __URIQUALIFIER_H__
-#include <URIQualifier.h>
+#include <DBSQLHandleSTHTypes.h>
+
+#ifndef __URIQUALIFIERDB_H__
+#include <URIQualiferDb.h>
 #endif
 
 /* #####   EXPORTED MACROS   ######################################################## */
 
 /* The following MACROS are used to create the statement handle to the edges table */
 #define UQ_DB_EDGE_SQL        "SELECT update_edge( $1, $2, $3, $4, $5, $6);"
-#define UQ_DB_EDGE_PARAMTYPE  "{TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID}"
+#define UQ_DB_EDGE_PARAMTYPE  {TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID}
 #define UQ_DB_EDGE_ERRMSG     "URIQualifierDB - Edge"
 #define UQ_DB_EDGE_NPARAMS    6
-#define UQ_DB_EDGE_INIT( db ) DBSQLSthInit( db, \
+#define UQ_DB_EDGE_INIT( db, param ) DBSQLSthInit( db, \
 		                            UQ_DB_EDGE_SQL, \
-		                            UQ_DB_EDGE_PARAMTYPE,\
+		                            param,\
                                             UQ_DB_EDGE_ERRMSG, \
 		                            UQ_DB_EDGE_NPARAMS)
 
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
-
-struct URIQualifierSTH_s {
-} typedef URIQualifierSTH_t;
 
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
 /* #####   EXPORTED VARIABLES   ##################################################### */
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
+extern DBSQLHandleSth_t * initEdgeSth( DBObj_t *db, DBSQLHandleSth_t * usth );
 

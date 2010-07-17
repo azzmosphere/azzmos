@@ -10,7 +10,7 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
+ *         Author:  Aaron Spiteri
  *        Company:  
  *
  * =====================================================================================
@@ -36,8 +36,8 @@
 #include <URIExtract.h>
 #endif
 
-#ifndef  _DBSQLHANDLE_H_
-#include <DBSQLHandle.h>
+#ifndef  __DBSQLHANDLESTH_H__
+#include <DBSQLHandleSTH.h>
 #endif
 
 #ifndef _OPTIONS_H_
@@ -51,12 +51,16 @@
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
-int DownloadURI(DownloadHTML_t *dl, URIQualify_t *uq, const char *seed, URIRegex_t *urire, 
-		int maxrecurse, URIObj_t *luri, DBObj_t *db, const Opts_t *opts);
+extern int downloadURI(DownloadHTML_t *dl, URIQualify_t *uq, const char *seed, URIRegex_t *urire, 
+		int maxrecurse, URIObj_t *luri, const Opts_t *opts, DBSQLHandleSth_t *dbsth);
 
 int             DownloadURISetListItem(  DownloadURI_t *tmp, DownloadURI_t *duri,  char *href);
+
 DownloadURI_t * GetHrefList( URIRegex_t *reuri,  URIObj_t *uri );
-DownloadURI_t * DownloadURIPerform( DownloadHTML_t *dl, const char *seed, URIRegex_t *urirel,  URIObj_t *uri, int recurse, DBObj_t *db);
+
+DownloadURI_t * downloadURIPerform( DownloadHTML_t *dl, const char *seed, URIRegex_t *urirel,  
+		URIObj_t *uri, int recurse, DBSQLHandleSth_t *dbsth);
+
 void            DownloadURICleanUp ( DownloadURI_t *du );
 
 

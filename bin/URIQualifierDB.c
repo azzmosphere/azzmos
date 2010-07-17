@@ -29,13 +29,25 @@
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  URIQDbInitEdgeSth
- *  Description:  Initilize statement handles that will be used with URI qualifier
+ *         Name:  init_edge_sth
+ *  Description:  Initilize the edges statement handle. (local function)
  * =====================================================================================
  */
-extern 
-URIQDbInitSth ( <+argument list+> )
+extern DBSQLHandleSth_t * 
+initEdgeSth( DBObj_t *db, DBSQLHandleSth_t * usth )
 {
-	return <+return value+>;
-}		/* -----  end of function URIQDbInitEdgeSth  ----- */
+	Oid params[UQ_DB_EDGE_NPARAMS] = UQ_DB_EDGE_PARAMTYPE;
+	usth->usth_edge = UQ_DB_EDGE_INIT( db, params );
+
+	if( ! usth->usth_edge ) {
+		syslog( LOG_ERR, "could not initilize the the edge statement - %s", strerror(errno));
+		dbFinitSth( usth );
+		usth = NULL;
+	}
+	return usth;
+}
+
+	/* -----  end of function URIQDbInitEdgeSth  ----- */
+
+
 

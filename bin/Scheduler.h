@@ -25,6 +25,10 @@
 #include <common.h>
 #endif
 
+#ifndef _SCHEDULERTYPES_H_
+#include <SchedulerTypes.h>
+#endif
+
 #ifndef _URIEXTRACT_H_
 #include <URIExtract.h>
 #endif
@@ -49,29 +53,27 @@
 #include <DownloadURI.h>
 #endif
 
+#ifndef __DOWNLOADER_H__
+#include <Downloader.h>
+#endif
+
 
 /* #####   EXPORTED DATA TYPES   #################################################### */
 
-struct Scheduler_s {
-	const Opts_t  *sc_opts;
-	int            sc_status;
-} typedef Scheduler_t;
+
 
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
-void SchedulerProcess( Scheduler_t *sc );
-Scheduler_t * SchedulerInit( );
-void SchedulerCleanUp( Scheduler_t *sc );
-
+extern void          schedulerProcess( void * argsin );
+extern Scheduler_t * schedulerInit( const Opts_t *opts );
+extern void          schedulerCleanUp( Scheduler_t *sc );
 
 /* #####   EXPORTED MACROS   ######################################################## */
 
-#define SchedulerSetCurlStatus(  sc, code)   (sc->sc_curlstatus = code)  
-#define SchedulerSetOpts( sc, opts )         (sc->sc_opts = opts )
-#define SchedulerSetStatus( sc, status )     (sc->sc_status = status )
-
-#define SchedulerGetCurlStatus( sc )         sc->sc_curlstatus
-#define SchedulerGetOpts( sc )               sc->sc_opts
-#define SchedulerGetStatus( sc )             sc->sc_status
+#define schedulerSetCurlStatus(  sc, code)   (sc->sc_curlstatus = code)  
+#define schedulerSetOpts( sc, opts )         (sc->sc_opts = opts )
+#define schedulerGetCurlStatus( sc )         sc->sc_curlstatus
+#define schedulerGetOpts( sc )               sc->sc_opts
+#define schedulerGetStatus( sc )             sc->sc_status
 

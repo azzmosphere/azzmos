@@ -32,7 +32,7 @@ main( int argc, char *argv[] )
 	/* make sure that the log is started before calling this
 	 * function but that the CURL handle has not yet been initilized */
 	syslog( LOG_DEBUG, "getting CLI options");
-	Opts_t *opts = GetOptions( &argc, argv );
+	Opts_t *opts = getOptions( &argc, argv );
 	if( opts == NULL ) exit( EXIT_FAILURE );
 
 
@@ -49,16 +49,15 @@ main( int argc, char *argv[] )
 	} else {
 		/* set up scheduler first, this way if a seed 
 		 * is defined it can be downloaded */
-		if((sc = SchedulerInit()) == NULL) {
+		if((sc = schedulerInit(opts)) == NULL) {
 			perror( "could not set scheduler");	
 			status = EXIT_FAILURE;
 		} else { 
-			SchedulerSetOpts( sc, opts );
-			SchedulerProcess(sc);	
+			schedulerProcess( (void *)sc);	
 		}
 	}
 
-	SchedulerCleanUp(sc);
+	schedulerCleanUp(sc);
 	syslog(LOG_INFO, "program finished", PACKAGE_NAME);
 	exit(status);
 }

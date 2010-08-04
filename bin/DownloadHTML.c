@@ -65,11 +65,11 @@ InitDownloadHTML( const Opts_t *opts )
 	}
 	else if( (res = curl_easy_setopt( dl_t->dl_ch, CURLOPT_WRITEFUNCTION,  DownloadHTMLWriteData)) != CURLE_OK) {
 		syslog( LOG_ERR, "%s - setting write function - %s", __FILE__, curl_easy_strerror(res));
-		CleanUpDownloadHTML( dl_t );
+		cleanUpDownloadHTML( dl_t );
 	}
 	else if( (res = curl_easy_setopt( dl_t->dl_ch, CURLOPT_WRITEDATA, dl_t->dl_fh)) != CURLE_OK) {
 		syslog( LOG_ERR, "%s - setting write pointer - %s", __FILE__, curl_easy_strerror(res));
-		CleanUpDownloadHTML( dl_t );
+		cleanUpDownloadHTML( dl_t );
 	}
 	else {
 		dl_t->dl_result = CURLE_OK;
@@ -98,12 +98,12 @@ PerformDownloadHTML( DownloadHTML_t *dl_t, const char *url )
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  CleanUpDownloadHTML
+ *         Name:  cleanUpDownloadHTML
  *  Description:  Destroy the DownloadHTML object
  * =====================================================================================
  */
 void
-CleanUpDownloadHTML( DownloadHTML_t *dl_t )
+cleanUpDownloadHTML( DownloadHTML_t *dl_t )
 {
 	if( dl_t != NULL ) {
 		curl_easy_cleanup( dl_t->dl_ch );

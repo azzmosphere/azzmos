@@ -43,7 +43,7 @@ struct DownloadHTML_s {
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
 DownloadHTML_t * InitDownloadHTML( const Opts_t *opt );
-void CleanUpDownloadHTML( DownloadHTML_t *dl_t );
+void cleanUpDownloadHTML( DownloadHTML_t *dl_t );
 CURLcode PerformDownloadHTML( DownloadHTML_t *dl_t, const char *url );
 CURLcode DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri );
 

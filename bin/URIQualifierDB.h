@@ -35,7 +35,7 @@
 /* #####   EXPORTED MACROS   ######################################################## */
 
 /* The following MACROS are used to create the statement handle to the edges table */
-#define UQ_DB_EDGE_SQL        "SELECT update_edge( $1, $2, $3, $4, $5, $6);"
+#define UQ_DB_EDGE_SQL        "SELECT upload_edge( $1, $2, $3, $4, $5, $6);"
 #define UQ_DB_EDGE_PARAMTYPE  {TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID, TEXTOID}
 #define UQ_DB_EDGE_ERRMSG     "URIQualifierDB - Edge"
 #define UQ_DB_EDGE_NPARAMS    6

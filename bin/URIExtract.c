@@ -136,14 +136,13 @@ URIRegexExec( URIRegex_t *ruri,
 			opts,
 			ovector,
 			ovecsize
-	)) < 0)
-	{
+	)) < 0) {
 		switch( rv ) {
 			case PCRE_ERROR_NOMATCH:
-				syslog( LOG_ERR, "no match found");
+				WARN("no match found");
 				break;
 			default:
-				syslog( LOG_ERR, "ERROR %d", rv);
+				ERROR("unknown reguler expr error");
 				break;
 
 		}

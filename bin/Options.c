@@ -34,7 +34,7 @@ usage()
 	fprintf( stdout, "usage: %s --dbconf [dbconf] --seed [seed]\n", PACKAGE);
 	fprintf( stdout, fmt, "-c", "--client-encoding=CLIENTE", "set the text encoding option for the database");
 	fprintf( stdout, fmt, "-d", "--dbconf=DBCONF", "database connection file");
-	fprintf( stdout, fmt, "-m", "--maxthread=MAXTHREAD","maximum number of downloader threads");
+	fprintf( stdout, fmt, "-m", "--max-thread=MAXTHREAD","maximum number of downloader threads");
 	fprintf( stdout, fmt, "-s", "--seed=SEED", "initial URI to use as seed");
 	fprintf( stdout, fmt, "-t", "--temp=TEMP", "set temp directory");
 	fprintf( stdout, fmt, "-h", "--help", "this help sscreen");
@@ -58,7 +58,7 @@ getOptions(int *argc, char **argv)
 		{ "help",     no_argument,        NULL, 'h' },
 		{ "seed",     required_argument,  NULL, 's' },
 		{ "temp",     required_argument,  NULL, 't' },
-		{ "maxthread",required_argument,  NULL, 'm' },
+		{ "max-thread",required_argument,  NULL, 'm' },
 		{ "client-encoding", required_argument, NULL, 'c'},
 		{ NULL,       0,                  NULL,  0  }
 	};
@@ -73,7 +73,7 @@ getOptions(int *argc, char **argv)
 	opts->o_clientenc = NULL;
 	opts->o_dcount = DEFAULT_DCOUNT;
 
-	while( (ch = getopt_long(*argc, argv, "hd:s:t:c:", longopts, NULL)) != -1) {
+	while( (ch = getopt_long(*argc, argv, "hd:s:t:c:m:", longopts, NULL)) != -1) {
 		switch (ch ) {
 			case 'd':
 				opts->o_dbconf = strdup(optarg);
@@ -90,6 +90,7 @@ getOptions(int *argc, char **argv)
 				break;
 			case 'm':
 				opts->o_dcount = atoi(optarg);
+				break;
 			case 'h':
 			default:
 				help = true;

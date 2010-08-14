@@ -17,9 +17,7 @@
  * =====================================================================================
  */
 
-
 #include <Scheduler.h>
-
 
 /* #####   PROTOTYPES  -  LOCAL TO THIS SOURCE FILE   ############################### */
 static inline  int   initDownloaderThread( DownloadEngine_t *, pthread_t *, pthread_attr_t *, Scheduler_t *);
@@ -27,7 +25,6 @@ static inline  DBSQLHandleSth_t * initSchedDb( Scheduler_t *sc );
 static inline void   finitSchedDb( Scheduler_t *sc );
 static inline void   getNextSeed( Scheduler_t *sc );
 static inline bool   allocatedSeed( Scheduler_t *sc );
-static bool          scLock( Scheduler_t *sc );
 static inline int    getDcountFromOpts( Scheduler_t *sc );
 
 /* 
@@ -56,12 +53,20 @@ schedulerProcess( void *argsin )
 	pthread_t thread[dcount];
 	pthread_attr_t attr;
 	DownloadEngine_t *dlc[ dcount ];
+	rv = pthread_attr_init( &attr );
 
-	/* Start downloader */
+	/*  Allocate the first seed before anything is started */
+	DEBUG("scheduler process started");
+	getNextSeed( sc );
+	if( rv ) {
+		errno = rv;
+		ERROR("could not initlize pthread attributes");
+		schedulerSetStatus( sc, EXIT_FAILURE ); 
+		return;
+	}
 	for( i = 0; i < dcount; i ++ ) {
-			
 			if( rv = initDownloaderThread(dlc[i], &thread[i], &attr, sc) ) {
-				syslog( LOG_ERR, "error createing downloader thread - %s", strerror(rv));
+				ERROR("error createing downloader thread");
 			 	i --;
 		       		maxtries ++;
 		 		continue;
@@ -69,25 +74,29 @@ schedulerProcess( void *argsin )
 
 			/* see if we have exceeded max tries if so this is fatal */
 			if( maxtries >= DL_INIT_MAX_TRIES) {
-				syslog( LOG_CRIT, "exceeded maximum attempts to create downloader thread");
+				ERROR("exceeded maximum attempts to create downloader thread");
 				schedulerSetStatus( sc, EXIT_FAILURE);
 				return;
 			}
 	}
-
 	do {
+		DEBUG("entering main loop");
+
 		/* get next seed */
 		if( allocatedSeed( sc ) ) {
+			DEBUG("seed allocated getting next");
 			getNextSeed(sc);
 		}
+		DEBUG("next iteration");
 	} while( ! chkExitStatus(sc));
 	
 	/* clean up each downloader thread. */
 	for( i = 0; i < dcount; i ++ ) {
+		pthread_join( thread[i], NULL);
 		deEngCleanUp( dlc[i], thread[i]);
 	}
-
-	syslog(LOG_DEBUG, "downloader engine finished");
+	pthread_attr_destroy( &attr );
+	DEBUG("downloader engine finished");
 }
 
 
@@ -104,6 +113,8 @@ initDownloaderThread ( DownloadEngine_t *dlc,
 		       Scheduler_t *sc )
 {
 	int rv = 0;
+
+	DEBUG("creating threader downloader process");
 	dlc = initDownloadEngine( sc );
 	if( dlc == NULL ) {
 		rv = errno;
@@ -154,7 +165,6 @@ schedulerInit( const Opts_t *opts )
 		return NULL;
 	}
 	schedulerSetOpts( sc, opts );
-
 	if( initSchedDb( sc ) == NULL ) {
 		free(sc);
 		return NULL;
@@ -188,6 +198,11 @@ schedulerInit( const Opts_t *opts )
 	sc->sc_flags = SC_DEFAULT;
 	sc->sc_seed  = (char **) malloc(sizeof(char *));
 
+	/* test if seed has been argued and set the flag for it */
+	if( opts->o_seed) {
+		sc->sc_flags |= SC_SEEDOPT;
+	}
+
 	return sc;
 }
 
@@ -209,7 +224,6 @@ schedulerCleanUp( Scheduler_t *sc )
 	/*  get rid of the UQ */
 	pthread_mutex_destroy(sc->sc_uq->uq_lock);
 	CleanUpURIQualify( sc->sc_uq );
-
 	sc = NULL;
 	free(sc);
 }
@@ -229,18 +243,16 @@ initSchedDb ( Scheduler_t *sc )
 	DBSQLHandleSth_t *sth;
 
 	if( db == NULL ) {
-		syslog( LOG_CRIT, "could not initilize database handle for scheduler");
+		ERROR("could not initilize database handle for scheduler");
 		schedulerSetStatus( sc, EXIT_FAILURE);
 		return NULL;
 	}
-
 	if( (sth = dbInitSth( db )) == NULL ) {
-		syslog( LOG_CRIT, "could not initilize statement handle for scheduler");
-		 DBSQLHandleCleanUp( db );
-		 schedulerSetStatus( sc, EXIT_FAILURE);
-		 return NULL;
+		ERROR("could not initilize statement handle for scheduler");
+		DBSQLHandleCleanUp( db );
+		schedulerSetStatus( sc, EXIT_FAILURE);
+		return NULL;
 	}
-
 	sc->sc_db  = db;
 	sc->sc_sth = sth;
 
@@ -273,18 +285,22 @@ finitSchedDb ( Scheduler_t *sc )
 static inline void 
 getNextSeed( Scheduler_t *sc )
 {
+	DEBUG( "getting next seed");
 	if( ! scLock(sc) ) {
 		return;
 	}
 
-	/*  allicate seed from options if SEED_OPT is true */
-	if( sc->sc_flags &= SC_SEEDOPT ) {
-		*(sc->sc_seed) = strdup( sc->sc_opts->o_seed );	
-		sc->sc_flags |= ~SC_SEEDOPT;
+	/*  allocate seed from options if SEED_OPT is true */
+	if( sc->sc_flags & SC_SEEDOPT ) {
+		*(sc->sc_seed) = strdup(sc->sc_opts->o_seed);
+		DEBUG_STR("seed", *(sc->sc_seed));
+		if( sc->sc_flags &= SC_SEEDOPT) {
+			sc->sc_flags ^= SC_SEEDOPT;
+		}
+		if( sc->sc_flags &= SC_ALLOCATED) {
+			sc->sc_flags ^= SC_ALLOCATED;
+		}
 	}
-
-	/* reset allocated seed back to false */
-	sc->sc_flags |= ~SC_ALLOCATED;
 	scUnlock(sc);
 }
 
@@ -296,14 +312,16 @@ getNextSeed( Scheduler_t *sc )
  *                return false.
  * =====================================================================================
  */
-static bool
+extern bool
 scLock( Scheduler_t *sc ) 
 {
 	int err;
 
 	/*  try and get a lock */
+	DEBUG("locking scheduler object");
 	if( err = pthread_mutex_lock( &sc->sc_lock ) ){
-		syslog( LOG_CRIT, "could not create lock on scheduler - ", strerror(err));
+		errno = err;
+		ERROR("could not create lock on scheduler");
 		sc->sc_flags |= SC_EXIT;
 		return false;
 	}
@@ -321,14 +339,17 @@ static inline bool
 allocatedSeed( Scheduler_t *sc )
 {
 	bool rv = false;
-	if( ! scLock(sc) ) {
-		return false;
-	}
 
-	if( sc->sc_flags &= SC_ALLOCATED ) {
+	DEBUG("testing if seed is allocated");
+	scLock( sc );
+	DEBUG_LNG("sc_flags", sc->sc_flags);
+	if( sc->sc_flags & SC_ALLOCATED ) {
+		DEBUG("seed has been allocated");
 		rv = true;
 	}
 	scUnlock(sc);
+	DEBUG("leaving routine");
+
 	return rv;
 }
 
@@ -344,13 +365,16 @@ chkExitStatus( Scheduler_t *sc )
 {
 	bool rv = false;
 
-	rv = scLock(sc);
-
-	if( rv && (sc->sc_flags &= SC_EXIT) ) {
+	scLock(sc);	
+	DEBUG("entered routine");
+	DEBUG_LNG("sc_flags", sc->sc_flags);
+	if( sc->sc_flags & SC_EXIT ) {
+		DEBUG("SC_EXIT is true");
 		rv = true;
 	}
-
 	scUnlock(sc);
+	DEBUG("unlocked sc");
+
 	return rv;
 }
 
@@ -368,7 +392,6 @@ getDcountFromOpts( Scheduler_t *sc )
 	if(! scLock( sc ) ) {
 		return dcount;
 	}
-
 	const Opts_t *opts = schedulerGetOpts(sc);
 	dcount = opts->o_dcount;
 	scUnlock( sc );
@@ -417,17 +440,16 @@ schedulerSetStatus ( Scheduler_t *sc, int status  )
 extern char *
 schedulerGetSeed ( Scheduler_t *sc )
 {
-	char *seed;
+	char *seed = NULL;
 
-
+	DEBUG("getting next seed");
 	if( sc->sc_seed ) {
 		seed = strdup( *(sc->sc_seed) );
+		DEBUG_STR("seed", seed);
 	}
-
 	sc->sc_seed = NULL;
 	free( sc->sc_seed );
 	sc->sc_flags |= SC_ALLOCATED;
-
 
 	return seed;
 }		/* -----  end of function schdulerGetSeed  ----- */
@@ -444,13 +466,11 @@ extern bool
 seedAvailable ( Scheduler_t *sc )
 {
 	bool rv = false;
-	scLock( sc );
-
-	if( sc->sc_flags =~  SC_ALLOCATED ) {
+	
+	DEBUG("checking if see id available");
+	if( sc->sc_flags ^= SC_ALLOCATED ) {
+		DEBUG("found available seed");
 		rv = true;
-	}
-	else {
-		scUnlock( sc );
 	}
 
 	return rv;

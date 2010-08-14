@@ -24,7 +24,6 @@
 static void dlError( Scheduler_t *sc, char *msg );
 static bool deGetSeed( char **seed, Scheduler_t *sc );
 
-
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  downloaderEngine
@@ -34,36 +33,35 @@ static bool deGetSeed( char **seed, Scheduler_t *sc );
 extern void*
 downloaderEngine(void *argsin)
 {
-	
 	DownloadEngine_t *de = (DownloadEngine_t *) argsin;
 	Scheduler_t *sc = de->de_sc;
 	URIObj_t *uri;
 	char     *seed;
+	int       dlerr = 0;
 
 	/* downloader engine starts here */
-	syslog( LOG_DEBUG, "downloader started");
+	DEBUG("downloader started");
 
 	/*  loop will continue until SC_EXIT */
 	while( deGetSeed(&seed, sc) ){
+		DEBUG("got seed from scheduler");
 
 		/*  create initial URI and qualify it */
 		uri =  URIObjInit();
-
+		DEBUG_STR( "seed", seed);
 
 		/* For each iteration of the loop get the next seed*/	
-		if( downloadURI( de->de_dl, sc->sc_uq, seed, de->de_urire, 0, uri, sc->sc_opts, de->de_dbsth) ) {
-			syslog(LOG_ERR, "error downloading site");
+		dlerr = downloadURI( de->de_dl, sc->sc_uq, seed, de->de_urire, 0, uri, sc->sc_opts, de->de_dbsth);
+		if( dlerr ) {
+			errno = dlerr;
+			ERROR("error downloading site");
 			schedulerSetStatus( sc, EXIT_FAILURE);
 		}
-
 		URIObjCleanUp(uri);
 	}
-
-
 	URIObjCleanUp(uri);
-	syslog(LOG_DEBUG, "downloader finished");
+	DEBUG("downloader finished");
 	/* Downloader has finished */
-
 }
 
 
@@ -118,8 +116,10 @@ initDownloadEngine(  Scheduler_t * sc)
 		return NULL;
 	} 
 
-	return de;
+	/* set de_sc if all has gone well */
+	de->de_sc = sc;
 
+	return de;
 }
 
 
@@ -133,7 +133,7 @@ initDownloadEngine(  Scheduler_t * sc)
 static void 
 dlError( Scheduler_t *sc, char *msg )
 {
-	syslog( LOG_ERR, "%s - %s", msg, strerror( errno ));
+	ERROR(msg);
 	schedulerSetFlag( sc, SC_EXIT );
 	schedulerSetStatus( sc, EXIT_FAILURE);	
 }
@@ -168,16 +168,27 @@ deGetSeed( char **seed, Scheduler_t *sc )
 	bool rv    = true;
 	bool found = false;
 
+	DEBUG("waiting for available seed");
 	do {
+		DEBUG("checking to see if exit has been called");
 		if (  chkExitStatus( sc ) ) {
 			rv = false;
+			DEBUG("exit routine called");
+			break;
 		}
-		else if( seedAvailable( sc) ){
+		DEBUG("checking if seed available");
+		scLock( sc );
+		if( seedAvailable(sc) ){
+			DEBUG("seed available");
 			*(seed) = schedulerGetSeed( sc );
-			scUnlock( sc );
+			DEBUG_STR("seed", *(seed));
 			found = true;
 		}
+		scUnlock( sc );
 	} while( !found && rv );
+	if( found) {
+		DEBUG("got seed leaving loop");
+	}
 
-	return rv;
+	return found;
 }

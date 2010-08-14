@@ -81,7 +81,9 @@
 #include <pthread.h>
 #endif
 
-
+#ifndef _USER_SIGNAL_H
+#include <signal.h>
+#endif
 
 /* #####   EXPORTED MACROS   ######################################################## */
 /**

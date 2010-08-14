@@ -24,8 +24,6 @@
 
 #include <DownloadURI.h>
 
-
-
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  DownloadURIPerform
@@ -46,24 +44,26 @@ downloadURIPerform(
 	int urirv = 0, uriid = 0;
 	CURLcode curlstatus;
 	char *href;
+	char *url =  URIObjGetFQP(uri);
 
-	if( (curlstatus = PerformDownloadHTML( dl, URIObjGetFQP(uri)) ) != CURLE_OK)
-		syslog(LOG_ERR, "%s - %s -%s", __FILE__, "CURL", curl_easy_strerror( curlstatus));
-
-	else if( (urirv = URIObjSetContent(uri, dl)) != 0)
-		SYSLOG_ERR("DownloadURI","URI" ,urirv);
+	if( (curlstatus = performDownloadHTML( dl,url) ) != CURLE_OK){
+		ERROR_C_URL("performing download",url,curlstatus);
+	}
+	else if( (urirv = URIObjSetContent(uri, dl)) != 0){
+		ERROR_E("could not set content for URI", urirv);
+	}
 
 	/* upload URL to database */
         /* REMAINS TO BE IMPLEMENTED */
 	/*  else if( (uriid = DBSQLExecFootprint( db, uri, recurse)) == 0 ) {
-		syslog(LOG_CRIT, "can not upload to database!!!!");
+		ERROR("can not upload to database!!!!");
 		URIObjCleanUp(uri);
 		urirv = 1;
 	}*/
 
 	/* Extract Href List from content */
 	else if( (duri = GetHrefList(urirel, uri)) == NULL ) {
-		syslog(LOG_ERR, "could not get HREF list");
+		ERROR("could not get HREF list");
 		urirv = 1;
 	} 
 	else if ( urirv == 0 ) {
@@ -104,40 +104,31 @@ downloadURI(DownloadHTML_t *dl,
 	char *href;
 	URIObj_t *nexturi;
 
-	syslog(LOG_DEBUG, "%s:%d - DownloadURI started", __FILE__, __LINE__);
+	DEBUG("DownloadURI started");
+	DEBUG_STR("seed", seed);
 	URIObjSetFQP( uri, seed );
-	URIQualify(urirel, seed, uri, NULL);
-
-	if( (duri = downloadURIPerform(dl, seed, urirel, uri, recurse, dbsth)) == NULL )
-		SYSLOG_ERR( "DownloadURI", "could not download URI", errno);
-
+	uriQualify(urirel, seed, uri, NULL);
+	if( (duri = downloadURIPerform(dl, seed, urirel, uri, recurse, dbsth)) == NULL ){
+		ERROR( "could not download URI");
+	}
 	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl)) == 0 ){
 
 		/* Start reading each link and transversing through them */
 		list_for_each( pos, &duri->du_list ) {
 			tmp  = list_entry(pos,  DownloadURI_t, du_list);
 			href = DownloadURIGetHref(tmp);
-			
 			nexturi = URIObjClone(uri);
 			URIObjFreeContent( nexturi );
-
-			syslog( LOG_DEBUG, "href is = '%s'",  href);
-
+			DEBUG_STR("href",href);
 			downloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, opts, dbsth);
 			free( href );
 			URIObjCleanUp(nexturi);
-
 		}	
 	} 
 	else {
-		syslog( LOG_ERR, 
-			"could not allocate URI list when reading seed - %s - %s", 
-			seed,
-			strerror( urirv )
-		);
+		ERROR_E("could not allocate URI list when reading seed", urirv);
 	}
-
-	syslog( LOG_DEBUG, "recursion level = '%d'", recurse);
+	DEBUG_INT("recursion level", recurse);
 	return urirv;
 }
 
@@ -155,19 +146,18 @@ GetHrefList( URIRegex_t *reuri,  URIObj_t *uri )
 	DownloadURI_t *duri = (DownloadURI_t *) malloc( sizeof(DownloadURI_t)), *tmp;
 
 	if( duri == NULL ) {
-		syslog( LOG_ERR, "can not allocate memory for URI list - %s", strerror(errno));
+		ERROR("can not allocate memory for URI list");
 		return duri;
 	}
-
 	INIT_LIST_HEAD( &duri->du_list );
 	while ( (href = URIRegexecNextHREF( reuri, URIObjGetContent(uri), &offset, uri )) != NULL) {
 		tmp = (DownloadURI_t *) malloc( sizeof(DownloadURI_t));
 		if( tmp == NULL ) {
-			syslog( LOG_WARNING, "could not allocate memory for URI - skipping");
+			WARN("could not allocate memory for URI - skipping");
 			continue;
 		}
 		if( err = DownloadURISetListItem( tmp, duri, href) ) {
-			syslog( LOG_WARNING, "could not add list item to URI list - skipping %s", strerror(errno));
+			WARN_E( "could not add list item to URI list - skipping ", errno);
 			continue;
 		}
 	}

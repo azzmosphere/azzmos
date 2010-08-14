@@ -54,7 +54,7 @@ am_azzmos_OBJECTS = azzmos.$(OBJEXT) DownloadHTML.$(OBJEXT) \
 	Scheduler.$(OBJEXT) URIQualifier.$(OBJEXT) \
 	DownloadURITypes.$(OBJEXT) URIHeaders.$(OBJEXT) \
 	URIQualifierDB.$(OBJEXT) DBSQLHandleSTH.$(OBJEXT) \
-	Downloader.$(OBJEXT)
+	Downloader.$(OBJEXT) AzmSignals.$(OBJEXT)
 azzmos_OBJECTS = $(am_azzmos_OBJECTS)
 azzmos_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
@@ -206,7 +206,8 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h \
 		 URIQualifierDB.c URIQualifierDB.h \
 		 DBSQLHandleSTH.c DBSQLHandleSTH.h DBSQLHandleSTHTypes.h \
-		 Downloader.h Downloader.c
+		 Downloader.h Downloader.c \
+		 AzmSignals.h AzmSignals.c
 
 all: all-am
 
@@ -279,6 +280,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AzmSignals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DBSQLHandleSTH.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DownloadHTML.Po@am__quote@

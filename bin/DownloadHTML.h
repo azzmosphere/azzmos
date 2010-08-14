@@ -29,6 +29,10 @@
 #include <common.h>
 #endif
 
+#ifndef _UTILS_H_
+#include <Utils.h>
+#endif
+
 
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
 
@@ -44,7 +48,7 @@ struct DownloadHTML_s {
 
 DownloadHTML_t * InitDownloadHTML( const Opts_t *opt );
 void cleanUpDownloadHTML( DownloadHTML_t *dl_t );
-CURLcode PerformDownloadHTML( DownloadHTML_t *dl_t, const char *url );
+CURLcode performDownloadHTML( DownloadHTML_t *dl_t, const char *url );
 CURLcode DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri );
 
 
@@ -56,4 +60,5 @@ CURLcode DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri );
 #define DownloadHTMLSetFH( dl, fh )    ( dl->dl_fh = fh)
 #define DownloadHTMLGetFh( dl )        dl->dl_fh 
 #define DownloadHTMLGetCH( dl )        dl->dl_ch
+
 

@@ -17,4 +17,5 @@ azzmos_SOURCES = azzmos.c azzmos.h \
 		 URIHeaders.c  URIHeaders.h URIHeadersTypes.h \
 		 URIQualifierDB.c URIQualifierDB.h \
 		 DBSQLHandleSTH.c DBSQLHandleSTH.h DBSQLHandleSTHTypes.h \
-		 Downloader.h Downloader.c
+		 Downloader.h Downloader.c \
+		 AzmSignals.h AzmSignals.c

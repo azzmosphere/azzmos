@@ -57,7 +57,7 @@ struct URIQualify_s {
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
-char * URIQualify(  URIRegex_t *urirel, const char *seed,  URIObj_t *uri,  URIObj_t *luri);
+char * uriQualify(  URIRegex_t *urirel, const char *seed,  URIObj_t *uri,  URIObj_t *luri);
 char * URIQualifyGetFQP ( URIRegex_t *urire, const char *seed,  URIObj_t *uri );
 
 URIQualify_t * URIQualifyInit( );

@@ -62,9 +62,9 @@ extern bool chkExitStatus( Scheduler_t *sc );
 extern void schedulerSetStatus (Scheduler_t *sc, int status );
 extern char * schedulerGetSeed ( Scheduler_t *sc );
 extern bool seedAvailable ( Scheduler_t *sc );
+extern bool scLock( Scheduler_t *sc );
 
 
 /* #####   EXPORTED MACROS   ######################################################## */
 #define scUnlock( sc )    pthread_mutex_unlock( &sc->sc_lock)
-
 

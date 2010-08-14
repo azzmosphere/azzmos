@@ -27,27 +27,27 @@
  * =====================================================================================
  */
 char *
-URIQualify(  URIRegex_t *urire, const char *seed,  URIObj_t *uri,  URIObj_t *luri) 
+uriQualify(  URIRegex_t *urire, const char *seed,  URIObj_t *uri,  URIObj_t *luri) 
 {
 	char *fqp = NULL;
 	int err = 0;
 	
-	
-	if( (fqp = URIQualifyGetFQP(urire, seed, uri)) == NULL ) 
-		syslog( LOG_ERR, "could not set Fully Qualified Path");	
-	else
-		if( err = URIObjSetFQP( uri, fqp) ) 
-			syslog( LOG_ERR, "could not allocate FQP - %s", strerror( err ));
-
+	if( (fqp = URIQualifyGetFQP(urire, seed, uri)) == NULL ) {
+		ERROR("could not set Fully Qualified Path");	
+	}
+	else{
+		if( err = URIObjSetFQP( uri, fqp) ) {
+			ERROR("could not allocate FQP");
+		}
+	}
 
 	/* Normalize string */
 	if( (fqp = NormalizeFQP( uri )) == NULL ) {
-		syslog( LOG_ERR, "could not normalize FQP");
+		ERROR("could not normalize FQP");
 	}
 
 	/* test sanity of authority using DNS */
-
-	syslog( LOG_DEBUG, "URIQualifier set FQP to '%s'", fqp);
+	DEBUG_STR("fqp", fqp);
 	return fqp;
 }
 
@@ -144,15 +144,7 @@ URIQualifyAppend ( URIQualify_t *uqin, const char *seed )
 	}
 
 	/*  unlock the object */
-	if( rv == 0 ) {
-		rv = pthread_mutex_unlock( URIQualifyGetLock( uqin ));
-		if ( rv == EPERM ) {
-			syslog( LOG_WARNING, "URIQualifyAppend - %s - %s", seed, strerror( rv));
-			rv = 0;
-		}
-
-	}
-
+	pthread_mutex_unlock( URIQualifyGetLock( uqin ));
 	return rv;
 }		/* -----  end of function URIQualifyAppend  ----- */
 
@@ -172,17 +164,14 @@ URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, UR
 	char *valid_ctype[UQ_VALID_CTYPE_COUNT] = UQ_VALID_CTYPES, *ct;
 
 	if( (res = URIHeaderAllocate( uh, dl, re, href)) == 0) {
-
 		if( !URIHeaderHasValue( uh, AHN_CONTENT_TYPE)) {
-			syslog( LOG_ERR, "%s header is not defined", AHN_CONTENT_TYPE);
+			WARN("header type is not defined");
 			res = 1;
 		}
 		else 
 			ct = URIHeaderGetValue( uh, AHN_CONTENT_TYPE);
 	}
-	
-	syslog( LOG_ERR,"%s:%s - %d res to '%d'", __FILE__, "URIQualifyChkHeaders", __LINE__, res);
-	
+	ERROR_E( "could not allocate headers",res);	
 	if( res == 0) {
 		res = 1;
 		for( i = 0; i < UQ_VALID_CTYPE_COUNT; i ++ ) {
@@ -235,20 +224,17 @@ URIQualifyDlURI ( URIQualify_t *uq,
 	list_for_each_safe( pos, q, &duri->du_list ) {
 		duri_tmp  = list_entry(pos,  DownloadURI_t, du_list);
 		href = DownloadURIGetHref(duri_tmp);
-
 		nexturi = URIObjClone(uri);
 		URIObjFreeContent( nexturi );
-
-		if( (href = URIQualify( urire, href , nexturi, NULL)) != NULL ) { 
+		if( (href = uriQualify( urire, href , nexturi, NULL)) != NULL ) { 
 			found = false;
 
 			/* upload the edge here this will also give a URI id that can be
 			 * used later on. */
 			/* upload reposnse and headers */
 			/* REMAINS TO BE IMPLEMENTED */
-			syslog( LOG_DEBUG, "%s:%d - dbupload uri     = '%s'", __FILE__, __LINE__,URIObjGetFQP(uri));
-			syslog( LOG_DEBUG, "%s:%d - dbupload nexturi = '%s'", __FILE__, __LINE__,URIObjGetFQP(nexturi));
-
+			DEBUG_STR("dbupload uri",URIObjGetFQP(uri));
+			DEBUG_STR("dbupload nexturi", URIObjGetFQP(nexturi));
 
 			/* locking is not taken to seriosly at this point as we are not
 			 * writing to the list */
@@ -256,17 +242,15 @@ URIQualifyDlURI ( URIQualify_t *uq,
 			/*  FROM THIS SECTION BEYOND WE WILL REPLACE WITH 
 			 *  THE MD5 ALGORITM */
 			pthread_mutex_lock( URIQualifyGetLock( uq ) );
-
 			list_for_each( uq_pos, &uq->uq_list ) {
 				uq_tmp = list_entry(uq_pos, URIQualify_t, uq_list);
-				
 				if( strncmp( href, URIQualifyGetThisFqp(uq_tmp), BUFSIZ) == 0 ) {
 					found = true;
 					break;
 				}
 			}
-			/*  ABOVE WILL BE REPLACED WITH MD5 */
 
+			/*  ABOVE WILL BE REPLACED WITH MD5 */
 			pthread_mutex_unlock( URIQualifyGetLock( uq ));
 			if( ! found ) {
 				uh = URIHeaderInit();
@@ -274,10 +258,10 @@ URIQualifyDlURI ( URIQualify_t *uq,
 					found = true;
 					URIHeaderCleanUp(uh);
 				}
-				else 
+				else {
 					duri_tmp->du_uh = uh;
+				}
 			}
-
 			if( found ) {
 				list_del(&duri_tmp->du_list );
 				DownloadURICleanUp( duri_tmp );
@@ -287,9 +271,8 @@ URIQualifyDlURI ( URIQualify_t *uq,
 				URIQualifyAppend( uq, href );
 				DownloadURISetHref( duri_tmp, href );
 
-
 				/*  upload response and headers */
-				syslog( LOG_DEBUG, "%s:%d - response = '%s'", __FILE__, __LINE__, URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
+				DEBUG_STR("response",URIHeaderGetValue(uh, AHN_HTTP_RESPONSE));
 			}
 
 		}

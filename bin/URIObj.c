@@ -28,7 +28,6 @@
 void 
 URIObjFreeElement( char **uriel )
 {
-	
 	if( uriel != NULL ) {
 		*uriel = NULL;
 		free( *uriel );
@@ -49,20 +48,22 @@ URIObjInit()
 {
 	URIObj_t *uri = (URIObj_t *) malloc(sizeof( URIObj_t));
 	if( uri == NULL ) {
-		SYSLOG_ERR( "URIObjInit", "could not allocate memory for URIObj", errno);
+		ERROR("could not allocate memory for URIObj");
 	} 
 	else if ( ( uri->uri_content = (char **) malloc(sizeof( char *))) == NULL) {
-		SYSLOG_ERR( "URIObjInit", "could not allocate memory for content", errno);
+		ERROR( "could not allocate memory for content");
 		free( uri );
 		uri = NULL;
 	} 
 	else if( (uri->uri_fqp = (char **) malloc( sizeof( char *))) == NULL) {
-		SYSLOG_ERR("URIObjInit", "could not allocate memory for FQP",errno);
+		ERROR( "could not allocate memory for FQP");
 		free( uri->uri_content);
 		free(uri);
 		uri = NULL;
 	}
-
+	if ( uri == NULL ){
+		return uri;
+	}
 	uri->uri_uh = NULL;
 	uri->uri_scheme_so = uri->uri_scheme_eo 
 		           = uri->uri_auth_so 
@@ -145,18 +146,18 @@ URIObjSetFQP( URIObj_t *uri, const char *fqp)
 	int rv = 0;
 
 	if( fqp == NULL ) {
-		SYSLOG_ERR( "URIObjSetFQP", "NULL FPQ", EFAULT);
+		ERROR_B( "NULL FPQ", strerror(EFAULT));
 		rv = EFAULT;
 	}
 	/* Value should be one less then BUFSIZ to allow for '\0' character in string */
 	else if( strlen( fqp ) >= BUFSIZ) {
-		SYSLOG_ERR( "URIObjSetFQP", "FPQ exceeds BUFSIZ in length", EFAULT);
+		ERROR_B( "FPQ exceeds BUFSIZ in length", strerror(EFAULT));
 		rv = EFAULT;
 	} 
 	else {
 		*(uri->uri_fqp) = strdup( fqp );
 		if( *uri->uri_fqp == NULL ) {
-			SYSLOG_ERR("URIObjSetFPQ","could not add FQP to URI",errno);
+			ERROR("could not add FQP to URI");
 			rv = errno;
 		}
 	}
@@ -180,16 +181,15 @@ URIObjSetContent( URIObj_t *uri, DownloadHTML_t *dl_t)
 	FILE   *io_read = DownloadHTMLGetFh( dl_t );
 
 	if( uri == NULL ||  io_read == NULL) {
-		if( uri == NULL)
-			syslog(LOG_ERR, "invalid URI object");
-		else
-			syslog(LOG_ERR, "can not read file - %s", DownloadHTMLGetFname( dl_t ));
-
+		if( uri == NULL){
+			ERROR("invalid URI object");
+		}
+		else{
+			ERROR_F(DownloadHTMLGetFname( dl_t ));
+		}
 		return  EFAULT;
 	}
-
 	rewind( io_read );
-
 	if( *uri->uri_content != NULL)
 		*uri->uri_content = NULL;
 	free( *uri->uri_content);
@@ -198,8 +198,8 @@ URIObjSetContent( URIObj_t *uri, DownloadHTML_t *dl_t)
 
 	while( (feof(io_read) == false)  && (ferror(io_read) == 0)  && (rv == 0)) {
 		if( fgets( buf, BUFSIZ, io_read) == NULL) {
-			/* Don't tuen this into a error condition, it may be legit */
-			syslog(LOG_WARNING, "%s - %s -%s", "URIObjSetContent", "while reading DL", ferror(io_read));
+			/* Don't turn this into a error condition, it may be legit */
+			WARN("DL file returned NULL");
 		}
 		else {
 			blen = strnlen(buf, BUFSIZ) + 1;
@@ -209,16 +209,17 @@ URIObjSetContent( URIObj_t *uri, DownloadHTML_t *dl_t)
 			}
 			/* failed initlization */
 			else if( *uri->uri_content == NULL ) {
-				SYSLOG_ERR("URIObjSetContent", "could not create content", errno); 
+				ERROR("could not create content"); 
 			}
 
 			/* Append data */
 			else if( (*uri->uri_content = (char *) realloc( *uri->uri_content, (strlen(*uri->uri_content) + blen))) == NULL) {
-				SYSLOG_ERR("URIObjSetContent", "could not reallocate memory", errno);
+				ERROR("could not reallocate memory");
 				rv = errno;
 			}
-			else
+			else{
 				strncat( *uri->uri_content, buf, blen);
+			}
 		}
 
 	}
@@ -237,21 +238,16 @@ URIObj_t *
 URIObjClone( URIObj_t *uriin )
 {
 	URIObj_t *uriout = URIObjInit();
-
 	URIObjSetFQP( uriout, URIObjGetFQP( uriin) );
-
-	if( *uriin->uri_content != NULL )
+	if( *uriin->uri_content != NULL ){
 		*uriout->uri_content = strdup( *uriin->uri_content);
-
+	}
 	uriout->uri_scheme_so = uriin->uri_scheme_so;
 	uriout->uri_scheme_eo = uriin->uri_scheme_eo;
-
 	uriout->uri_auth_so = uriin->uri_auth_so;
 	uriout->uri_auth_eo = uriin->uri_auth_eo;
-
 	uriout->uri_path_so = uriin->uri_path_so;
 	uriout->uri_path_eo = uriin->uri_path_eo;
-
 	return uriout;
 }
 

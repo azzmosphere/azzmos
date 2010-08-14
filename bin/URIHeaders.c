@@ -33,12 +33,12 @@ URIHeaderInit ( )
 	URIHeader_t *uh;
 
 	uh = (URIHeader_t *) malloc( sizeof(URIHeader_t));
-
-	if( uh )
+	if( uh ){
 		INIT_LIST_HEAD( &uh->uh_list );
-	else 
-		syslog( LOG_ERR, "could not allocate URIheaders %s", strerror( errno ));
-
+	}
+	else {
+		ERROR("could not allocate URIheaders");
+	}
 	return uh;
 }		/* -----  end of function URIHeaderInit  ----- */
 
@@ -86,26 +86,20 @@ URIHeaderSetListItem( URIHeader_t *uh, URIHeader_t *tmp, const char *key, const 
 {
 	int rv = 0;
 	if( uh == NULL ) {
-		syslog( LOG_ERR, 
-			"could not allocate memory for URIHeader - %s", 
-			strerror(errno));
+		ERROR("could not allocate memory for URIHeader");
 		return errno;
 	}
 	if( (tmp->uh_key = (char **) malloc( sizeof(char *))) == NULL ) {
-		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		ERROR("could not allocate memory for version header");
 		return errno;
 	}
-
 	if( (tmp->uh_val = (char **) malloc( sizeof(char *))) == NULL ) {
-		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		ERROR("could not allocate memory for version header");
 		return errno;
 	}
-
 	*(tmp->uh_key) = strdup(key);
 	*(tmp->uh_val) = strdup(val);
-
 	list_add(&tmp->uh_list, &(uh->uh_list));
-
 	return rv;
 }		/* -----  end of static function URIHeaderAllocateElement  ----- */
 
@@ -128,56 +122,46 @@ URIHeaderAllocateFromFile ( URIHeader_t *uh, URIRegex_t *ue, FILE *in )
 	URIHeader_t *tmp;
 
 	rewind( in );
-
 	if ( in == NULL ) {
-		syslog( LOG_ERR, "couldn't URI header file; %s",
-			strerror(errno) );
+		ERROR("couldn't URI header file");
 		return errno;
 	}
 
 	/* first line of headers is allways the HTTP response */
 	if( fgets( buf, BUFSIZ, in ) == NULL ) {
-		syslog( LOG_ERR, "could not find any headers - %s", strerror(errno));
+		ERROR("could not find any headers");
 		return errno;
 	}
-
 	if( (uh->uh_key = (char **) malloc( sizeof(char *))) == NULL ) {
-		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		ERROR("could not allocate memory for version header");
 		return errno;
 	}
-
 	if( (uh->uh_val = (char **) malloc( sizeof(char *))) == NULL ) {
-		syslog( LOG_ERR, "could not allocate memory for version header - %s", strerror(errno));
+		ERROR("could not allocate memory for version header");
 		return errno;
 	}
-
 	*(uh->uh_key) = strdup(AHN_HTTP_RESPONSE);
 	*(uh->uh_val) = USplice( buf, 0, (strnlen(buf,BUFSIZ) - 3)); 
 
 	/* get uri headers from the file */
 	while( feof(in) == false ) {
 		if( (tmp = (URIHeader_t *) malloc(sizeof(URIHeader_t))) == NULL ) {
-			syslog( LOG_ERR, 
-				"could allocate memory for URIHeader object %s",
-				strerror(errno)
-			);
+			ERROR("could allocate memory for URIHeader object");
 			break;
-
 		}
 		else if( fgets( buf, BUFSIZ, in) != NULL) {
-			if( strncmp(buf, "\r\n", BUFSIZ) == 0 )
+			if( strncmp(buf, "\r\n", BUFSIZ) == 0 ){
 				continue;
-
-			if( URIRegexSplitURIHeader(ue, buf, &key, &val ) != 0) 
+			}
+			if( URIRegexSplitURIHeader(ue, buf, &key, &val ) != 0) {
 				continue;
-
+			}
 			else if( (rv = URIHeaderSetListItem( uh, tmp, key, val)) != 0) {
-				syslog(LOG_ERR, "could not set list item for - %s - %s", key, strerror(rv));
+				ERROR_URL("could not set list item", key, strerror(rv));
 				break;
 			}
 		}
 	}
-
 	return rv;
 }		/* -----  end of function URIHeaderAllocateFromFile  ----- */
 
@@ -247,7 +231,6 @@ URIHeaderGetValue ( URIHeader_t *uh, const char *key )
 			}
 		}
 	}
-
 	return ret;
 }		/* -----  end of function URIHeaderGetValue  ----- */
 
@@ -267,11 +250,11 @@ URIHeaderAllocate ( URIHeader_t *uh, DownloadHTML_t *dl, URIRegex_t *re, const c
 	CURLcode res = CURLE_OK;
 
 	if( (res = DownloadHTMLGetHeaders(dl, seed)) != CURLE_OK) {
-		syslog( LOG_ERR, "could not download headers - %s", curl_easy_strerror( res ));
+		ERROR_C("could not download headers", res);
 		ret = 1;
 	}
-	else 
+	else {
 		ret = URIHeaderAllocateFromFile( uh, re, DownloadHTMLGetFh(dl)); 
-	
+	}	
 	return ret;
 }		/* -----  end of function URIHeaderAllocate  ----- */

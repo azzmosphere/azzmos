@@ -1,15 +1,30 @@
-/**
- * Common Utilities.
+/*
+ * =====================================================================================
+ *
+ *       Filename:  Utils.c
+ *
+ *    Description:  Common tools that are used throughout all programs.
+ *
+ *        Version:  1.0
+ *        Created:  08/08/2010 14:24:14
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  YOUR NAME (), 
+ *        Company:  
+ *
+ * =====================================================================================
  */
+
 
 #include <Utils.h>
 
-/**
- * splice a character strting from offset start to 
- * offset end.  If end is NULL then go to end of
- * string. '\0'
- *
- * On any error return NUL.
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  USplice
+ *  Description:  splice a character strting from offset start to offset end.  If end is 
+ *                NULL then go to end of string. '\0'
+ * =====================================================================================
  */
 char *
 USplice( const char *in, unsigned int start, unsigned int end)
@@ -17,29 +32,33 @@ USplice( const char *in, unsigned int start, unsigned int end)
 	char *out;
 	int   l, i = 0;
 
-	if( (char *)end == NULL )
+	if( (char *)end == NULL ){
 		end = strlen(in);
-
-	if( (l = end - start) < 0 )
+	}
+	if( (l = end - start) < 0 ){
 		return NULL;
-
-	if( end > strlen(in))
+	}
+	if( end > strlen(in)){
 		return NULL;
-	if( (out = (char *) malloc((l + 1))) == NULL )
+	}
+	if( (out = (char *) malloc((l + 1))) == NULL ){
 		return NULL;
-	
-	for( l = start; l < (end + 1); l ++ )
+	}	
+	for( l = start; l < (end + 1); l ++ ){
 		out[i++] = in[l];
-
-	if( out[i] != '\0')
+	}
+	if( out[i] != '\0'){
 		out[i] = '\0';
+	}
 	return out;
 }
 
-/**
- * Mac does not provide a itoa function,  
- * so this function is used, Only if the
- * program is getting compiled on OSX
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  _MacItoA_
+ *  Description:  Mac does not provide a itoa function, so this function is used, Only if 
+ *                the  program is getting compiled on OSX
+ * =====================================================================================
  */
 char *
 _MacItoA_( int num )
@@ -53,3 +72,31 @@ _MacItoA_( int num )
 	}
 	return text;
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  _syslog_print_error
+ *  Description:  Print a error
+ * =====================================================================================
+ */
+extern void 
+_syslog_print_error( unsigned int tid, char *fname, int lineno, char *m1, char *m2 )
+{
+	syslog( LOG_ERR, "%u:%s:%d - ERROR - %s - %s", tid, fname, lineno, m1, m2);
+	perror( m2 );
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  _syslog_print_error_url
+ *  Description:  Print a error that is specifically related to a URL
+ * =====================================================================================
+ */
+extern void
+_syslog_print_error_url(  unsigned int tid, char *fname, int lineno, char *m1, char *url, char *m2 )
+{
+	char *mm2;
+	asprintf( &mm2, "%s (%s)", m1, url);
+	_syslog_print_error( tid, fname, lineno, mm2, m2);
+}
+

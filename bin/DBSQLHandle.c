@@ -35,7 +35,7 @@ GetConnStr( const char *dbconf )
 	int len = 0;
 
 	if( f == NULL ) {
-		SYSLOG_ERR( "GetConnStr", "could not open dbconf", errno);
+		ERROR( "could not open dbconf");
 		return NULL;
 	}
 
@@ -74,13 +74,13 @@ DBSQLHandleInit(const Opts_t *opts )
 
 	DBObj_t *db = ( DBObj_t *) malloc( sizeof(DBObj_t));
 	if( ! db ) {
-		SYSLOG_ERR( "DBSQLHandleInit", "could not allocate memory for db connection", errno);
+		ERROR( "could not allocate memory for db connection");
 		return NULL;
 	}
 
 	/* Get connstr */
 	if( (connstr = (char *) GetConnStr(dbconf)) == NULL) {
-		syslog( LOG_ERR, "could not get the db connstr");
+		ERROR("could not get the db connstr");
 		db = NULL;
 		free(db);
 		return NULL;
@@ -92,23 +92,18 @@ DBSQLHandleInit(const Opts_t *opts )
 
 	/* Check status of connection status */
 	if( PQstatus( db->dbconn ) == CONNECTION_BAD ) {
-		syslog( LOG_ERR, 
-			"something has gone wrong with the database connection - %s", 
-			PQerrorMessage( db->dbconn)
-		);
+		DB_ERROR("something has gone wrong with the database connection",db->dbconn );
 		return NULL;
 	} 
 	else {
 		/* Check the client_encoding, we want it to be iso-8559-1 if
 		 * it isn't thne try and set it otherwise it is fatal. */
 		clientenc = (char *) PQparameterStatus(db->dbconn, "client_encoding");
-		syslog( LOG_DEBUG, "client_encoding = '%s'", clientenc);
-
+		DEBUG_STR("client_encoding", clientenc);
 		if( strncmp( clientenc, opts->o_clientenc, BUFSIZ ) != 0 ) {
 			const Oid paramTypes[1] = {TEXTOID};
 			const char *const paramValues[1] = {opts->o_clientenc};
-			syslog(LOG_DEBUG, "attempting to change client-encoding to %s", opts->o_clientenc);
-
+			DEBUG_STR( "attempting to change client-encoding", opts->o_clientenc);
 			result = PQexecParams(db->dbconn, "SET client_encoding = %1;", 
 					      1, 
 					      paramTypes, 

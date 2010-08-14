@@ -21,7 +21,7 @@
 
 /* #####   FUNCTION DEFINITIONS  -  LOCAL TO THIS SOURCE FILE   ##################### */
 
-static size_t DownloadHTMLWriteData(void *ptr, size_t size, size_t nmemb, void *stream);
+static size_t downloadHTMLWriteData(void *ptr, size_t size, size_t nmemb, void *stream);
 
 
 /* 
@@ -36,39 +36,38 @@ InitDownloadHTML( const Opts_t *opts )
 	DownloadHTML_t *dl_t;
 	CURLcode res;
 
-
 	if( (dl_t = (DownloadHTML_t *) malloc( sizeof(DownloadHTML_t))) == NULL ) {
-		SYSLOG_ERR("InitDownloadHTML()", "could not allocate memory", errno);
+		ERROR("could not allocate memory");
 
 	}
 	else if( (dl_t->dl_fname = (char **) malloc(sizeof( char *))) == NULL) {
-		syslog( LOG_ERR, "could not allocate memory for tmp file pointer");
+		ERROR("could not allocate memory for tmp file pointer");
 		free(dl_t);
 		dl_t = NULL;
 	}
 	else if( (*dl_t->dl_fname  = strdup(tempnam(opts->o_tdir, NULL))) == NULL ) {
-		syslog( LOG_ERR, "could not get temporary file");
+		ERROR("could not get temporary file");
 		free(dl_t->dl_fname);
 	       	free(dl_t);
        		dl_t = NULL;
 	}
 	else if( (dl_t->dl_fh = fopen(*dl_t->dl_fname, "w+")) ==  NULL) {
-		SYSLOG_ERR("InitDownloadHTML()", "could not create temp file", errno);
+		ERROR("could not create temp file");
 		free(dl_t);
 		dl_t = NULL;
 	}	
 	else if( (dl_t->dl_ch = curl_easy_init()) == NULL ) {
-		syslog( LOG_ERR, "%s could not initilise CURL handle", __FILE__);
+		ERROR("could not initilise CURL handle");
 		fclose(dl_t->dl_fh);
 		free(dl_t);
 		dl_t = NULL;
 	}
-	else if( (res = curl_easy_setopt( dl_t->dl_ch, CURLOPT_WRITEFUNCTION,  DownloadHTMLWriteData)) != CURLE_OK) {
-		syslog( LOG_ERR, "%s - setting write function - %s", __FILE__, curl_easy_strerror(res));
+	else if( (res = curl_easy_setopt( dl_t->dl_ch, CURLOPT_WRITEFUNCTION,  downloadHTMLWriteData)) != CURLE_OK) {
+		ERROR_C("setting write function", res);
 		cleanUpDownloadHTML( dl_t );
 	}
 	else if( (res = curl_easy_setopt( dl_t->dl_ch, CURLOPT_WRITEDATA, dl_t->dl_fh)) != CURLE_OK) {
-		syslog( LOG_ERR, "%s - setting write pointer - %s", __FILE__, curl_easy_strerror(res));
+		ERROR_C("setting write pointer", res);
 		cleanUpDownloadHTML( dl_t );
 	}
 	else {
@@ -85,13 +84,13 @@ InitDownloadHTML( const Opts_t *opts )
  * =====================================================================================
  */
 CURLcode 
-PerformDownloadHTML( DownloadHTML_t *dl_t, const char *url )
+performDownloadHTML( DownloadHTML_t *dl_t, const char *url )
 {
 	CURLcode res;
 	rewind( dl_t->dl_fh);
 
 	if( ((res = curl_easy_setopt(dl_t->dl_ch, CURLOPT_URL, url)) != CURLE_OK) || (res = curl_easy_perform(dl_t->dl_ch))) {
-		syslog( LOG_ERR, "%s - could not get URL (%s) - %s", __FILE__, url, curl_easy_strerror(res));
+		ERROR_C_URL("could not download", url, res);
 	}
 	return res;
 }
@@ -118,12 +117,12 @@ cleanUpDownloadHTML( DownloadHTML_t *dl_t )
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  DownloadHTMLWriteData
+ *         Name:  downloadHTMLWriteData
  *  Description:  Write data to file handle (callback function for cURL)
  * =====================================================================================
  */
 static size_t 
-DownloadHTMLWriteData(void *ptr, size_t size, size_t nmemb, void *stream)
+downloadHTMLWriteData(void *ptr, size_t size, size_t nmemb, void *stream)
 {
         int written = fwrite(ptr, size, nmemb, (FILE *)stream);
         return written;
@@ -147,24 +146,21 @@ DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri )
 
 	rewind( fh );
 	if(  (res = curl_easy_setopt( cl, CURLOPT_NOBODY, true )) != CURLE_OK ) 
-		syslog( LOG_ERR, "could not get headers - %s", curl_easy_strerror(res));
+		ERROR_C("could not get headers", res);
 
 	else if ( (res = curl_easy_setopt( cl, CURLOPT_URL, uri )) != CURLE_OK )
-		syslog( LOG_ERR, "could not set URL - %s - %s", uri, curl_easy_strerror(res));
+		ERROR_C_URL("could not set URL", uri, res);
 
 	else if ( (res = curl_easy_setopt( cl, CURLOPT_WRITEHEADER, fh)) != CURLE_OK) {
-		syslog( LOG_ERR, 
-			"could not set file handle for headers - %s - %s", 
-			uri, curl_easy_strerror(res));
+		ERROR_C_URL("could not set file handle for headers", uri, res);
 	}
-	else	
+	else{	
 		res = curl_easy_perform( cl );
-	
+	}
 	if( res == CURLE_OK) {
 		res = curl_easy_setopt( cl, CURLOPT_NOBODY, false );
 		res = curl_easy_setopt( cl, CURLOPT_HEADER, false);
 	}
-
 	curl_easy_setopt( cl, CURLOPT_WRITEDATA, fh);
 	return res;
 }		/* -----  end of function DownloadHTMLGetHeaders  ----- */

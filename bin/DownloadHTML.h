@@ -49,7 +49,7 @@ struct DownloadHTML_s {
 DownloadHTML_t * InitDownloadHTML( const Opts_t *opt );
 void cleanUpDownloadHTML( DownloadHTML_t *dl_t );
 CURLcode performDownloadHTML( DownloadHTML_t *dl_t, const char *url );
-CURLcode DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri );
+CURLcode downloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri );
 
 
 

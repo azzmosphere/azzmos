@@ -51,16 +51,10 @@
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
 
-extern int downloadURI(DownloadHTML_t *dl, URIQualify_t *uq, const char *seed, URIRegex_t *urire, 
-		int maxrecurse, URIObj_t *luri, const Opts_t *opts, DBSQLHandleSth_t *dbsth);
-
+extern int      dl_uri(DownloadHTML_t *dl, URIQualify_t *uq, const char *seed, URIRegex_t *urire, int maxrecurse, URIObj_t *luri, const Opts_t *opts, DBSQLHandleSth_t *dbsth);
 int             DownloadURISetListItem(  DownloadURI_t *tmp, DownloadURI_t *duri,  char *href);
-
-DownloadURI_t * GetHrefList( URIRegex_t *reuri,  URIObj_t *uri );
-
-DownloadURI_t * downloadURIPerform( DownloadHTML_t *dl, const char *seed, URIRegex_t *urirel,  
-		URIObj_t *uri, int recurse, DBSQLHandleSth_t *dbsth);
-
+extern DownloadURI_t * getHrefList( URIRegex_t *reuri,  URIObj_t *uri );
+DownloadURI_t * downloadURIPerform( DownloadHTML_t *dl, const char *seed, URIRegex_t *urirel,  URIObj_t *uri, int recurse, DBSQLHandleSth_t *dbsth);
 void            DownloadURICleanUp ( DownloadURI_t *du );
 
 

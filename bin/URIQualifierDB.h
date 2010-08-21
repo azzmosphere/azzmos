@@ -44,7 +44,8 @@
 		                            param,\
                                             UQ_DB_EDGE_ERRMSG, \
 		                            UQ_DB_EDGE_NPARAMS)
-
+#define UQ_DB_EDGE_ROW  0
+#define UQ_DB_EDGE_COL  0
 /* #####   EXPORTED TYPE DEFINITIONS   ############################################## */
 
 /* #####   EXPORTED DATA TYPES   #################################################### */

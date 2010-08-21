@@ -44,7 +44,7 @@ main( int argc, char *argv[] )
 		atexit(curl_global_cleanup);
 	}
 	if( curlstatus != CURLE_OK) {
-		ERROR_C("CURL global init failed", curlstatus);
+		CRIT_C("CURL global init failed", curlstatus);
 		status = EXIT_FAILURE;
 	} 
 	else {
@@ -52,7 +52,7 @@ main( int argc, char *argv[] )
 		/* set up scheduler first, this way if a seed 
 		 * is defined it can be downloaded */
 		if((sc = schedulerInit(opts)) == NULL) {
-			ERROR( "could not set scheduler");	
+			CRIT( "could not set scheduler");	
 			status = EXIT_FAILURE;
 		} 
 		else { 

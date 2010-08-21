@@ -62,7 +62,7 @@ downloadURIPerform(
 	}*/
 
 	/* Extract Href List from content */
-	else if( (duri = GetHrefList(urirel, uri)) == NULL ) {
+	else if( (duri = getHrefList(urirel, uri)) == NULL ) {
 		ERROR("could not get HREF list");
 		urirv = 1;
 	} 
@@ -88,7 +88,7 @@ downloadURIPerform(
  * =====================================================================================
  */
 extern int 
-downloadURI(DownloadHTML_t *dl, 
+dl_uri(DownloadHTML_t *dl, 
 	    URIQualify_t *uq,
 	    const char *seed, 
 	    URIRegex_t *urirel, 
@@ -108,10 +108,11 @@ downloadURI(DownloadHTML_t *dl,
 	DEBUG_STR("seed", seed);
 	URIObjSetFQP( uri, seed );
 	uriQualify(urirel, seed, uri, NULL);
-	if( (duri = downloadURIPerform(dl, seed, urirel, uri, recurse, dbsth)) == NULL ){
+	duri = downloadURIPerform(dl, seed, urirel, uri, recurse, dbsth);
+	if( duri == NULL ){
 		ERROR( "could not download URI");
 	}
-	else if( (urirv = URIQualifyDlURI(uq, urirel, duri, uri, dl)) == 0 ){
+	else if( (urirv = uriQualifyDlURI(uq, urirel, duri, uri, dl, dbsth)) == 0 ){
 
 		/* Start reading each link and transversing through them */
 		list_for_each( pos, &duri->du_list ) {
@@ -119,8 +120,7 @@ downloadURI(DownloadHTML_t *dl,
 			href = DownloadURIGetHref(tmp);
 			nexturi = URIObjClone(uri);
 			URIObjFreeContent( nexturi );
-			DEBUG_STR("href",href);
-			downloadURI( dl, uq, href, urirel, (recurse + 1), nexturi, opts, dbsth);
+			dl_uri( dl, uq, href, urirel, (recurse + 1), nexturi, opts, dbsth);
 			free( href );
 			URIObjCleanUp(nexturi);
 		}	
@@ -134,12 +134,12 @@ downloadURI(DownloadHTML_t *dl,
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  GetHrefList
+ *         Name:  getHrefList
  *  Description:  Gets a list of HREF's from the URI content.
  * =====================================================================================
  */
-DownloadURI_t *
-GetHrefList( URIRegex_t *reuri,  URIObj_t *uri )
+extern DownloadURI_t *
+getHrefList( URIRegex_t *reuri,  URIObj_t *uri )
 {
 	char *href;
 	int   offset = 0, err;

@@ -80,9 +80,9 @@ _MacItoA_( int num )
  * =====================================================================================
  */
 extern void 
-_syslog_print_error( unsigned int tid, char *fname, int lineno, char *m1, char *m2 )
+_syslog_print_error( unsigned int tid, char *fname, int lineno, char *m1, char *m2, int pri )
 {
-	syslog( LOG_ERR, "%u:%s:%d - ERROR - %s - %s", tid, fname, lineno, m1, m2);
+	syslog( pri, "%u:%s:%d - ERROR - %s - %s", tid, fname, lineno, m1, m2);
 	perror( m2 );
 }
 
@@ -93,10 +93,24 @@ _syslog_print_error( unsigned int tid, char *fname, int lineno, char *m1, char *
  * =====================================================================================
  */
 extern void
-_syslog_print_error_url(  unsigned int tid, char *fname, int lineno, char *m1, char *url, char *m2 )
+_syslog_print_error_url(  unsigned int tid, char *fname, int lineno, char *m1, char *url, char *m2, int pri )
 {
 	char *mm2;
 	asprintf( &mm2, "%s (%s)", m1, url);
-	_syslog_print_error( tid, fname, lineno, mm2, m2);
+	_syslog_print_error( tid, fname, lineno, mm2, m2, pri);
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  reset_file
+ *  Description:  Reset file back to the beginning, file is reopened in "w+" mode.
+ * =====================================================================================
+ */
+inline void
+reset_file ( FILE *fh )
+{
+	rewind(fh);
+	fprintf(fh,"%d",EOF);
+	freopen(NULL,"w+",fh);
+}		/* -----  end of function resetFile  ----- */
 

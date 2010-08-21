@@ -92,14 +92,8 @@ URIRegexCompile( URIRegex_t *reuri, const char *pattern, long opts, regex_types 
 	);
 
 	if( ! re ) {
-		syslog(LOG_ERR, "%s - %s:%d (%d) could not compile re - %s",
-				__FILE__,
-				"URIRegexCompile",
-				__LINE__,
-				reuri->ur_erroffset,
-				*reuri->ur_errptr
-		);
-		syslog(LOG_DEBUG, "using pattern - '%s'", pattern);
+		ERROR_B("could not compile", *(reuri->ur_errptr));
+		DEBUG_STR("pattern", pattern);
 	} 
 	else {
 		reuri->ur_opts |= opts;
@@ -181,12 +175,7 @@ ProcRegEx( URIRegex_t *reuri,
 	if( reuri->ur_opts & bopt )
 		re = reuri->ur_regex[rtype];
 	else if( (re = URIRegexCompile( reuri, pattern, bopt, rtype)) == NULL) {
-		syslog( LOG_ERR, 
-			"ERROR: %s - %d -%s", 
-			func,
-			uri->uri_content_offset,
-			*reuri->ur_errptr
-		);
+		ERROR_B("could not process regular expression", *(reuri->ur_errptr));
 		return NULL;
 	}
 	rv = URIRegexExec( reuri, re, subject,  0, roffset, ovecsize, ovector);
@@ -394,7 +383,6 @@ URIRegexSplitURIHeader ( URIRegex_t *reuri, const char *subject, char **key, cha
 		O_OVECCOUNT,
 		ovector
 	);
-
 	if( re == NULL ) {
 		rv = errno;
 	}
@@ -402,7 +390,6 @@ URIRegexSplitURIHeader ( URIRegex_t *reuri, const char *subject, char **key, cha
 		*(key) = USplice( subject, ovector[2], (ovector[3] - 1));
 		*(val) = USplice( subject, ovector[4], (ovector[5] - 1));
 	} 
-
 	return rv;
 }		/* -----  end of function URIRegexSplitURIHeader  ----- */
 

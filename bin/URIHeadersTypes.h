@@ -5,7 +5,7 @@
  *
  *    Description:  Contains the object and function definitions for the URIHeader_t 
  *                  object.  A URIHeader_t contains the headers that are returned by
- *                  a URL after the DownloadHTMLGetHeaders method is called.
+ *                  a URL after the downloadHTMLGetHeaders method is called.
  *
  *        Version:  1.0
  *        Created:  02/06/2010 21:43:06

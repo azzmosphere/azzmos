@@ -45,7 +45,7 @@ struct DownloadEngine_s {
 
 
 /* #####   EXPORTED FUNCTION DECLARATIONS   ######################################### */
-extern DownloadEngine_t *initDownloadEngine(  Scheduler_t *);
+extern DownloadEngine_t *download_eng_init(  Scheduler_t *);
 extern void             *downloaderEngine( void *argsin);
 
 

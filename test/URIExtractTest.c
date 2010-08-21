@@ -28,82 +28,82 @@ const char *seed = "http://www.ato.gov.au/something.html";
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  TestURIQualify
+ *         Name:  testUriQualify
  *  Description:  Test that a fully qualified address is seen as a FQP
  * =====================================================================================
  */
 void
-TestURIQualify( CuTest *tc )
+testUriQualify( CuTest *tc )
 {
-        CuAssertStrEquals( tc, seed, URIQualify(urire, seed, luri, NULL  ));
+        CuAssertStrEquals( tc, seed, uriQualify(urire, seed, luri, NULL  ));
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  TestURIQualify2
+ *         Name:  testUriQualify2
  *  Description:  Test that a fully qualified address is seen as a FQP
  * =====================================================================================
  */
 void
-TestURIQualify2( CuTest *tc )
+testUriQualify2( CuTest *tc )
 {
 	char *lseed = "http://www.ato.gov.au/";
-        CuAssertStrEquals( tc, lseed, URIQualify(urire, lseed, uri, NULL  ));
+        CuAssertStrEquals( tc, lseed, uriQualify(urire, lseed, uri, NULL  ));
 }
 
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  TestURIObjGetScheme
+ *         Name:  testUriObjGetScheme
  *  Description:  Test the scheme section of the URI
  * =====================================================================================
  */
 void
-TestURIObjGetScheme( CuTest *tc )
+testUriObjGetScheme( CuTest *tc )
 {
 	CuAssertStrEquals( tc, "http", URIObjGetScheme( luri ));
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  TestURIObjGetAuth
+ *         Name:  testUriObjGetAuth
  *  Description:  Test the Auth function
  * =====================================================================================
  */
 void
-TestURIObjGetAuth( CuTest *tc )
+testUriObjGetAuth( CuTest *tc )
 {
 	CuAssertStrEquals( tc, "www.ato.gov.au", URIObjGetAuth( luri ));
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name: TestURIObjGetPath 
+ *         Name: testUriObjGetPath 
  *  Description: Test the Path section
  * =====================================================================================
  */
 void
-TestURIObjGetPath( CuTest *tc )
+testUriObjGetPath( CuTest *tc )
 {
 	CuAssertStrEquals( tc, "/something.html", URIObjGetPath( luri ));
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name: TestURIObjGetPath 
+ *         Name: testUriObjGetPath 
  *  Description: Test a Path Only URI
  * =====================================================================================
  */
 void
-TestPathOnly( CuTest *tc )
+testPathOnly( CuTest *tc )
 {
 	char *lseed = strdup( "/a/location/to/a/path.html"),
 	     *gseed = strdup("http://www.ato.gov.au/");
-	URIQualify( urire, gseed, uri, luri);
+	uriQualify( urire, gseed, uri, luri);
 
 	CuAssertStrEquals( tc, 
 			"http://www.ato.gov.au/a/location/to/a/path.html",
-			URIQualify( urire, lseed, uri, luri)
+			uriQualify( urire, lseed, uri, luri)
 	);
 				
 }
@@ -111,49 +111,49 @@ TestPathOnly( CuTest *tc )
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name: TestURINoPath
+ *         Name: testUriNoPath
  *  Description: Test a URI with no path defined
  * =====================================================================================
  */
 void
-TestURINoPath( CuTest *tc )
+testUriNoPath( CuTest *tc )
 {
 	char *lseed = strdup("http://www.ato.gov.au");
 	CuAssertStrEquals( tc,
 			"http://www.ato.gov.au/",
-			URIQualify( urire, lseed, uri, luri)
+			uriQualify( urire, lseed, uri, luri)
 	);
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name: TestURINoPath
+ *         Name: testUriNoPath
  *  Description: Test a URI with various characters 
  * =====================================================================================
  */
 void
-TestURIQualify3( CuTest *tc )
+testUriQualify3( CuTest *tc )
 {
 	char *lseed = "http://www.perlmonks.org/?node_id=840289";
-        CuAssertStrEquals( tc, lseed, URIQualify(urire, lseed, uri, NULL  ));
+        CuAssertStrEquals( tc, lseed, uriQualify(urire, lseed, uri, NULL  ));
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  TestPathOnly2
+ *         Name:  testPathOnly2
  *  Description:  Test paths that do not start with '/'`
  * =====================================================================================
  */
 void
-TestPathOnly2( CuTest *tc )
+testPathOnly2( CuTest *tc )
 {
 	char *lseed = strdup( "ml.asp?45937"),
 	     *gseed = strdup("http://www.ato.gov.au/");
-	URIQualify( urire, gseed, uri, luri);
+	uriQualify( urire, gseed, uri, luri);
 
 	CuAssertStrEquals( tc, 
 			"http://www.ato.gov.au/ml.asp?45937",
-			URIQualify( urire, lseed, uri, luri)
+			uriQualify( urire, lseed, uri, luri)
 	);
 				
 }
@@ -161,9 +161,9 @@ TestPathOnly2( CuTest *tc )
 
  /* REMAINS TO BE IMPLEMENTED */
 void
-TestURINormalization( CuTest *tc )
+testUriNormalization( CuTest *tc )
 {
-	URIQualify( urire, "htTP://WWW.ato.GOV.aU/SomePath/", uri, luri );
+	uriQualify( urire, "htTP://WWW.ato.GOV.aU/SomePath/", uri, luri );
 	CuAssertStrEquals( tc,
 			"http://www.ato.gov.au/SomePath/",
 			URIObjGetFQP( uri )
@@ -182,15 +182,15 @@ CuSuite *GetSuite()
 {
         CuSuite *suite = CuSuiteNew();
 
-        SUITE_ADD_TEST( suite, TestURIQualify);
-        SUITE_ADD_TEST( suite, TestURIObjGetScheme);
-	SUITE_ADD_TEST( suite, TestURIObjGetAuth);
-	SUITE_ADD_TEST( suite, TestURIObjGetPath);
-	SUITE_ADD_TEST( suite, TestPathOnly );
-	SUITE_ADD_TEST( suite, TestURINoPath );
-	SUITE_ADD_TEST( suite, TestURIQualify3 );
-	SUITE_ADD_TEST( suite, TestPathOnly2 );
-	SUITE_ADD_TEST( suite, TestURINormalization );
+        SUITE_ADD_TEST( suite, testUriQualify);
+        SUITE_ADD_TEST( suite, testUriObjGetScheme);
+	SUITE_ADD_TEST( suite, testUriObjGetAuth);
+	SUITE_ADD_TEST( suite, testUriObjGetPath);
+	SUITE_ADD_TEST( suite, testPathOnly );
+	SUITE_ADD_TEST( suite, testUriNoPath );
+	SUITE_ADD_TEST( suite, testUriQualify3 );
+	SUITE_ADD_TEST( suite, testPathOnly2 );
+	SUITE_ADD_TEST( suite, testUriNormalization );
 }
 
 /* 

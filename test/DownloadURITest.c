@@ -31,7 +31,7 @@ TestGetHrefList( CuTest *tc )
 	/* set content directly for the purposes of a test */
 	*uri->uri_content = strdup( content );
 	URIObjSetFQP( uri, "http://www.perlmonks.org/");
-	dlu = GetHrefList( urire, uri );
+	dlu = getHrefList( urire, uri );
 
 	CuAssertPtrNotNull( tc, dlu );
 	

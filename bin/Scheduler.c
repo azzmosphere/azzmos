@@ -26,6 +26,7 @@ static inline void   finitSchedDb( Scheduler_t *sc );
 static inline void   getNextSeed( Scheduler_t *sc );
 static inline bool   allocatedSeed( Scheduler_t *sc );
 static inline int    getDcountFromOpts( Scheduler_t *sc );
+static inline int createrDownloadWkers ( int rv, pthread_attr_t *attr, Scheduler_t *sc,DownloadEngine_t **dlc, pthread_t *thread );
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -48,8 +49,7 @@ schedulerProcess( void *argsin )
 	Scheduler_t *sc = (Scheduler_t *) argsin;
 	int   rv = 0, 
 	      dcount = getDcountFromOpts(sc), 
-	      maxtries = 0,
-	      i = 0;
+	      i = 0, maxtries = 0;
 	pthread_t thread[dcount];
 	pthread_attr_t attr;
 	DownloadEngine_t *dlc[ dcount ];
@@ -58,27 +58,9 @@ schedulerProcess( void *argsin )
 	/*  Allocate the first seed before anything is started */
 	DEBUG("scheduler process started");
 	getNextSeed( sc );
-	if( rv ) {
-		errno = rv;
-		ERROR("could not initlize pthread attributes");
-		schedulerSetStatus( sc, EXIT_FAILURE ); 
-		return;
-	}
-	for( i = 0; i < dcount; i ++ ) {
-			if( rv = initDownloaderThread(dlc[i], &thread[i], &attr, sc) ) {
-				ERROR("error createing downloader thread");
-			 	i --;
-		       		maxtries ++;
-		 		continue;
-			}
+	createrDownloadWkers(rv, &attr, sc, dlc, thread);
 
-			/* see if we have exceeded max tries if so this is fatal */
-			if( maxtries >= DL_INIT_MAX_TRIES) {
-				ERROR("exceeded maximum attempts to create downloader thread");
-				schedulerSetStatus( sc, EXIT_FAILURE);
-				return;
-			}
-	}
+	/* create the main loop */
 	do {
 		DEBUG("entering main loop");
 
@@ -96,9 +78,43 @@ schedulerProcess( void *argsin )
 		deEngCleanUp( dlc[i], thread[i]);
 	}
 	pthread_attr_destroy( &attr );
-	DEBUG("downloader engine finished");
+	DEBUG("scheduler process finished");
 }
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  createrDownloadWkers
+ *  Description:  Create the worker functions.
+ * =====================================================================================
+ */
+static inline int
+createrDownloadWkers( int rv, pthread_attr_t *attr, Scheduler_t *sc,DownloadEngine_t **dlc, pthread_t *thread )
+{
+	int err = rv, dcount = getDcountFromOpts(sc),i, maxtries = 0;
+	if( err ) {
+		ERROR_E("could not initlize pthread attributes", err);
+		schedulerSetStatus( sc, EXIT_FAILURE ); 
+		return;
+	}
+	for( i = 0; i < dcount; i ++ ) {
+			if( err = initDownloaderThread(dlc[i], &thread[i], attr, sc) ) {
+				ERROR("error createing downloader thread");
+			 	i --;
+		       		maxtries ++;
+		 		continue;
+			}
+
+			/* see if we have exceeded max tries if so this is fatal */
+			if( maxtries >= DL_INIT_MAX_TRIES) {
+				ERROR("exceeded maximum attempts to create downloader thread");
+				schedulerSetStatus( sc, EXIT_FAILURE);
+				break;
+			}
+	}
+
+	return err;
+}
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -115,7 +131,7 @@ initDownloaderThread ( DownloadEngine_t *dlc,
 	int rv = 0;
 
 	DEBUG("creating threader downloader process");
-	dlc = initDownloadEngine( sc );
+	dlc = download_eng_init( sc );
 	if( dlc == NULL ) {
 		rv = errno;
 	}
@@ -124,7 +140,7 @@ initDownloaderThread ( DownloadEngine_t *dlc,
 	}
 
 	return rv;
-}		/* -----  end of static function initDownloaderThread  ----- */
+}
 
 
 /* 
@@ -161,7 +177,7 @@ schedulerInit( const Opts_t *opts )
 
 	Scheduler_t *sc = (Scheduler_t *) malloc( sizeof(Scheduler_t) );
 	if( ! sc ) {
-		syslog(LOG_ERR, "could not initilize scheduler object");
+		CRIT("could not initilize scheduler object");
 		return NULL;
 	}
 	schedulerSetOpts( sc, opts );
@@ -172,7 +188,7 @@ schedulerInit( const Opts_t *opts )
 
 	/* create the locking variable. */
 	if( pt_errno = pthread_mutex_init( &sc->sc_lock, NULL) ) {
-		syslog( LOG_CRIT, "could not create mutex lock for scheduler - %s", strerror( pt_errno ));
+		CRIT_E("could not create mutex lock for scheduler", pt_errno);
 		destroySc(sc);
 		return NULL;
 	}
@@ -180,19 +196,19 @@ schedulerInit( const Opts_t *opts )
 	/* create the UQ object  */
 	uq_lock = (pthread_mutex_t *) malloc( sizeof( pthread_mutex_t ));
 	if( !uq_lock || (pt_errno = pthread_mutex_init( uq_lock, NULL)) ) {
-		syslog( LOG_CRIT, "could not create mutex lock for URI Qualifier - %s", strerror( pt_errno ));
+		CRIT_E("could not create mutex lock for URI Qualifier", pt_errno);
 		destroySc(sc);
 		return NULL;
 	}
-
 	if( !(uq = URIQualifyInit()) ) {
-		syslog( LOG_CRIT, "could not create the URI Qualifier object");
+		CRIT("could not create the URI Qualifier object");
 		destroySc(sc);
 		return NULL;
 
 	}
 	URIQualifySetLock( uq, uq_lock );
 	INIT_LIST_HEAD( &uq->uq_list );
+	sc->sc_uq = uq;
 
 	/* set default flags */
 	sc->sc_flags = SC_DEFAULT;
@@ -202,7 +218,6 @@ schedulerInit( const Opts_t *opts )
 	if( opts->o_seed) {
 		sc->sc_flags |= SC_SEEDOPT;
 	}
-
 	return sc;
 }
 
@@ -291,6 +306,7 @@ getNextSeed( Scheduler_t *sc )
 	}
 
 	/*  allocate seed from options if SEED_OPT is true */
+	DEBUG_INT("sc_flags", sc->sc_flags);
 	if( sc->sc_flags & SC_SEEDOPT ) {
 		*(sc->sc_seed) = strdup(sc->sc_opts->o_seed);
 		DEBUG_STR("seed", *(sc->sc_seed));

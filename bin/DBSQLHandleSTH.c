@@ -37,7 +37,7 @@ dbInitSth ( DBObj_t *db )
 {
 	DBSQLHandleSth_t *usth = (DBSQLHandleSth_t *) malloc( sizeof(DBSQLHandleSth_t));
 	if ( ! usth ) {
-		syslog( LOG_ERR, "could not allocate memory for DBA sth %s", strerror( errno ));
+		ERROR("could not allocate memory for DBA sth");
 		return NULL;
 	}
 

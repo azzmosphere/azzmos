@@ -15,7 +15,6 @@
  *
  * =====================================================================================
  */
-
 #include <URIQualifier.h>
 
 /* 
@@ -186,7 +185,7 @@ URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, UR
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  URIQualifyDlURI
+ *         Name:  uriQualifyDlURIi
  *  Description:  This function is called by the DownloadURI algoritm to qualify a list
  *                of href's known has a DownloadURI_t object.  
  *
@@ -205,11 +204,12 @@ URIQualifyChkHeaders ( URIHeader_t *uh, const char *href, DownloadHTML_t *dl, UR
  * =====================================================================================
  */
 int
-URIQualifyDlURI ( URIQualify_t *uq, 
+uriQualifyDlURI ( URIQualify_t *uq, 
 		  URIRegex_t *urire, 
 		  DownloadURI_t *duri, 
 		  URIObj_t *uri, 
-		  DownloadHTML_t *dl)
+		  DownloadHTML_t *dl,
+		  DBSQLHandleSth_t *dbsth)
 {
 	int rv = 0;
 	DownloadURI_t *duri_tmp;
@@ -228,17 +228,10 @@ URIQualifyDlURI ( URIQualify_t *uq,
 		URIObjFreeContent( nexturi );
 		if( (href = uriQualify( urire, href , nexturi, NULL)) != NULL ) { 
 			found = false;
-
-			/* upload the edge here this will also give a URI id that can be
-			 * used later on. */
-			/* upload reposnse and headers */
-			/* REMAINS TO BE IMPLEMENTED */
-			DEBUG_STR("dbupload uri",URIObjGetFQP(uri));
-			DEBUG_STR("dbupload nexturi", URIObjGetFQP(nexturi));
+			rv = uriUploadEdge( dbsth, uri, nexturi);
 
 			/* locking is not taken to seriosly at this point as we are not
 			 * writing to the list */
-
 			/*  FROM THIS SECTION BEYOND WE WILL REPLACE WITH 
 			 *  THE MD5 ALGORITM */
 			pthread_mutex_lock( URIQualifyGetLock( uq ) );
@@ -284,7 +277,7 @@ URIQualifyDlURI ( URIQualify_t *uq,
 	}
 
 	return rv;
-}		/* -----  end of function URIQualifyDlURI  ----- */
+}		/* -----  end of function uriQualifyDlURIi  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -322,5 +315,6 @@ CleanUpURIQualify( URIQualify_t *uq )
 	}
 
 }
+
 
 

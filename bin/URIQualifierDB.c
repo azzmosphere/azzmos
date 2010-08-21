@@ -20,10 +20,8 @@
  * =====================================================================================
  */
 
-
 /* #####   HEADER FILE INCLUDES   ################################################### */
 #include <URIQualifierDB.h>
-
 
 /* #####   FUNCTION DEFINITIONS  -  EXPORTED FUNCTIONS   ############################ */
 
@@ -37,17 +35,44 @@ extern DBSQLHandleSth_t *
 initEdgeSth( DBObj_t *db, DBSQLHandleSth_t * usth )
 {
 	Oid params[UQ_DB_EDGE_NPARAMS] = UQ_DB_EDGE_PARAMTYPE;
-	usth->usth_edge = UQ_DB_EDGE_INIT( db, params );
 
+	usth->usth_edge = UQ_DB_EDGE_INIT( db, params );
 	if( ! usth->usth_edge ) {
-		syslog( LOG_ERR, "could not initilize the the edge statement - %s", strerror(errno));
+		ERROR( "could not initilize the the edge statement");
 		dbFinitSth( usth );
 		usth = NULL;
 	}
 	return usth;
 }
 
-	/* -----  end of function URIQDbInitEdgeSth  ----- */
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  uriUploadEdge
+ *  Description:  Create the edge on the database.
+ * =====================================================================================
+ */
+extern int 
+uriUploadEdge( DBSQLHandleSth_t *usth, URIObj_t *xuri, URIObj_t *yuri )
+{
+	int rv = 0, pcount = 0;
+	char *paramValues[UQ_DB_EDGE_NPARAMS], *idstr;
 
+	DEBUG("uploading edge");
+	paramValues[pcount ++] = URIObjGetScheme( xuri );
+	paramValues[pcount ++] = URIObjGetAuth( xuri );
+	paramValues[pcount ++] = URIObjGetPath(xuri);
+	paramValues[pcount ++] = URIObjGetScheme( yuri );
+	paramValues[pcount ++] = URIObjGetAuth( yuri );
+	paramValues[pcount ++] = URIObjGetPath(yuri);
+	rv = DBSQLExecSthQuery( usth->usth_edge, (const char **)paramValues );
 
-
+	/* check result and assign id */
+	if( rv ) {
+		ERROR_E("could not upload edge", rv);
+	}
+	else {
+		idstr = DBSQLGetResult(usth->usth_edge, UQ_DB_EDGE_ROW, UQ_DB_EDGE_COL );
+		yuri->uri_id = atoi( idstr );
+	}
+	return rv;
+}

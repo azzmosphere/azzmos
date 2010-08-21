@@ -21,9 +21,9 @@
 
 #include <Downloader.h>
 
-static void dlError( Scheduler_t *sc, char *msg );
-static bool deGetSeed( char **seed, Scheduler_t *sc );
-
+static void              dl_error( Scheduler_t *sc, char *msg );
+static bool              de_get_seed( char **seed, Scheduler_t *sc );
+/*  static */ DownloadEngine_t *de_sth_init( DownloadEngine_t *de, Scheduler_t *sc );
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  downloaderEngine
@@ -39,11 +39,18 @@ downloaderEngine(void *argsin)
 	char     *seed;
 	int       dlerr = 0;
 
+	de = de_sth_init( de, sc);
+	if( ! de ) {
+		ERROR("could not initilize database");
+		schedulerSetStatus( sc, EXIT_FAILURE);
+		return;
+	}
+
 	/* downloader engine starts here */
 	DEBUG("downloader started");
 
 	/*  loop will continue until SC_EXIT */
-	while( deGetSeed(&seed, sc) ){
+	while( de_get_seed(&seed, sc) ){
 		DEBUG("got seed from scheduler");
 
 		/*  create initial URI and qualify it */
@@ -51,15 +58,16 @@ downloaderEngine(void *argsin)
 		DEBUG_STR( "seed", seed);
 
 		/* For each iteration of the loop get the next seed*/	
-		dlerr = downloadURI( de->de_dl, sc->sc_uq, seed, de->de_urire, 0, uri, sc->sc_opts, de->de_dbsth);
+		dlerr = dl_uri( de->de_dl, sc->sc_uq, seed, de->de_urire, 0, uri, sc->sc_opts, de->de_dbsth);
 		if( dlerr ) {
-			errno = dlerr;
-			ERROR("error downloading site");
+			ERROR_E("error downloading site", dlerr);
 			schedulerSetStatus( sc, EXIT_FAILURE);
 		}
 		URIObjCleanUp(uri);
 	}
 	URIObjCleanUp(uri);
+	dbFinitSth( de->de_dbsth );
+	DBSQLHandleCleanUp(de->de_db);
 	DEBUG("downloader finished");
 	/* Downloader has finished */
 }
@@ -67,52 +75,60 @@ downloaderEngine(void *argsin)
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  initDownloadEngine
+ *         Name:  de_sth_init
+ *  Description:  initilise the database and statement handle for the downloader engine,
+ *                this must be done inside the downloader thread
+ * =====================================================================================
+ */
+/*  static */DownloadEngine_t *
+de_sth_init( DownloadEngine_t *de, Scheduler_t *sc )
+{
+	de->de_db = DBSQLHandleInit(  sc->sc_opts );
+	/* create connection to the database */
+	if( de->de_db == NULL) {
+		dl_error(sc,"download engine no db");
+		return NULL;
+	}	
+
+	/*  Initlize the statement handle. */
+	de->de_dbsth = dbInitSth( de->de_db );
+	if( de->de_dbsth == NULL ) {
+		dl_error(sc, "could not create STH");
+		return NULL;
+	} 
+	return de;
+}
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  download_eng_init
  *  Description:  Initilize the downloader engine.
  * =====================================================================================
  */
 extern DownloadEngine_t *
-initDownloadEngine(  Scheduler_t * sc)
+download_eng_init(  Scheduler_t * sc)
 {
 	const Opts_t *opts = sc->sc_opts;
 
 	DownloadEngine_t *de = (DownloadEngine_t *) malloc( sizeof(DownloadEngine_t) );
 	if( ! de ) {
-		dlError(sc, "could not inilize downloader engine");
+		dl_error(sc, "could not inilize downloader engine");
 		return NULL;
 	}
 
 
 	/* create regular expression pattern holder */
 	if( (de->de_urire = URIRegexInit()) == NULL) {
-		dlError(sc, "regular expresion error for downloader engine");
+		dl_error(sc, "regular expresion error for downloader engine");
 		free( de );
 		return NULL;
 	}
 
 	/* create internet socket */
 	if( (de->de_dl = InitDownloadHTML( opts )) == NULL ) {
-		dlError(sc, "could not initilize DownloadHTML");
+		dl_error(sc, "could not initilize DownloadHTML");
 		URIRegexCleanUp( de->de_urire );
 		free( de );
-		return NULL;
-	} 
-
-	/* create connection to the database */
-	if( (de->de_db = DBSQLHandleInit( opts )) == NULL) {
-		dlError(sc,"download engine no db");
-		URIRegexCleanUp( de->de_urire );
-		cleanUpDownloadHTML( de->de_dl );
-		free( de );
-		return NULL;
-	}	
-
-	/*  Initlize the statement handle. */
-	if( (de->de_dbsth = dbInitSth( sc->sc_db )) == NULL ) {
-		dlError(sc, "could not create STH");
-		DBSQLHandleCleanUp( de->de_db );
-		cleanUpDownloadHTML( de->de_dl );
-		URIRegexCleanUp( de->de_urire );
 		return NULL;
 	} 
 
@@ -125,13 +141,13 @@ initDownloadEngine(  Scheduler_t * sc)
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  dlError
+ *         Name:  dl_error
  *  Description:  Print the error message and set the scheduler to EXIT_FAILURE.  also
  *                set the SC flag  SC_EXIT to true.
  * =====================================================================================
  */
 static void 
-dlError( Scheduler_t *sc, char *msg )
+dl_error( Scheduler_t *sc, char *msg )
 {
 	ERROR(msg);
 	schedulerSetFlag( sc, SC_EXIT );
@@ -148,22 +164,20 @@ dlError( Scheduler_t *sc, char *msg )
 extern void
 deEngCleanUp(DownloadEngine_t *de, pthread_t thread )
 {
-	dbFinitSth( de->de_dbsth );
-	DBSQLHandleCleanUp(de->de_db);
 	cleanUpDownloadHTML( de->de_dl );
 	URIRegexCleanUp( de->de_urire );
 }
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  deGetSeed
+ *         Name:  de_get_seed
  *  Description:  Check the exit status,  if the exit status is set to true then return
  *                false.  Otherwise wait until a seed becomes available and then grab 
  *                it.
  * =====================================================================================
  */
 static bool 
-deGetSeed( char **seed, Scheduler_t *sc )
+de_get_seed( char **seed, Scheduler_t *sc )
 {
 	bool rv    = true;
 	bool found = false;

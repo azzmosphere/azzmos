@@ -38,20 +38,14 @@
 struct URIObj_s {
 	char ** uri_content;  /* The HTML content of the URI */
 	char ** uri_fqp;      /* The Fully Qualified Address */
-
 	int uri_scheme_so;    /* offset values for scheme */
 	int uri_scheme_eo; 
-
 	int uri_auth_so;      /* offset values for auth */
 	int uri_auth_eo;
-
 	int uri_path_so;
 	int uri_path_eo;
-
 	int uri_content_offset; /* offset value for getting URI content */
-
 	URIHeader_t *uri_uh;    /* linked list of URI headers */
-
 	int uri_id;
 } typedef URIObj_t;
 

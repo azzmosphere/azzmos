@@ -249,7 +249,7 @@ URIHeaderAllocate ( URIHeader_t *uh, DownloadHTML_t *dl, URIRegex_t *re, const c
 	int ret = 0;
 	CURLcode res = CURLE_OK;
 
-	if( (res = DownloadHTMLGetHeaders(dl, seed)) != CURLE_OK) {
+	if( (res = downloadHTMLGetHeaders(dl, seed)) != CURLE_OK) {
 		ERROR_C("could not download headers", res);
 		ret = 1;
 	}

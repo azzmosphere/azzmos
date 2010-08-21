@@ -112,7 +112,7 @@ DBSQLHandleInit(const Opts_t *opts )
 					      NULL, 
 					      0 );
 			if( result == NULL || PQresultStatus( result ) != PGRES_COMMAND_OK) {
-				syslog( LOG_CRIT, "could not change client-encoding - %s", PQresultErrorMessage( result ));
+				DB_ERROR_R( "could not change client-encoding", result);
 				PQfinish( db->dbconn );
 				free(db);
 				db = NULL;
@@ -162,10 +162,10 @@ DBSQLHandleCleanUp( DBObj_t *db )
  */
 DBSth_t *
 DBSQLSthInit( DBObj_t *db, 
-                       const char *sql,
-                       const Oid  *paramTypes,
-                       const char *errmsg,
-                       int   nParams
+              const char *sql,
+              const Oid  *paramTypes,
+              const char *errmsg,
+              int   nParams
 )
 {
 	Oid *lparamTypes;
@@ -173,7 +173,7 @@ DBSQLSthInit( DBObj_t *db,
 	DBSth_t *sth = (DBSth_t *) malloc( sizeof(DBSth_t));
 
 	if( ! sth ) {
-		syslog( LOG_ERR, "%s - could not initlize the statment handle", errmsg);
+		ERROR("could not initlize the statment handle");
 		return NULL;
 	}
 
@@ -207,9 +207,8 @@ DBSQLSthInit( DBObj_t *db,
 				   sth->db_errmsg, 
 				   sth->db_nParams,
 				   sth->db_rc);
-
 	if( i ) {
-		syslog( LOG_ERR, "%s - could not prepare statement", sth->db_errmsg);
+		ERROR_B("could not prepare statement", sth->db_errmsg);
 		return NULL;
 	}
 
@@ -234,22 +233,18 @@ DBSQLSthFinit ( DBSth_t *sth )
 		free( sth );
 		return;
 	}
-
-
 	sth->db_stmtName   = NULL;
 	sth->db_paramLengths = sth->db_paramFormats = NULL;
    	sth->db_paramTypes = NULL;
    	sth->db_errmsg     = NULL;
-
-	if( sth->db_rc )
+	if( sth->db_rc ){
 		PQclear( sth->db_rc);
-
+	}
 	free((void *) sth->db_stmtName);
 	free((void *) sth->db_paramLengths);
 	free((void *) sth->db_paramFormats);
 	free((void *) sth->db_paramTypes);
 	free((void *) sth->db_errmsg);
-
 	sth = NULL;
 	free((void *)  sth );
 }		/* -----  end of function DBSQLSthFinit  ----- */
@@ -267,7 +262,7 @@ int
 DBSQLExecSthQuery ( DBSth_t *sth, const char **paramValues )
 {
 	return DBSQLExecSth( sth, paramValues,  PGRES_TUPLES_OK );
-}		/* -----  end of function DBSQLExecSthExec  ----- */
+}		
 
 
 /* 
@@ -281,7 +276,7 @@ int
 DBSQLExecSthCmd ( DBSth_t *sth, const char **paramValues )
 {
 	return DBSQLExecSth( sth, paramValues,  PGRES_COMMAND_OK );
-}		/* -----  end of function DBSQLExecSthCmd  ----- */
+}
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -295,7 +290,9 @@ int
 DBSQLExecSth ( DBSth_t *sth, const char **paramValues, int pgcheck )
 {
 	int rv = 0;
-	sth->db_rc = PQexecPrepared( sth->db_conn->dbconn, 
+	DEBUG("executing statement");
+	sth->db_rc = PQexecPrepared( 
+			sth->db_conn->dbconn, 
 			sth->db_stmtName, 
 			sth->db_nParams, 
 			paramValues, 
@@ -304,12 +301,12 @@ DBSQLExecSth ( DBSth_t *sth, const char **paramValues, int pgcheck )
 			sth->db_resultFormat
 	);
 	if( PQresultStatus( sth->db_rc ) != pgcheck ) {
-		syslog(LOG_ERR, "%s - %s ", sth->db_errmsg ,PQresultErrorMessage(sth->db_rc));
+		DB_ERROR_R(sth->db_errmsg, sth->db_rc);
 		rv =  PQresultStatus( sth->db_rc );
 	}
-
+	DEBUG("SQL statement executed successfully");
 	return rv;
-}		/* -----  end of function DBSQLExecSthExec  ----- */
+}
 
 
 /* 
@@ -344,14 +341,9 @@ DBSQLPrepareStatement ( DBObj_t *db,
 
 	rc = PQprepare( conn, stmtName, query, nParams, paramTypes);
 	if( PQresultStatus( rc ) != PGRES_COMMAND_OK ) {
-		syslog(LOG_ERR, "%s(%s) %s - %s ",
-		      __FILE__, 
-		      "DBSQLPrepareStatement",
-		      errmsg,
-		      PQresultErrorMessage(rc));
+		DB_ERROR_R(errmsg, rc);
 		rv = 1;
 	}
-	
 	return rv;
-}		/* -----  end of function DBSQLPrepareStatement  ----- */
+}	
 

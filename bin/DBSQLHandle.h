@@ -108,7 +108,8 @@ int      DBSQLExecSth ( DBSth_t *sth, const char **paramValues, int pgcheck );
 
 
 /* #####   EXPORTED MACROS   ######################################################## */
-#define DB_ERROR(m1,m2)  ERROR_B(m1, PQerrorMessage(m2))
+#define DB_ERROR(m1,m2)  ERROR_B((char *) m1, (char *) PQerrorMessage(m2))
+#define DB_ERROR_R(m1,e) ERROR_B((char *) m1, (char *) PQresultErrorMessage(e))
 
 /*===================================================================================== 
  * The following macros are special in that they are to be used as if they where 

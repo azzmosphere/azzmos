@@ -87,10 +87,13 @@ CURLcode
 performDownloadHTML( DownloadHTML_t *dl_t, const char *url )
 {
 	CURLcode res;
-	rewind( dl_t->dl_fh);
-
-	if( ((res = curl_easy_setopt(dl_t->dl_ch, CURLOPT_URL, url)) != CURLE_OK) || (res = curl_easy_perform(dl_t->dl_ch))) {
-		ERROR_C_URL("could not download", url, res);
+	reset_file( dl_t->dl_fh);
+	res = curl_easy_setopt(dl_t->dl_ch, CURLOPT_URL, url);
+	if( res != CURLE_OK){
+		ERROR_C_URL("could not set URL",url,res);
+	}
+	else if( (res = curl_easy_perform(dl_t->dl_ch)) != CURLE_OK) {
+		ERROR_C_URL("could not download url", url, res);
 	}
 	return res;
 }
@@ -131,26 +134,26 @@ downloadHTMLWriteData(void *ptr, size_t size, size_t nmemb, void *stream)
 
 /* 
  * ===  FUNCTION  ======================================================================
- *         Name:  DownloadHTMLGetHeaders
+ *         Name:  downloadHTMLGetHeaders
  *  Description:  Download the headers for a specific URI, the request method is set to
  *                HEAD here but that is done through the CURL_NOBODY option instead of 
  *                directly for consistancy.
  * =====================================================================================
  */
 CURLcode
-DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri )
+downloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri )
 {
 	CURLcode res = CURLE_OK;
 	CURL    *cl  = DownloadHTMLGetCH(dl);
 	FILE    *fh  = DownloadHTMLGetFh(dl);
 
-	rewind( fh );
-	if(  (res = curl_easy_setopt( cl, CURLOPT_NOBODY, true )) != CURLE_OK ) 
+	reset_file( fh );
+	if(  (res = curl_easy_setopt( cl, CURLOPT_NOBODY, true )) != CURLE_OK ) {
 		ERROR_C("could not get headers", res);
-
-	else if ( (res = curl_easy_setopt( cl, CURLOPT_URL, uri )) != CURLE_OK )
+	}
+	else if ( (res = curl_easy_setopt( cl, CURLOPT_URL, uri )) != CURLE_OK ){
 		ERROR_C_URL("could not set URL", uri, res);
-
+	}
 	else if ( (res = curl_easy_setopt( cl, CURLOPT_WRITEHEADER, fh)) != CURLE_OK) {
 		ERROR_C_URL("could not set file handle for headers", uri, res);
 	}
@@ -163,5 +166,5 @@ DownloadHTMLGetHeaders ( DownloadHTML_t *dl, const char *uri )
 	}
 	curl_easy_setopt( cl, CURLOPT_WRITEDATA, fh);
 	return res;
-}		/* -----  end of function DownloadHTMLGetHeaders  ----- */
+}		/* -----  end of function downloadHTMLGetHeaders  ----- */
 

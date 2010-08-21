@@ -6,4 +6,5 @@ ETag: "da4e3e-f77c-4c0a52c5"
 Accept-Ranges: bytes
 Content-Length: 63356
 Content-Type: text/html
+Location: http://www.pair.com
 
